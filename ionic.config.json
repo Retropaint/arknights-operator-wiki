@@ -1,0 +1,7 @@
+{
+  "name": "arknights-wiki",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
