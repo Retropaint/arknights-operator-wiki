@@ -1,20 +1,108 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
+<ion-header>
+  <div class="dead-zone">
+    <h1>Another Arknights Wiki</h1>
+  </div>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" *ngIf="operator">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <p class="op-name">{{operator.name}} ({{randomOperatorNum}})</p>
+
+  <div class="dead-zone container">
+
+    <div class="left-container">
+      <table class="basic-info-card">
+        <ion-img class="image" src="https://aceship.github.io/AN-EN-Tags/img/avatars/{{operatorImageLink}}.png"></ion-img>
+        <tbody>
+          <tr *ngIf="operator.recruitTags.length != 0">
+            <th>Recruit Tags</th>
+            <td>{{operator.recruitTags}}</td>
+          </tr>
+          <tr>
+            <th>Rarity</th>
+            <td>{{operator.rarity}}</td>
+          </tr>
+          <tr>
+            <th>Class</th>
+            <td>{{operator.class}}</td>
+          </tr>
+          <tr>
+            <th>Branch</th>
+            <td>{{operator.branch}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="stat-table">
+        <tbody>
+          <tr>
+            <th></th>
+            <th>
+              <ion-img src="assets/icons/stats/hp.png"></ion-img>
+            </th>
+            <th>
+              <ion-img src="assets/icons/stats/atk.png"></ion-img>
+            </th>
+            <th>
+              <ion-img src="assets/icons/stats/def.png"></ion-img>
+            </th>
+            <th>
+              <ion-img src="assets/icons/stats/res.png"></ion-img>
+            </th>
+            <th>
+              <ion-img src="assets/icons/stats/deploy.png"></ion-img>
+            </th>
+            <th>
+              <ion-img src="assets/icons/stats/cost.png"></ion-img>
+            </th>
+            <th>
+              <ion-img src="assets/icons/stats/block.webp"></ion-img>
+            </th>
+            <th>
+              <ion-img src="assets/icons/stats/aspd.png"></ion-img>
+            </th>
+          </tr>
+          <tr>
+            <th class="level-cell">
+              <ion-img class="elite-img" src="assets/icons/elitePhases/0.webp"></ion-img>
+              Lv 0
+            </th>
+            <th>
+              {{operator.stats.elite0.minElite.stats.maxHp}}
+            </th>
+            <th>
+              {{operator.stats.elite0.minElite.stats.atk}}
+            </th>
+            <th>
+              {{operator.stats.elite0.minElite.stats.def}}
+            </th>
+            <th>
+              {{operator.stats.elite0.minElite.stats.res}}
+            </th>
+            <th>
+              {{operator.stats.elite0.minElite.stats.atk}}
+            </th>
+            <th>
+              {{operator.stats.elite0.minElite.stats.atk}}
+            </th>
+            <th>
+              {{operator.stats.elite0.minElite.stats.atk}}
+            </th>
+            <th>
+              {{operator.stats.elite0.minElite.stats.baseAttackTime}}s
+            </th>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="right-container">
+      <div class="image-container">
+        <ion-img class="image" src="https://aceship.github.io/AN-EN-Tags/img/characters/{{operatorImageLink}}_1.png"></ion-img>
+      </div>
+    </div>
+
   </div>
+
 </ion-content>
