@@ -11,7 +11,7 @@ export interface Operator {
   talents: Talent[];
   recruitTags: string[];
   obtainMethods: string[];
-  stats: any;
+  statBreakpoints: StatBreakpoint[];
   position: string;
   trustExtraStats?: any[];
   skills: Skill[];
@@ -43,4 +43,12 @@ export interface SkillLevel {
     name: string;
     value: any;
   }[];
+}
+
+export interface StatBreakpoint {
+  elite: number;
+  minLevel: number;
+  maxLevel: number;
+  minStats: any;
+  maxStats: any;
 }

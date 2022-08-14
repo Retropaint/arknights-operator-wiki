@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Operator, Skill, SkillLevel, Talent } from '../interfaces/operator';
+import { Operator, Skill, SkillLevel, StatBreakpoint, Talent } from '../interfaces/operator';
 import { concatMap } from 'rxjs/operators'; 
 
 @Injectable({
@@ -43,7 +43,7 @@ export class AceshipService {
                 obtainMethods: op.itemObtainApproach,
                 position: op.position,
                 skills: skills,
-                stats: this.getStats(op)
+                statBreakpoints: this.getStats(op)
               }
 
               this.operators.push(newOperator);
@@ -69,55 +69,39 @@ export class AceshipService {
 
           })
         })
-
-        console.log(this.operators)
       })
   }
 
   
 
-  getStats(operator): any {
-    let opStats: any = [];
+  getStats(operator): StatBreakpoint[] {
+    let opStats: StatBreakpoint[] = [];
 
-    let eliteCount: string = 'elite0';
+    let eliteCount: number = 0;
     operator.phases.forEach(elite => {
 
-      let stats = elite.attributesKeyFrames[0].data;
+      elite = elite.attributesKeyFrames;
 
-      stats.res = this.replaceKey(stats.magicResistance, stats.res);
-      stats.blockCount = this.replaceKey(stats.blockCnt, stats.blockCount);
-      stats.aspd = this.replaceKey(stats.attackSpeed, stats.aspd);
-      stats.deployTime = this.replaceKey(stats.attackSpeed, stats.aspd);
+      let minStats = elite[0].data
+      minStats = this.replaceKey(minStats, 'magicResistance', 'res');
+      minStats = this.replaceKey(minStats, 'blockCnt', 'blockCount');
 
-      switch(stats.baseAttackTime) {
-        case 1.3: case 1.6:
-          stats.attackTimeDesc = 'Slightly Slow';
-        case 2.3:
-          stats.attackTimeDesc = 'Slow';
-        break;
+      let maxStats = elite[1].data
+      maxStats = this.replaceKey(maxStats, 'magicResistance', 'res');
+      maxStats = this.replaceKey(maxStats, 'blockCnt', 'blockCount');
+
+      const newBreakpoint: StatBreakpoint = {
+        elite: eliteCount,
+        minLevel: elite[0].level,
+        maxLevel: elite[1].level,
+        minStats: minStats,
+        maxStats: maxStats
       }
 
-      const minElite = {
-        level: elite.attributesKeyFrames[0].level,
-        stats: stats
-      }
-      const maxElite = {
-        level: elite.attributesKeyFrames[1].level,
-        stats: stats
-      }
-      const newElite = {
-        minElite,
-        maxElite
-      }
-      opStats[eliteCount] = newElite;
-      switch(eliteCount) {
-        case 'elite0':
-          eliteCount = 'elite1';
-        break; case 'elite1':
-          eliteCount = 'elite2';
-      }
+      opStats.push(newBreakpoint)
+
+      eliteCount++;
     })
-    console.log(opStats)
 
     return opStats;
 
@@ -142,7 +126,7 @@ export class AceshipService {
     jsonSkill.levels.forEach(level => {
 
       level.blackboard.forEach(stat => {
-        stat.name = this.replaceKey(stat.key, stat.name);
+        stat = this.replaceKey(stat, stat.key, stat.name);
       })
 
       const newLevel: SkillLevel = {
@@ -173,7 +157,7 @@ export class AceshipService {
 
       talent.candidates.forEach(candidate => {
         
-        candidate.unlockCondition.elite = this.replaceKey(candidate.unlockCondition.phase, candidate.unlockCondition.elite);
+        candidate = this.replaceKey(candidate, candidate.unlockCondition.phase, candidate.unlockCondition.elite);
         
         // add required potential to unlockCondition
         candidate.unlockCondition.potential = candidate.requiredPotentialRank;
@@ -282,9 +266,9 @@ export class AceshipService {
   /** 
   * @returns The new key.
   */
-  replaceKey(keyToRename: any, newName: any) {
-    newName = keyToRename;
-    keyToRename = null;
-    return newName;
+  replaceKey(object: any, keyToRename: string, newName: string) {
+    object[newName] = object[keyToRename];
+    delete(object[keyToRename]);
+    return object;
   }
 }

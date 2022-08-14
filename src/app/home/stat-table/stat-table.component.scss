@@ -1,0 +1,30 @@
+.stat-table {
+  display: flex;
+  padding-top: 10px;
+
+  .elite-img {
+    padding-right: 10px;
+    width: 30px;
+  }
+
+  .level-cell {
+    display: flex;
+    align-items: center;
+    border: none;
+  }
+
+  tr {
+    border: 1px solid white;
+  }
+
+  th {
+    padding: 5px 10px 5px;
+    border: 1px solid white;
+  }
+
+  ion-img {
+    width: 23px;
+    display: inline-block;
+    vertical-align: top;
+  }
+}

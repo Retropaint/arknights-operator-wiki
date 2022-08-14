@@ -21,9 +21,9 @@ export class HomePage implements OnInit {
     setTimeout(() => {
       this.randomOperatorNum = Math.round(Math.random() * this.aceship.operators.length - 1);
       this.operator = this.aceship.operators[this.randomOperatorNum];
-      console.log(this.operator)
-      this.operatorImageLink = this.operator.id.slice(2, this.operator.id.length);
-      console.log(this.operator)
+      if(this.operator.id) {
+        this.operatorImageLink = this.operator.id.slice(2, this.operator.id.length);
+      }
     })
   }
 

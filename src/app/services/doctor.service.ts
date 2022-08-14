@@ -7,6 +7,8 @@ import { Doctor, LevelBreakpoint } from '../interfaces/doctor';
 })
 export class DoctorService {
 
+  doctor: Doctor;
+
   constructor(
     private storage: Storage
   ) { }
@@ -15,16 +17,28 @@ export class DoctorService {
     this.storage.get('doctor')
       .then(doctor => {
         if(doctor == null) {
-          const firstBreakpoint: LevelBreakpoint = {
-            elite: 0,
-            level: 0
+          const bp1: LevelBreakpoint = {
+            elite: 1,
+            level: 999
+          }
+          const bp2: LevelBreakpoint = {
+            elite: 2,
+            level: 40
+          }
+          const bp3: LevelBreakpoint = {
+            elite: 2,
+            level: 999
           }
 
           const newDoctor: Doctor = {
-            levelBreakpoints: [firstBreakpoint]
+            levelBreakpoints: [bp1, bp2, bp3]
           }
 
           this.storage.set('doctor', newDoctor);
+
+          this.doctor = newDoctor;
+        } else {
+          this.doctor = doctor;
         }
       })
   }

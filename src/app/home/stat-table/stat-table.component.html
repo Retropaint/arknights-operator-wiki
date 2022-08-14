@@ -1,0 +1,62 @@
+<table class="stat-table">
+  <tbody>
+    <tr>
+      <th></th>
+      <th>
+        <ion-img src="assets/icons/stats/hp.png"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/atk.png"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/def.png"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/res.png"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/deploy.png"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/cost.png"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/block.webp"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/aspd.png"></ion-img>
+      </th>
+    </tr>
+    
+    <tr *ngFor="let vb of visualBreakpoints">
+      <th class="level-cell">
+        <ion-img class="elite-img" src="assets/icons/elitePhases/{{vb.elite}}.webp"></ion-img>
+        {{vb.level}}
+      </th>
+      <th>
+        {{vb.stats.maxHp}}
+      </th>
+      <th>
+        {{vb.stats.atk}}
+      </th>
+      <th>
+        {{vb.stats.def}}
+      </th>
+      <th>
+        {{vb.stats.res}}
+      </th>
+      <th>
+        {{vb.stats.respawnTime}}
+      </th>
+      <th>
+        {{vb.stats.cost}}
+      </th>
+      <th>
+        {{vb.stats.blockCount}}
+      </th>
+      <th>
+        {{vb.stats.baseAttackTime}}s
+      </th>
+    </tr>
+  </tbody>
+</table>
