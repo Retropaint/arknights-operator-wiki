@@ -14,14 +14,6 @@
       <table class="basic-info-card">
         <ion-img class="image" src="https://aceship.github.io/AN-EN-Tags/img/avatars/{{operatorImageLink}}.png"></ion-img>
         <tbody>
-          <tr *ngIf="operator.recruitTags.length != 0">
-            <th>Recruit Tags</th>
-            <td>{{operator.recruitTags}}</td>
-          </tr>
-          <tr>
-            <th>Rarity</th>
-            <td>{{operator.rarity}}</td>
-          </tr>
           <tr>
             <th>Class</th>
             <td>{{operator.class}}</td>
@@ -30,6 +22,14 @@
             <th>Branch</th>
             <td>{{operator.branch}}</td>
           </tr>
+          <tr>
+            <th>Rarity</th>
+            <td>{{operator.rarity}}</td>
+          </tr>
+          <tr *ngIf="operator.recruitTags.length != 0 && operator.obtainMethods.includes('Recruitment')">
+            <th>Recruit Tags</th>
+            <td>{{operator.recruitTags}}</td>
+          </tr>
         </tbody>
       </table>
 
@@ -37,8 +37,16 @@
         [operator]="operator"
       ></app-stat-table>
 
-    </div>
+      <app-potential-table
+        [operator]="operator"
+      ></app-potential-table>
 
+      <app-talent-table
+        [operator]="operator"
+      ></app-talent-table>
+      
+    </div>
+    
     <div class="right-container">
       <div class="image-container">
         <ion-img class="image" src="https://aceship.github.io/AN-EN-Tags/img/characters/{{operatorImageLink}}_1.png"></ion-img>

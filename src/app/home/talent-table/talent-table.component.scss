@@ -1,0 +1,28 @@
+.table {
+  .center-aligned {
+    text-align: center;
+  }
+
+
+  
+  .unlock-condition-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    .unlock-stat {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .no-unlock-condition {
+    text-align: center;
+  }
+  
+  ion-img {
+    width: 30px;
+  }
+  
+}
+

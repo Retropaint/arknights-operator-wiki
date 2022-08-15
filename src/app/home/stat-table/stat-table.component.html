@@ -1,62 +1,62 @@
-<table class="stat-table">
+<table class="table">
   <tbody>
     <tr>
       <th></th>
       <th>
-        <ion-img src="assets/icons/stats/hp.png"></ion-img>
+        <ion-img src="assets/icons/stats/hp.webp"></ion-img>
       </th>
       <th>
-        <ion-img src="assets/icons/stats/atk.png"></ion-img>
+        <ion-img src="assets/icons/stats/atk.webp"></ion-img>
       </th>
       <th>
-        <ion-img src="assets/icons/stats/def.png"></ion-img>
+        <ion-img src="assets/icons/stats/def.webp"></ion-img>
       </th>
       <th>
-        <ion-img src="assets/icons/stats/res.png"></ion-img>
+        <ion-img src="assets/icons/stats/res.webp"></ion-img>
       </th>
       <th>
-        <ion-img src="assets/icons/stats/deploy.png"></ion-img>
+        <ion-img src="assets/icons/stats/redeploy.webp"></ion-img>
       </th>
       <th>
-        <ion-img src="assets/icons/stats/cost.png"></ion-img>
+        <ion-img src="assets/icons/stats/cost.webp"></ion-img>
       </th>
       <th>
         <ion-img src="assets/icons/stats/block.webp"></ion-img>
       </th>
       <th>
-        <ion-img src="assets/icons/stats/aspd.png"></ion-img>
+        <ion-img src="assets/icons/stats/interval.webp"></ion-img>
       </th>
     </tr>
     
     <tr *ngFor="let vb of visualBreakpoints">
-      <th class="level-cell">
+      <td class="level-cell">
         <ion-img class="elite-img" src="assets/icons/elitePhases/{{vb.elite}}.webp"></ion-img>
         {{vb.level}}
-      </th>
-      <th>
+      </td>
+      <td>
         {{vb.stats.maxHp}}
-      </th>
-      <th>
+      </td>
+      <td>
         {{vb.stats.atk}}
-      </th>
-      <th>
+      </td>
+      <td>
         {{vb.stats.def}}
-      </th>
-      <th>
+      </td>
+      <td>
         {{vb.stats.res}}
-      </th>
-      <th>
+      </td>
+      <td>
         {{vb.stats.respawnTime}}
-      </th>
-      <th>
+      </td>
+      <td>
         {{vb.stats.cost}}
-      </th>
-      <th>
+      </td>
+      <td>
         {{vb.stats.blockCount}}
-      </th>
-      <th>
+      </td>
+      <td>
         {{vb.stats.baseAttackTime}}s
-      </th>
+      </td>
     </tr>
   </tbody>
 </table>

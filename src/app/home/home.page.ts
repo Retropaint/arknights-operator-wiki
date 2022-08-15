@@ -5,7 +5,7 @@ import { AceshipService } from '../services/aceship.service';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  styleUrls: ['home.page.scss', 'table.scss'],
 })
 export class HomePage implements OnInit {
 
@@ -20,7 +20,7 @@ export class HomePage implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.randomOperatorNum = Math.round(Math.random() * this.aceship.operators.length - 1);
-      this.operator = this.aceship.operators[this.randomOperatorNum];
+      this.operator = this.aceship.operators[62];
       if(this.operator.id) {
         this.operatorImageLink = this.operator.id.slice(2, this.operator.id.length);
       }

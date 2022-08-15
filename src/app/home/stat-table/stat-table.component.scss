@@ -1,6 +1,4 @@
-.stat-table {
-  display: flex;
-  padding-top: 10px;
+.table {
 
   .elite-img {
     padding-right: 10px;
@@ -17,9 +15,13 @@
     border: 1px solid white;
   }
 
-  th {
-    padding: 5px 10px 5px;
+  th, td {
+    padding: 5px 10px 5px !important;
     border: 1px solid white;
+  }
+
+  td {
+    text-align: right;
   }
 
   ion-img {

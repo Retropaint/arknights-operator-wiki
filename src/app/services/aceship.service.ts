@@ -69,10 +69,9 @@ export class AceshipService {
 
           })
         })
+        console.log(this.operators)
       })
   }
-
-  
 
   getStats(operator): StatBreakpoint[] {
     let opStats: StatBreakpoint[] = [];
@@ -151,6 +150,7 @@ export class AceshipService {
     entry.talents.forEach(talent => {
 
       let newTalent: Talent = {
+        name: '',
         descriptions: [],
         unlockConditions: []
       };
@@ -161,9 +161,12 @@ export class AceshipService {
         
         // add required potential to unlockCondition
         candidate.unlockCondition.potential = candidate.requiredPotentialRank;
+
+        candidate.unlockCondition = this.replaceKey(candidate.unlockCondition, 'phase', 'elite')
         
         newTalent.descriptions.push(candidate.description);
         newTalent.unlockConditions.push(candidate.unlockCondition);
+        newTalent.name = candidate.name;
       })
       newTalent.maxLevel = newTalent.descriptions.length;
 

@@ -8,6 +8,7 @@ ion-header {
 
   &.container {
     display: flex;
+    margin-bottom: 100px
   }
 }
 
@@ -61,4 +62,5 @@ ion-header {
 
 .right-container {
   flex: 1 1 360px;
+  padding-left: 15px;
 }

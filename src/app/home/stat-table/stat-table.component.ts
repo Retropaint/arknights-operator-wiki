@@ -7,7 +7,7 @@ import { linear } from 'everpolate';
 @Component({
   selector: 'app-stat-table',
   templateUrl: './stat-table.component.html',
-  styleUrls: ['./stat-table.component.scss'],
+  styleUrls: ['./stat-table.component.scss', '../table.scss'],
 })
 export class StatTableComponent implements OnInit {
 

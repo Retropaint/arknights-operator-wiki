@@ -18,6 +18,7 @@ export interface Operator {
 }
 
 export interface Talent {
+  name: string,
   maxLevel?: number,
   descriptions: string[];
   unlockConditions: {
