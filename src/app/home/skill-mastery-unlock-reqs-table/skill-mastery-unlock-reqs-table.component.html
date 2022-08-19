@@ -1,0 +1,38 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <th>
+        Skill
+      </th>
+      <th>
+        Mastery 1 Unlock Reqs.
+      </th>
+      <th>
+        Mastery 2 Unlock Reqs.
+      </th>
+      <th>
+        Mastery 3 Unlock Reqs.
+      </th>
+    </tr>
+    <tr *ngFor="let s of operator.skills">
+      <th>
+        {{s.name}}
+      </th>
+      <td *ngFor="let ms of s.masteryUnlockReqs">
+        <div class="misc-container">
+          <ion-img class="elite-img" src="assets/icons/elitePhases/{{ms.elite}}.webp"></ion-img>
+          <p class="duration">{{ms.duration | timerFormat}} hours</p>
+        </div>
+        <div class="item-container">
+          <div class="required-item" *ngFor="let item of ms.items">
+            
+            <ion-img class="item-bg" src="https://aceship.github.io/AN-EN-Tags/img/material/bg/item-{{item.rarity}}.png"></ion-img>
+            <ion-img class="item-img" src="https://aceship.github.io/AN-EN-Tags/img/items/{{item.imgId}}.png"></ion-img>
+            <p>x{{item.amount}}</p>
+          </div>
+        </div>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>

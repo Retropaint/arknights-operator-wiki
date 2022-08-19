@@ -24,7 +24,13 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import './assets/scss/effect-text-colors.scss';
 
-.test {
-  background: rgba(0,0,0,0.4);
+.skill-level-mastery {
+  display: inline-block;
+
+  img {
+    width: 20px;
+    transform: translateY(3px);
+  }
 }

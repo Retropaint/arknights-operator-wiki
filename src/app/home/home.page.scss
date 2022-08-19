@@ -2,6 +2,10 @@ ion-header {
   margin-bottom: 10px;
 }
 
+.header {
+  background: #121212;
+}
+
 .dead-zone {
   padding-left: 10px;
   padding-right: 10px;
@@ -58,9 +62,9 @@ ion-header {
 
 .left-container {
   flex: 1 1 360px;
+  padding-right: 15px;
 }
 
 .right-container {
   flex: 1 1 360px;
-  padding-left: 15px;
 }

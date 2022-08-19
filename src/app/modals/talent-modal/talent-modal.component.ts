@@ -14,7 +14,6 @@ export class TalentModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.config.data);
   }
 
 }

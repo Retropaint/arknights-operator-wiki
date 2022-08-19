@@ -27,7 +27,6 @@ export class StatTableComponent implements OnInit {
       this.getBreakpoints();
     })
 
-    console.log();
   }
 
   getBreakpoints() {
@@ -57,7 +56,6 @@ export class StatTableComponent implements OnInit {
       }
       this.visualBreakpoints.push(newBreakpoint)
     })
-    console.log(this.visualBreakpoints)
   }
 
   calculateStats(elite: number, level: number) {

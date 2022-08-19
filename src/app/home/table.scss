@@ -1,11 +1,16 @@
 .table {
   width: 100%;
   margin-top: 12px;
-  background: #2c2c2c;
+  background: #2a2929;
   border: 1px solid white;
+  color: #e6e6e6;
 
   th, td {
-    padding: 10px;
+    padding: 7px;
     border: 1px solid white;
+  }
+
+  .center-aligned {
+    text-align: center;
   }
 }

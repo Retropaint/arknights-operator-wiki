@@ -2,7 +2,7 @@
   <tbody>
     <tr>
       <th>
-        Talent Name
+        Talent
       </th>
       <th>
         Description
@@ -19,8 +19,7 @@
         <td class="center-aligned" *ngIf="i > 0">
           ^
         </td>
-        <td>
-          {{t.description}}
+        <td [innerHtml]="t.description">
         </td>
         <td (click)="openTalentModal(i)" *ngIf="t.maxLevel > 1" class="center-aligned">
           [show all levels]
@@ -33,8 +32,8 @@
             </div>
             
             <div *ngIf="t.unlockConditions.potential" class="unlock-stat">
-              <ion-img src="assets/icons/potentials/{{t.unlockConditions.potential}}.webp"></ion-img>
-              {{t.unlockConditions.potential+1}}
+              <ion-img src="assets/icons/potentials/{{t.unlockConditions.potential-1}}.webp"></ion-img>
+              {{t.unlockConditions.potential}}
             </div>
   
             <div *ngIf="t.unlockConditions.level" class="unlock-stat">

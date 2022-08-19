@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit  } from '@angular/core';
 import { Operator } from 'src/app/interfaces/operator';
 import { DialogService } from 'primeng/dynamicdialog';
 import { TalentModalComponent } from 'src/app/modals/talent-modal/talent-modal.component';
@@ -7,7 +7,8 @@ import { TalentModalComponent } from 'src/app/modals/talent-modal/talent-modal.c
   selector: 'app-talent-table',
   templateUrl: './talent-table.component.html',
   styleUrls: ['./talent-table.component.scss', '../table.scss'],
-  providers: [DialogService]
+  providers: [DialogService],
+
 })
 export class TalentTableComponent implements OnInit {
 
@@ -20,8 +21,6 @@ export class TalentTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.operator)
-
     this.operator.talents.forEach(talent => {
 
       let newTalent = [];

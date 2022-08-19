@@ -1,0 +1,40 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <th>
+        Elite
+      </th>
+      <th>
+        Unlock Reqs.
+      </th>
+    </tr>
+    <tr>
+      <td class="center-aligned">
+        <ion-img class="elite-img" src="assets/icons/elitePhases/1.webp"></ion-img>
+      </td>
+      <td class="req-cell">
+        <ion-img class="elite-img" src="assets/icons/elitePhases/0.webp"></ion-img>
+        <p class="level">Lv {{operator.statBreakpoints[1].eliteUnlockReqs.level}}</p>
+        <div class="required-item" *ngFor="let item of operator.statBreakpoints[1].eliteUnlockReqs.items">
+          <ion-img class="item-bg" src="https://aceship.github.io/AN-EN-Tags/img/material/bg/item-{{item.rarity}}.png"></ion-img>
+          <ion-img class="item-img" src="https://aceship.github.io/AN-EN-Tags/img/items/{{item.imgId}}.png"></ion-img>
+          <p>x{{item.amount}}</p>
+        </div>
+      </td>
+    </tr>
+    <tr *ngIf="operator.rarity > 3">
+      <td class="center-aligned"c>
+        <ion-img class="elite-img" src="assets/icons/elitePhases/2.webp"></ion-img>
+      </td>
+      <td class="req-cell">
+        <ion-img class="elite-img" src="assets/icons/elitePhases/1.webp"></ion-img>
+        <p class="level">Lv {{operator.statBreakpoints[2].eliteUnlockReqs.level}}</p>
+        <div class="required-item" *ngFor="let item of operator.statBreakpoints[2].eliteUnlockReqs.items">
+          <ion-img class="item-bg" src="https://aceship.github.io/AN-EN-Tags/img/material/bg/item-{{item.rarity}}.png"></ion-img>
+          <ion-img class="item-img" src="https://aceship.github.io/AN-EN-Tags/img/items/{{item.imgId}}.png"></ion-img>
+          <p>x{{item.amount}}</p>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

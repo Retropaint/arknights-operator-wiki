@@ -1,0 +1,28 @@
+.required-item {
+  display: inline-flex;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.item-bg {
+  width: 50px;
+}
+
+.item-img {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  transform: translate(7px, 0px);
+}
+
+.req-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.elite-img {
+  width: 30px;
+  transform: translateY(-3px);
+  margin-right: 10px;
+}

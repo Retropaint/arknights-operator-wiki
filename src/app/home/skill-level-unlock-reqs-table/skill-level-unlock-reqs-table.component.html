@@ -1,0 +1,25 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <th>
+        Skill Level
+      </th>
+      <th>
+        Unlock Requirements
+      </th>
+    </tr>
+    <tr *ngFor="let level of operator.skillLevelUnlockReqs; let i = index">
+      <th>
+        {{i+2}}
+      </th>
+      <td class="req-container">
+        <ion-img *ngIf="level.elite > 0" class="elite-img" src="assets/icons/elitePhases/{{level.elite}}.webp"></ion-img>
+        <div class="required-item" *ngFor="let item of level.items">
+          <ion-img class="item-bg" src="https://aceship.github.io/AN-EN-Tags/img/material/bg/item-{{item.rarity}}.png"></ion-img>
+          <ion-img class="item-img" src="https://aceship.github.io/AN-EN-Tags/img/items/{{item.imgId}}.png"></ion-img>
+          <p>x{{item.amount}}</p>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -20,11 +20,12 @@ export class HomePage implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.randomOperatorNum = Math.round(Math.random() * this.aceship.operators.length - 1);
-      this.operator = this.aceship.operators[62];
+      this.operator = this.aceship.operators[this.aceship.operators.findIndex(operator => operator.name == 'Gummy')];
       if(this.operator.id) {
         this.operatorImageLink = this.operator.id.slice(2, this.operator.id.length);
       }
-    })
+      console.log(this.operator)
+    }, 1000)
   }
 
 }

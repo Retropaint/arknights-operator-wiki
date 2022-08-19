@@ -12,7 +12,11 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DialogModule } from 'primeng/dialog';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { TalentModalComponent } from '../modals/talent-modal/talent-modal.component';
-
+import { SkillTableComponent } from './skill-table/skill-table.component';
+import { EliteUnlockReqsTableComponent } from './elite-unlock-reqs-table/elite-unlock-reqs-table.component';
+import { SkillLevelUnlockReqsTableComponent } from './skill-level-unlock-reqs-table/skill-level-unlock-reqs-table.component';
+import { SkillMasteryUnlockReqsTableComponent } from './skill-mastery-unlock-reqs-table/skill-mastery-unlock-reqs-table.component';
+import { TimerFormatPipe } from '../timer-format.pipe';
 
 @NgModule({
   imports: [
@@ -24,6 +28,20 @@ import { TalentModalComponent } from '../modals/talent-modal/talent-modal.compon
     DialogModule,
     DynamicDialogModule
   ],
-  declarations: [HomePage, StatTableComponent, PotentialTableComponent, TalentTableComponent, TalentModalComponent]
+  declarations: [
+    HomePage, 
+    StatTableComponent, 
+    PotentialTableComponent, 
+    TalentTableComponent, 
+    TalentModalComponent, 
+    SkillTableComponent, 
+    EliteUnlockReqsTableComponent,
+    SkillLevelUnlockReqsTableComponent,
+    SkillMasteryUnlockReqsTableComponent,
+    TimerFormatPipe
+  ],
+  providers: [
+    TimerFormatPipe
+  ]
 })
 export class HomePageModule {}

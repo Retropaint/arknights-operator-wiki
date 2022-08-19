@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="header">
   <div class="dead-zone">
     <h1>Another Arknights Wiki</h1>
   </div>
@@ -37,6 +37,10 @@
         [operator]="operator"
       ></app-stat-table>
 
+      <app-elite-unlock-reqs-table
+        [operator]="operator"
+      ></app-elite-unlock-reqs-table>
+
       <app-potential-table
         [operator]="operator"
       ></app-potential-table>
@@ -51,6 +55,18 @@
       <div class="image-container">
         <ion-img class="image" src="https://aceship.github.io/AN-EN-Tags/img/characters/{{operatorImageLink}}_1.png"></ion-img>
       </div>
+
+      <app-skill-table
+        [operator]="operator"
+      ></app-skill-table>
+
+      <app-skill-mastery-unlock-reqs-table
+        [operator]="operator"
+      ></app-skill-mastery-unlock-reqs-table>
+
+      <app-skill-level-unlock-reqs-table
+        [operator]="operator"
+      ></app-skill-level-unlock-reqs-table>
     </div>
 
   </div>
