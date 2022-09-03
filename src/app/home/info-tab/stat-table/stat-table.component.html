@@ -1,0 +1,103 @@
+<table class="table" style="margin-bottom: 0px" *ngIf="operator">
+  <tbody>
+    <tr>
+      <th style="width: 125px">
+        Stat
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/hp.webp"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/atk.webp"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/def.webp"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/res.webp"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/redeploy.webp"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/cost.webp"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/blockCount.webp"></ion-img>
+      </th>
+      <th>
+        <ion-img src="assets/icons/stats/attackInterval.webp"></ion-img>
+      </th>
+    </tr>
+    
+    <tr *ngFor="let vb of displayedBreakpoints">
+      <td class="level-cell">
+        <ion-img class="elite-img" src="assets/icons/elitePhases/{{vb.elite}}.webp"></ion-img>
+        {{vb.level}}
+      </td>
+      <td>
+        {{vb.stats.hp}}
+      </td>
+      <td>
+        {{vb.stats.atk}}
+      </td>
+      <td>
+        {{vb.stats.def}}
+      </td>
+      <td>
+        {{vb.stats.res}}
+      </td>
+      <td>
+        {{vb.stats.redploy}}
+      </td>
+      <td>
+        {{vb.stats.cost}}
+      </td>
+      <td>
+        {{vb.stats.blockCount}}
+      </td>
+      <td>
+        {{vb.stats.attackInterval}}s
+      </td>
+    </tr>
+    <tr *ngIf="doctor.statSlider">
+      <td class="level-cell" >
+        <ion-img class="elite-img" src="assets/icons/elitePhases/{{parsedCustomLevel.elite}}.webp"></ion-img>
+        {{parsedCustomLevel.level}}
+      </td>
+      <td>
+        {{customStats.hp}}
+      </td>
+      <td>
+        {{customStats.atk}}
+      </td>
+      <td>
+        {{customStats.def}}
+      </td>
+      <td>
+        {{customStats.res}}
+      </td>
+      <td>
+        {{customStats.redploy}}
+      </td>
+      <td>
+        {{customStats.cost}}
+      </td>
+      <td>
+        {{customStats.blockCount}}
+      </td>
+      <td>
+        {{customStats.attackInterval}}s
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table" draggable="false" *ngIf="operator && doctor.statSlider">
+  <tbody>
+    <tr>
+      <td>
+        <input draggable="false" [(ngModel)]="customLevel" type="range" class="slider" min="1" [max]="maxCustomLevel" (ngModelChange)="parseCustomLevel()"/>
+      </td>
+    </tr>
+  </tbody>
+</table>

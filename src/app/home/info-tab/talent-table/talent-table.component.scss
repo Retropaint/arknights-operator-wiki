@@ -1,0 +1,35 @@
+.table {
+
+  &.top-margin {
+    margin-top: 15px;
+  }
+
+  .center-aligned {
+    text-align: center;
+  }
+
+  .unlock-condition-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+
+    .unlock-stat {
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      padding-right: 10px;
+      white-space: nowrap;
+    }
+  }
+
+  .no-unlock-condition {
+    text-align: center;
+  }
+  
+  ion-img {
+    width: 30px;
+  }
+  
+}
+

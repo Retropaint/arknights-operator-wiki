@@ -6,6 +6,13 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+  },
+  { 
+    path: ':operator', 
+    component: HomePage,
+    data: {
+      title: 'Arknights Wiki'
+    },
   }
 ];
 

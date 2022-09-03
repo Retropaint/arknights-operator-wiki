@@ -1,0 +1,18 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Elite</th>
+      <th *ngFor="let range of ranges">
+        <ion-img class="elite-img" src="assets/icons/elitePhases/{{range.elite}}.webp"></ion-img>
+      </th>
+    </tr>
+    <tr>
+      <th>
+        Range
+      </th>
+      <td *ngFor="let range of ranges">
+        <app-range-grid [id]="range.id"></app-range-grid>
+      </td>
+    </tr>
+  </tbody>
+</table>

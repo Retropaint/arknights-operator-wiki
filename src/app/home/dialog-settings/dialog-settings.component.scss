@@ -1,0 +1,84 @@
+@keyframes fadeIn{
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+.background {
+  background: rgb(28 28 28 / 75%);
+  padding: 20px;
+  padding-top: 5px;
+  animation-name: fadeIn;
+  animation-duration: 0.25s;
+  border: 1px solid white;
+}
+
+.header {
+  font-size: 25px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.level-breakpoint {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 190px;
+
+  &.selected {
+    background: grey;
+  }
+
+  &.hoverable {
+    cursor: pointer;
+    &:hover {
+      background: var(--hovergrey);
+    }
+  }
+}
+
+.elite-img {
+  width: 30px;
+  margin-right: 20px;
+
+  &.editor {
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+    cursor: pointer;
+
+    &.selected {
+      background: darkgrey;
+      cursor: default;
+    }
+  }
+}
+
+.input-editor {
+  width: 50px;
+  text-align: center;
+  --padding-start: 0;
+}
+
+.add-breakpoint {
+  text-align: center;
+  cursor: pointer;
+
+  &.hoverable {
+    &:hover {
+      background: var(--hovergrey);
+    }
+  }
+}
+
+.editor-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.stat-slider-checkbox {
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+}

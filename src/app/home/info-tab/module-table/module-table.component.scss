@@ -1,0 +1,38 @@
+.module-header {
+  display: flex;
+
+  ion-img {
+    max-width: 150px;
+    padding-right: 10px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+}
+
+.header {
+  background: #575757;
+}
+
+.not-first-module {
+  margin-bottom: 0px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 5px;
+  padding-top: 5px;
+
+  &.no-margin {
+    padding: 0px;
+  }
+
+  ion-img {
+    width: 23px;
+  }
+}

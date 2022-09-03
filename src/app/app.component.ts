@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { AceshipService } from './services/aceship.service';
+import { DatabaseJsonGetterService } from './services/database-json-getter.service';
 import { DoctorService } from './services/doctor.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { DoctorService } from './services/doctor.service';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private aceship: AceshipService,
+    private dbJsonGetter: DatabaseJsonGetterService,
     private doctorService: DoctorService,
     private storage: Storage
   ) {}
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.storage.create();
 
-    this.aceship.init();
+    this.dbJsonGetter.init();
     this.doctorService.init();
   }
 }

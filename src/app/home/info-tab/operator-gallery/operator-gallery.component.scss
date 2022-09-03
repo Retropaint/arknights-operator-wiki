@@ -1,0 +1,100 @@
+
+.gallery {
+  border: 1px solid white;
+
+  &.is-tab {
+    border: none;
+  }
+
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &.is-tab {
+    position: absolute;
+    transform: scale(1.10);
+    transform-origin: top left;
+  }
+
+  .skin-list {
+    .icon {
+      width: 50px;
+      margin-right: 10px;
+    }
+  
+    .item-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      border: 1px solid white;
+      background: #2a2929;
+      cursor: pointer;
+    }
+  
+    .name {
+      white-space: nowrap;
+      padding-right: 10px;
+      text-decoration: underline;
+    }
+  }
+
+  .misc-table {
+    white-space: nowrap;
+
+    th {
+      text-align: right;
+      border-right: 1px solid white;
+      padding-right: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      color: #a1a1a1;
+    }
+    td {
+      padding-left: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
+}
+
+.skin-img-container {
+  text-align: center;
+  width: 100%;
+  margin: auto;
+
+  .img {
+    width: 375px;
+    display: inline-block;
+
+    &:hover {
+      border: 1px solid white;
+    }
+
+    &.is-tab {
+      width: 75vh;
+    }
+  }
+}
+
+.right-container {
+  position: absolute;
+  right: 20px;
+
+  .background-brightness {
+    border: 1px solid white;
+    background: #2a2929;
+    padding: 10px;
+
+    p {
+      white-space: nowrap;
+    }
+  }
+}

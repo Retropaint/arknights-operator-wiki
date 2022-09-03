@@ -1,0 +1,40 @@
+.check-box {
+  width: 90px;
+  height: 30px;
+  border: 1px solid white;
+  padding: 10px;
+  background: #424242;
+  margin-left: 10px;
+  cursor: pointer;
+
+  &.on {
+    background: var(--blue);
+  }
+}
+
+.toggle-text {
+  margin: 0px;
+  transform: translateY(-4px);
+
+  &.on {
+    float: left;
+  }
+
+  &.off {
+    float: right;
+  }
+}
+
+.toggle-state {
+  position: absolute;
+
+  height: 20px;
+  width: 33px;
+  background: white;
+  transition: transform 0.25s;
+  transform: translate(-4px, -6px);
+
+  &.on {
+    transform: translate(40px, -6px);
+  } 
+}

@@ -1,0 +1,9 @@
+.operator-suggestion {
+  padding: 5px;
+  margin: 0px;
+  background: black;
+
+  &.chosen {
+    border: 1px solid white;
+  }
+}

@@ -28,6 +28,7 @@
     "@ionic/angular": "^6.1.9",
     "@ionic/storage-angular": "^3.0.6",
     "everpolate": "^0.0.3",
+    "ngx-image-zoom": "^1.0.1",
     "primeng": "^14.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",

@@ -1,0 +1,26 @@
+.table {
+  width: 100%;
+  background: #2a2929;
+  border: 1px solid white;
+  color: #e6e6e6;
+  margin-bottom: 15px;
+
+  > tbody :first-child {
+    th {
+      background: #575757;
+    }
+  }
+
+  th, td {
+    padding: 7px;
+    border: 1px solid white;
+  }
+
+  .center-aligned {
+    text-align: center;
+  }
+
+  &.connect {
+    margin-bottom: 0px;
+  }
+}

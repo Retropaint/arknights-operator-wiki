@@ -1,0 +1,17 @@
+<table class="table" *ngIf="operator.potentials.length > 0">
+  <tbody>
+    <tr>
+      <th colspan="2">
+        Potential Ranks
+      </th>
+    </tr>
+    <tr *ngFor="let p of operator.potentials; let i = index">
+      <td class="potential-cell">
+        <ion-img src="assets/icons/potentials/{{i}}.webp"></ion-img>
+      </td>
+      <td>
+        {{p}}
+      </td>
+    </tr> 
+  </tbody>
+</table>

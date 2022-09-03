@@ -1,37 +1,31 @@
-<ion-header class="header">
-  <div class="dead-zone">
+<ion-header class="header" [ngClass]="{'blur' : isBlurry}">
+  <div>
     <h1>Another Arknights Wiki</h1>
+    <app-search-box (homePageReset)="refresh($event)"></app-search-box>
   </div>
+  <ion-icon name="settings-outline" class="settings-button" (click)="openSettingsModal()"></ion-icon>
 </ion-header>
 
-<ion-content [fullscreen]="true" *ngIf="operator">
+<!--
+<app-operator-transitioner (changeOperator)="refresh($event)"></app-operator-transitioner>
+-->
 
-  <p class="op-name">{{operator.name}} ({{randomOperatorNum}})</p>
+<ion-content [ngClass]="{'blur' : isBlurry}">
 
-  <div class="dead-zone container">
+  <p *ngIf="operator" class="op-name">{{operator.name}}</p>
+
+  <div class="tabs">
+    <p (click)="currentTab = 'info'" [ngClass]="{'selected' : currentTab == 'info'}">Info</p>
+    <p (click)="currentTab = 'gallery'" [ngClass]="{'selected' : currentTab == 'gallery'}">Gallery</p>
+  </div>
+  
+  <div class="dead-zone container" *ngIf="operator && currentTab == 'info'">
 
     <div class="left-container">
-      <table class="basic-info-card">
-        <ion-img class="image" src="https://aceship.github.io/AN-EN-Tags/img/avatars/{{operatorImageLink}}.png"></ion-img>
-        <tbody>
-          <tr>
-            <th>Class</th>
-            <td>{{operator.class}}</td>
-          </tr>
-          <tr>
-            <th>Branch</th>
-            <td>{{operator.branch}}</td>
-          </tr>
-          <tr>
-            <th>Rarity</th>
-            <td>{{operator.rarity}}</td>
-          </tr>
-          <tr *ngIf="operator.recruitTags.length != 0 && operator.obtainMethods.includes('Recruitment')">
-            <th>Recruit Tags</th>
-            <td>{{operator.recruitTags}}</td>
-          </tr>
-        </tbody>
-      </table>
+      
+      <app-operator-briefer
+        [operator]="operator"
+      ></app-operator-briefer>
 
       <app-stat-table
         [operator]="operator"
@@ -41,34 +35,64 @@
         [operator]="operator"
       ></app-elite-unlock-reqs-table>
 
+      <app-talent-table
+        [operator]="operator"
+      ></app-talent-table>
+
       <app-potential-table
         [operator]="operator"
       ></app-potential-table>
 
-      <app-talent-table
+      <app-module-table
+        *ngIf="operator.modules.length > 0"
         [operator]="operator"
-      ></app-talent-table>
+        [moduleIndex]="1"
+      ></app-module-table>
       
     </div>
     
-    <div class="right-container">
-      <div class="image-container">
-        <ion-img class="image" src="https://aceship.github.io/AN-EN-Tags/img/characters/{{operatorImageLink}}_1.png"></ion-img>
-      </div>
+    <div class="right-container" *ngIf="operator">
+      <p class="close-gallery" (click)="isGalleryOpen = !isGalleryOpen">{{isGalleryOpen ? 'Close' : 'Open'}} mini-gallery</p>
 
-      <app-skill-table
+      <app-operator-gallery
+        *ngIf="isGalleryOpen"
+        [operator]="operator"
+      ></app-operator-gallery>
+
+      <app-skill-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
         [operator]="operator"
       ></app-skill-table>
-
-      <app-skill-mastery-unlock-reqs-table
+      
+      <!--
+        <app-skill-range-table
+        [operator]="operator"
+      ></app-skill-range-table>
+      -->
+      
+      <!--
+        <app-skill-mastery-unlock-reqs-table
         [operator]="operator"
       ></app-skill-mastery-unlock-reqs-table>
-
-      <app-skill-level-unlock-reqs-table
+      -->
+      
+      <app-skill-level-unlock-reqs-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
         [operator]="operator"
       ></app-skill-level-unlock-reqs-table>
+
+      <app-base-skill-table
+        
+      ></app-base-skill-table>
+
+      <p style="text-align: center" *ngIf="operator.rarity < 3 || operator.name.includes('Reserve')">Skill issue</p>
     </div>
 
+  </div>
+
+  <div *ngIf="operator && currentTab == 'gallery'">
+    <app-operator-gallery
+      [isTab]="true"
+      [operator]="operator"
+    ></app-operator-gallery>
   </div>
 
 </ion-content>

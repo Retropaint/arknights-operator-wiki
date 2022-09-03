@@ -1,0 +1,46 @@
+
+.basic-info-card {
+  padding: 10px;
+  border: 1px solid white;
+  display: flex;
+  justify-content: space-between;
+
+  th {
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: right;
+    border-right: 1px solid white;
+  }
+  td {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .image {
+    width: 100px;
+    margin: 5px;
+  }
+
+  .left-side {
+    display: flex;
+    align-items: top;
+  }
+
+  .right-side {
+    display: flex;
+    align-items: center;
+  }
+
+  .elite-img {
+    width: 30px;
+    margin-right: 10px;
+  }
+
+  .range-container {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+}

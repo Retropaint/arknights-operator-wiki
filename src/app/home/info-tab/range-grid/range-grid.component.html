@@ -1,0 +1,13 @@
+<!-- I sincerely apologize for the retardation that is this and all other range code -->
+
+<table class="range-table" *ngIf="grid != null">
+  <tbody>
+    <tr style.height="{{size}}px" *ngFor="let row of emptyArray(grid.squares.length); let r = index">
+      <ng-container *ngFor="let col of emptyArray(grid.maxCols+1); let c = index">
+        <td *ngIf="squareIs(r, c) == 'range'" style.width="{{size}}px" style.borderWidth="{{size/10}}px" class="square"></td>
+        <td *ngIf="squareIs(r, c) == 'empty'" style.width="{{size}}px" style.borderWidth="{{size/10}}px" class="empty-square"></td>
+        <td *ngIf="squareIs(r, c) == 'start'" style.width="{{size}}px" style.borderWidth="{{size/10}}px" class="square start"></td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>

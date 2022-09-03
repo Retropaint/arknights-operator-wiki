@@ -23,15 +23,13 @@ export class DoctorService {
           }
           const bp2: LevelBreakpoint = {
             elite: 2,
-            level: 40
-          }
-          const bp3: LevelBreakpoint = {
-            elite: 2,
             level: 999
           }
 
           const newDoctor: Doctor = {
-            levelBreakpoints: [bp1, bp2, bp3]
+            levelBreakpoints: [bp1, bp2],
+            statSlider: true,
+            skillSlider: true
           }
 
           this.storage.set('doctor', newDoctor);
@@ -41,5 +39,9 @@ export class DoctorService {
           this.doctor = doctor;
         }
       })
+  }
+
+  save() {
+    this.storage.set('doctor', this.doctor);
   }
 }

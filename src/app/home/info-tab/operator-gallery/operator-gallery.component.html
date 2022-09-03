@@ -1,0 +1,57 @@
+<div class="gallery" [ngClass]="{'is-tab' : isTab}" *ngIf="operator">
+
+  <div class="left-container" [ngClass]="{'is-tab' : isTab}">
+
+    <div *ngIf="!operator.name.includes('Reserve Operator')" class="skin-list">
+      <div class="item-container" *ngFor="let skin of operator.skins; let i = index" (click)="chosenSkin = i; ngOnInit()">
+        <ion-img *ngIf="i == 0" class="icon" src="https://aceship.github.io/AN-EN-Tags/img/avatars/{{defaultOpIconLink}}.png"></ion-img>
+        <ion-img *ngIf="i > 0" class="icon" src="https://aceship.github.io/AN-EN-Tags/img/avatars/{{operator.skins[i].id}}.png"></ion-img>
+        <p class="name">{{skin.name}}</p>
+      </div>
+    </div>
+
+    <table class="misc-table">
+      <tbody>
+        <tr *ngIf="operator.skins[chosenSkin].artist != null">
+          <th>Illustrator</th><td>{{operator.skins[chosenSkin].artist}}</td>
+        </tr>
+        <tr *ngIf="operator.voiceActors.CN">
+          <th>VA (CN)</th><td>{{operator.voiceActors.CN}}</td>
+        </tr>
+        <tr *ngIf="operator.voiceActors.JP">
+          <th>VA (JP)</th><td>{{operator.voiceActors.JP}}</td>
+        </tr>
+        <tr *ngIf="operator.voiceActors.EN">
+          <th>VA (EN)</th><td>{{operator.voiceActors.EN}}</td>
+        </tr>
+        <tr *ngIf="operator.voiceActors.KR">
+          <th>VA (KR)</th><td>{{operator.voiceActors.KR}}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+
+  <div class="skin-img-container">
+    <lib-ngx-image-zoom
+      #opImage
+      class="img"
+      [style]="'background: rgb(' + backgroundBrightness + ', ' + backgroundBrightness +  ', ' + backgroundBrightness + ')'"
+      [ngClass]="{'is-tab' : isTab}"
+      thumbImage="assets/operatorSkins/{{operator.skins[chosenSkin].id}}.png"
+      fullImage="assets/operatorSkins/{{operator.skins[chosenSkin].id}}.png"
+      zoomMode="hover"
+      [enableScrollZoom]="true"
+      [magnification]="1.05 * magnificationMultiplier"
+      [minZoomRatio]="1.05 * magnificationMultiplier"
+      [maxZoomRatio]="2"
+    ></lib-ngx-image-zoom>
+  </div>
+
+  <div class="right-container" *ngIf="isTab">
+    <div class="background-brightness">
+      <p>Background Brightness:</p>
+      <input [(ngModel)]="backgroundBrightness" type="range" class="slider" min="0" max="255"/>
+    </div>
+  </div>
+</div>

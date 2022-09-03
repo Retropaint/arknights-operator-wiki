@@ -1,4 +1,5 @@
 import { Item } from "./item";
+import { Skin } from "./skin";
 
 export interface Operator {
   id: string;
@@ -18,6 +19,15 @@ export interface Operator {
   trustExtraStats?: any[];
   skills: Skill[];
   skillLevelUnlockReqs?: SkillUnlockReqs[];
+  modules?: Module[];
+  skins: Skin[];
+  summons?: Summon[];
+  voiceActors: {
+    CN?: string;
+    JP?: string;
+    EN?: string;
+    KR?: string;
+  }
 }
 
 export interface Talent {
@@ -35,10 +45,12 @@ export interface Skill {
   id: string;
   name?: string;
   description?: string;
-  spType?: 'Auto Recovery' | 'Offensive Recovery' | 'Defensive Recovery' | 'Passive'
+  spType?: 'Auto Recovery' | 'Offensive Recovery' | 'Defensive Recovery' | 'Passive';
+  activationType?: 'Manual' | 'Auto';
   spIncrement?: number;
   levels?: SkillLevel[];
   masteryUnlockReqs?: SkillUnlockReqs[]; 
+  eliteUnlockReq: number;
 }
 
 export interface SkillLevel {
@@ -59,6 +71,7 @@ export interface StatBreakpoint {
   maxLevel: number;
   minStats: any;
   maxStats: any;
+  rangeId: string;
   eliteUnlockReqs?: EliteUnlockReqs;
 }
 
@@ -73,4 +86,44 @@ export interface SkillUnlockReqs {
   elite: number;
 
   duration?: number;
+}
+
+export interface Module {
+  id: string;
+  imgLink: string;
+  typeName: string;
+  name: string;
+  description: string;
+
+  // info gathered on battle equip json
+  trait?: string;
+  traitStats?: any;
+  missions?: ModuleMission[];
+  levels?: ModuleLevel[];
+}
+
+export interface ModuleMission {
+  id: string;
+  description?: string;
+}
+
+export interface ModuleLevel {
+  itemCosts: Item[];
+  stats?: any;
+  summonStats?: any;
+}
+
+export interface Summon {
+  name: string;
+  id: string;
+  associatedSkillIndex: number;
+  statBreakpoints: StatBreakpoint[];
+}
+
+export interface BaseSkill {
+  name: string;
+  id: string;
+  iconId: string;
+  description: string;
+  color: string;
 }

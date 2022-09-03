@@ -25,12 +25,38 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 @import './assets/scss/effect-text-colors.scss';
+@import './assets/scss/table.scss';
+@import './assets/scss/searchbox.scss';
+@import './assets/scss/variables.scss';
+@import './assets/scss/slider.scss';
 
-.skill-level-mastery {
+.skill-level {
   display: inline-block;
 
-  img {
+  .mastery-img {
     width: 20px;
     transform: translateY(3px);
   }
+
+  .level {
+    width: 7px;
+    transform: translateY(-1px);
+  }
+}
+
+.ngxImageZoomContainer {
+  width: auto !important;
+  width: auto !important;
+
+  .ngxImageZoomThumbnail:hover {
+    opacity: 0;
+  }
+
+  .ngxImageZoomFull {
+    transform: scale(0.85)
+  }
+}
+
+p {
+  margin: 0;
 }

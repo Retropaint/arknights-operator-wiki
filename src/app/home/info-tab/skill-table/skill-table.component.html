@@ -1,0 +1,92 @@
+<table class="table connect header-table">
+  <tbody>
+    <tr>
+      <td [ngClass]="{'selected' : selectedSkillLevels[skillLevel]}" *ngFor="let skillLevel of objectKeys(selectedSkillLevels); let i=index" (click)="toggleSkillLevel(i)" style="text-align: center">
+        <ion-img *ngIf="i <= 5" class="level button" src="assets/icons/skillLevels/{{i+1}}.png"></ion-img>
+        <ion-img *ngIf="i > 5" class="mastery-img button" src="assets/icons/skillLevels/{{i+1}}.png"></ion-img>
+      </td>
+      <td (click)="clearSkillLevels()" style="text-align: center">
+        Clear
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table" style="margin-bottom: 0px" draggable="false" *ngIf="operator && doctor.skillSlider">
+  <tbody>
+    <tr>
+      <td>
+        <input draggable="false" [(ngModel)]="sliderLevel" type="range" class="slider" min="0" [max]="9" (ngModelChange)="usingSlider()"/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>
+        Skill 
+      </th>
+      <th>
+        Elite Req.
+      </th>
+      <th>
+        Skill Description
+      </th>
+      <th>
+        SP Cost
+      </th>
+      <th>
+        Initial SP
+      </th>
+    </tr>
+    <tr *ngFor="let s of skills">
+      <th>
+        {{s.name}}
+      </th>
+      <td class="elite-unlock-req-cell">
+        <ion-img *ngIf="s.eliteUnlockReq > 0" class="elite-img" src="assets/icons/elitePhases/{{s.eliteUnlockReq}}.webp"></ion-img>
+        <p *ngIf="s.eliteUnlockReq == 0">-</p>
+      </td>
+      <td class="skill-description">
+        <p class="recovery {{s.recoveryType.split(' ')[0]}}"> {{s.recoveryType}} </p>
+        <p class="activation"> {{s.activationType}} </p>
+        <p class="duration" *ngIf="s.durations[0].value != -1">
+          <span *ngFor="let d of s.durations; let i = index">
+            <ng-container *ngIf="d.value == 0">Instant</ng-container>
+            <ng-container *ngIf="d.value > 0">{{d.value}}s 
+              <img *ngIf="d.level <= 6" class="level" src="assets/icons/skillLevels/{{d.level}}.png"/>
+              <img *ngIf="d.level >= 7" class="mastery-img" src="assets/icons/skillLevels/{{d.level}}.png"/>
+            </ng-container>
+            <ng-container *ngIf="i < s.durations.length - 1">, </ng-container>
+          </span>
+        </p>
+
+        <p class="skill-description" [innerHtml]="s.description"></p>
+
+        <div class="range-container" *ngIf="s.ranges.length > 0">
+          <div class="range" *ngFor="let range of s.ranges">
+            <app-range-grid [id]="range.id"></app-range-grid>
+            <img *ngIf="range.level <= 6" class="level" src="assets/icons/skillLevels/{{range.level}}.png"/>
+              <img *ngIf="range.level >= 7" class="mastery-img" src="assets/icons/skillLevels/{{range.level}}.png"/>
+          </div>
+        </div>
+      </td>
+      <td>
+        <ng-container *ngFor="let spCost of s.spCosts">
+          <p class="flex-container">{{spCost.value}} 
+            <ion-img *ngIf="spCost.level <= 6" class="level" src="assets/icons/skillLevels/{{spCost.level}}.png"></ion-img>
+            <ion-img *ngIf="spCost.level >= 7" class="mastery-img" src="assets/icons/skillLevels/{{spCost.level}}.png"></ion-img>
+          </p>
+        </ng-container>
+      </td>
+      <td>
+        <ng-container *ngFor="let initialSp of s.initialSp">
+          <p class="flex-container">{{initialSp.value}} 
+            <ion-img *ngIf="initialSp.level <= 6" class="level" src="assets/icons/skillLevels/{{initialSp.level}}.png"></ion-img>
+            <ion-img *ngIf="initialSp.level >= 7" class="mastery-img" src="assets/icons/skillLevels/{{initialSp.level}}.png"></ion-img>
+          </p>
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>

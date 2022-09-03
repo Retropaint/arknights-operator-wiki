@@ -1,0 +1,53 @@
+<div class="background">
+
+  <p class="header">Settings</p>
+
+  <div class="stat-slider-checkbox">
+    Skill Slider
+    <app-checkbox [value]="skillSlider" (onChanged)="skillSlider = $event"></app-checkbox>
+  </div>
+
+  <br>
+
+  <div class="stat-slider-checkbox">
+    Stat Slider
+    <app-checkbox [value]="statSlider" (onChanged)="statSlider = $event"></app-checkbox>
+  </div>
+
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>
+          Stat Breakpoints
+        </th>
+      </tr>
+      <tr *ngFor="let breakpoint of doctorService.doctor.levelBreakpoints; let i = index">
+        <td class="level-breakpoint" [ngClass]="{'hoverable': editingBreakpoint == -1, 'selected' : editingBreakpoint == i}" (click)="editThisBreakpoint(i)">
+          <ng-container *ngIf="editingBreakpoint != i">
+            <ion-img class="elite-img" src="assets/icons/elitePhases/{{breakpoint.elite}}.webp"></ion-img>
+            {{breakpoint.level}}
+          </ng-container>
+          <ng-container *ngIf="editingBreakpoint == i">
+            <ion-img class="elite-img editor" [ngClass]="{'selected' : editingElite == 0}" src="assets/icons/elitePhases/0.webp" (click)="editingElite = 0"></ion-img>
+            <ion-img class="elite-img editor" [ngClass]="{'selected' : editingElite == 1}" src="assets/icons/elitePhases/1.webp" (click)="editingElite = 1"></ion-img>
+            <ion-img class="elite-img editor" [ngClass]="{'selected' : editingElite == 2}" src="assets/icons/elitePhases/2.webp" (click)="editingElite = 2"></ion-img>
+
+            <!--
+            <ion-input class="input-editor" placeholder="elite" [value]="editingElite" [(ngModel)]="editingElite"></ion-input>
+            -->
+            <ion-input class="input-editor" placeholder="level" [value]="editingLevel" [(ngModel)]="editingLevel" (keyup.enter)="doneEditing()"></ion-input>
+            <div class="editor-buttons">
+              <ion-icon name="checkmark-outline" (click)="doneEditing()" style="cursor: pointer"></ion-icon>
+              <ion-icon name="trash-outline" (click)="deleteBreakpoint()" style="cursor: pointer"></ion-icon>
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+      <tr>
+        <td class="add-breakpoint" [ngClass]="{'hoverable': editingBreakpoint == -1}" (click)="addBreakpoint()">
+          + 
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

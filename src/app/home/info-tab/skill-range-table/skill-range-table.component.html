@@ -1,0 +1,20 @@
+<table class="table" *ngIf="skillRanges.length != 0">
+  <tbody>
+    <tr>
+      <th colspan="2">
+        Skill Ranges
+      </th>
+    </tr>
+    <tr *ngFor="let skillRange of skillRanges">
+      <th>
+        {{skillRange.skillName}}
+      </th>
+      <td>
+        <div class="skill-range-container" *ngFor="let range of skillRange.ranges">
+          <app-range-grid class="range-grid" [id]="range.id"></app-range-grid>
+          <p><img class="mastery-img" src="assets/icons/skillLevels/m{{range.level}}.png"/></p>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

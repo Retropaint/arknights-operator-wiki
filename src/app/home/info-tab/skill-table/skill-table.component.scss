@@ -1,0 +1,113 @@
+p {
+  margin: 0
+}
+
+.header-table {
+  table-layout: fixed;
+  cursor: pointer;
+
+  td {
+    &:hover {
+      background: var(--hovergrey);
+    }
+
+    &.selected {
+      background: var(--blue);
+    }
+  }
+}
+
+.mastery-img {
+  width: 15px;
+  display: inline-block;
+
+  &.button {
+    margin: auto;
+  }
+}
+
+.level {
+  width: 7px;
+  transform: translateY(-1px);
+  margin-left: 4px;
+  display: inline-block;
+
+  &.button {
+    margin: auto;
+  }
+}
+
+.elite-img {
+  width: 30px;
+  display: inline-block;
+}
+
+.elite-unlock-req-cell {
+  text-align: center;
+}
+
+.skill-description {
+  vertical-align: top;
+
+  .recovery {
+    &.Defensive {
+      background: #d99900;
+    }
+    &.Offensive {
+      background: #FC793E;
+    }
+    &.Auto {
+      background: #7cac19;
+    }
+    &.Passive {
+      background: #737373;
+    }
+    display: inline-block;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+
+  .activation {
+    background: #737373;
+    display: inline-block;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+
+  .duration {
+    display: inline-block;
+    background: #545454;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+
+  .mastery-img {
+    width: 12px;
+    display: inline-block;
+    transform: scale(1.25);
+  }
+}
+
+.range-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .range {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+
+    app-range-grid {
+      padding-right: 5px;
+    }
+  }
+}
+
+.skill-description {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

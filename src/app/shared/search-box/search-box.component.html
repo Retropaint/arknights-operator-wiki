@@ -1,0 +1,14 @@
+<p-autoComplete 
+  inputStyleClass="search-input" 
+  inputId="searchBox" 
+  id="searchBox" 
+  [(ngModel)]="text" 
+  placeholder="Search operator..." 
+  [showEmptyMessage]="true" 
+  [suggestions]="results" 
+  (completeMethod)="search($event)" 
+  (keyup.enter)="clickedSuggestion(results[0])">
+    <ng-template let-operator pTemplate="operator" let-idx="index">
+      <p class="operator-suggestion" [ngClass]="{'chosen' : chosenResult == idx}" (click)="clickedSuggestion(operator)">{{operator}}</p>
+    </ng-template>
+</p-autoComplete>

@@ -1,0 +1,42 @@
+.table {
+  border-top: none;
+}
+
+ion-img {
+  width: 30px;
+}
+
+.elite-img {
+  width: 30px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.header-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.req-cell {
+  display: flex;
+  padding-left: 10px !important;
+  justify-content: center;
+  align-items: center;
+
+  .elite-img {
+    width: 30px;
+    display: inline-block;
+    transform: translateY(-5px);
+    margin-right: 10px;
+  }
+  
+  .center-aligned {
+    text-align: center;
+    width: 0px;
+  }
+  
+  .level {
+    padding-right: 15px;
+  }
+}

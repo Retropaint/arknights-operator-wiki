@@ -1,0 +1,41 @@
+<table class="basic-info-card">
+  <div class="left-side">
+    <ion-img class="image" src="https://aceship.github.io/AN-EN-Tags/img/avatars/{{operatorImageLink}}.png"></ion-img>
+    <tbody>
+      <tr>
+        <th>Class</th>
+        <td>{{operator.class}}</td>
+      </tr>
+      <tr>
+        <th>Position</th>
+        <td>Something lol</td>
+      </tr>
+      <tr>
+        <th>Rarity</th>
+        <td>{{operator.rarity}}</td>
+      </tr>
+    </tbody>
+  </div>
+  
+  
+  <div class="right-side">
+    <div class="range-container">
+      <ion-img class="elite-img" src="assets/icons/elitePhases/0.webp"></ion-img>
+      <app-range-grid style="float: right" [id]="operator.statBreakpoints[0].rangeId"></app-range-grid>
+    </div>
+    <div *ngIf="operator.rarity > 2" class="range-container">
+      <ion-img class="elite-img" src="assets/icons/elitePhases/1.webp"></ion-img>
+      <app-range-grid style="float: right" [id]="operator.statBreakpoints[1].rangeId"></app-range-grid>
+    </div>
+    <div *ngIf="operator.name == 'Frostleaf'" class="range-container">
+      <ion-img class="elite-img" src="assets/icons/elitePhases/2.webp"></ion-img>
+      <app-range-grid style="float: right" [id]="operator.statBreakpoints[2].rangeId"></app-range-grid>
+    </div>
+  </div>
+</table>
+<table class="table">
+  <tbody>
+      <th style="width: 20%">{{operator.branch}}</th>
+      <td class="trait-description" [innerHTML]="operator.trait"></td>
+  </tbody>
+</table>
