@@ -26,26 +26,27 @@ export class OperatorGalleryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // delay to wait for image to load
-    setTimeout(() => {
-      // 2048 size images magnifier double as much as 1024, so compensate by halving magnification
-      if(this.opImage.fullWidth == 2048) {
-        this.magnificationMultiplier = 0.5;
-      } else {
-        this.magnificationMultiplier = 1;
-      }
-    }, 50)
+    // special reserve ops are so quirkyyyy!!! UwU
+    const specialReserveOp = this.database.specialReserveOps.find(operator => operator == this.operator.name);
 
-    if(this.database.specialReserveOps.find(operator => operator == this.operator.name) != null) {
+    if(specialReserveOp) {
       this.defaultOpIconLink = this.operator.id;
     } else {
       this.defaultOpIconLink = this.operator.id.slice(2, this.operator.id.length);
     }
 
-    const specialReserveOp = this.database.specialReserveOps.find(operator => operator == this.operator.name);
 
     if(this.operator.name.includes('Reserve Operator') || specialReserveOp) {
       this.reserveOpImageLink = this.operator.id
+    }
+  }
+
+  onHover() {
+    // 2048 size images magnifier double as much as 1024, so compensate by halving magnification
+    if(this.opImage.fullWidth == 2048) {
+      this.magnificationMultiplier = 0.5;
+    } else {
+      this.magnificationMultiplier = 1;
     }
   }
 

@@ -22,7 +22,7 @@ export class DatabaseJsonGetterService {
   ) { }
 
   init() {
-    this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/item_table.json')
+    this.http.get('assets/json/item_table.json')
       .pipe(
         concatMap(itemJson => {
           Object.keys(itemJson['items']).forEach(item => {
@@ -39,7 +39,7 @@ export class DatabaseJsonGetterService {
           
           })
 
-          return this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/character_table.json');
+          return this.http.get('assets/json/character_table.json');
         }),
         concatMap(results => {
 
@@ -79,6 +79,8 @@ export class DatabaseJsonGetterService {
                   op.potentialItemId = 'char_509_acast';
                 break; case 'Stormeye':
                   op.potentialItemId = 'char_511_asnipe';
+                break; case 'Conviction':
+                  op.potentialItemId = "p_char_159_peacok"
               }
 
               const newOperator: Operator = {
@@ -93,21 +95,22 @@ export class DatabaseJsonGetterService {
                 talents: this.dbJsonParser.getTalents(op),
                 recruitTags: op.tagList,
                 obtainMethods: op.itemObtainApproach,
-                position: op.position,
+                position: this.dbJsonParser.getPosition(op),
                 skills: skills,
                 statBreakpoints: this.dbJsonParser.getStats(op),
                 skillLevelUnlockReqs: this.dbJsonParser.getSkillLevelUnlockReqs(op),
                 skins: [],
                 voiceActors: {},
                 modules: [],
-                summons: this.dbJsonParser.getSummons(results, op.tokenKey)
+                summons: this.dbJsonParser.getSummons(results, op.tokenKey),
+                baseSkills: []
               }
 
               this.database.operators.push(newOperator);
             }
           })
           
-          return this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/range_table.json');
+          return this.http.get('assets/json/range_table.json');
         }),
         concatMap(jsonRanges => {
           Object.keys(jsonRanges).forEach(jsonRange => {
@@ -118,7 +121,7 @@ export class DatabaseJsonGetterService {
             this.database.ranges.push(newRange);
           })
 
-          return this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/charword_table.json'); 
+          return this.http.get('assets/json/charword_table.json'); 
         }),
         concatMap((jsonCharwords: any) => {
           Object.keys(jsonCharwords.voiceLangDict).forEach(char => {
@@ -133,7 +136,7 @@ export class DatabaseJsonGetterService {
             }
           })
 
-          return this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/skin_table.json'); 
+          return this.http.get('assets/json/skin_table.json'); 
         }),
         concatMap((jsonSkins: any) => {
 
@@ -179,7 +182,7 @@ export class DatabaseJsonGetterService {
             skinJson.skins.push(skin.id)
           })
           
-          return this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/uniequip_table.json'); 
+          return this.http.get('assets/json/uniequip_table.json'); 
         }),
         concatMap((results: any) => {
 
@@ -195,16 +198,18 @@ export class DatabaseJsonGetterService {
             
           })
 
-          return this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/building_data.json'); 
+          return this.http.get('assets/json/building_data.json'); 
         }),
         concatMap(results => {
-          console.log(results)
+          this.dbJsonParser.getBaseSkills(results['buffs']);
 
-          Object.keys(results).forEach(build => {
-            
+          console.log(results['buffs'])
+
+          Object.keys(results['chars']).forEach(char => {
+            this.dbJsonParser.getOperatorBaseSkills(results['chars'][char].charId, results['chars'][char].buffChar)
           })
 
-          return this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/battle_equip_table.json'); 
+          return this.http.get('assets/json/battle_equip_table.json'); 
         }),
         concatMap(results => {
 
@@ -217,7 +222,7 @@ export class DatabaseJsonGetterService {
             })
           })
 
-          return this.http.get('https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/skill_table.json'); 
+          return this.http.get('assets/json/skill_table.json'); 
         })
       )
       .subscribe(skills => {

@@ -6,7 +6,7 @@
       </th>
     </tr>
     <tr *ngFor="let level of operator.skillLevelUnlockReqs; let i = index">
-      <th>
+      <th style="width: 20%;">
         {{i+2}}
       </th>
       <td class="req-container">
@@ -16,8 +16,9 @@
     </tr>
     <ng-container *ngIf="operator.rarity > 3 && operator.skills[0].masteryUnlockReqs.length != 0">
       <tr *ngFor="let mastery of emptyArray(3); let m = index">
-        <th>Mastery {{m+1}}</th>
+        <th style="width: 20%;">Mastery {{m+1}}</th>
         <td>
+          
           <div class="mastery">
             <div class="skill" *ngFor="let num of emptyArray(operator.skills.length); let i = index">
               <p class="name">{{operator.skills[i].name}}</p>
@@ -26,10 +27,12 @@
               </div>
             </div>
           </div>
+
           <div class="misc-mastery-reqs">
             <ion-img class="elite-img" src="assets/icons/elitePhases/2.webp"></ion-img>
             <p>{{8 * (m+1)}} hours</p>
           </div>
+
         </td>
       </tr>
     </ng-container>

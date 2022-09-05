@@ -56,10 +56,6 @@ export class DialogSettingsComponent implements OnInit {
     this.editingBreakpoint = -1;
   }
 
-  pressedOutside() {
-    
-  }
-
   ngOnDestroy() {
     this.transitioner.transitionSubscription.next();
     this.doctorService.doctor.statSlider = this.statSlider;

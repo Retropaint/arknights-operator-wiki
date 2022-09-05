@@ -15,7 +15,6 @@ import { SkillTableComponent } from './info-tab/skill-table/skill-table.componen
 import { EliteUnlockReqsTableComponent } from './info-tab/elite-unlock-reqs-table/elite-unlock-reqs-table.component';
 import { SkillLevelUnlockReqsTableComponent } from './info-tab/skill-level-unlock-reqs-table/skill-level-unlock-reqs-table.component';
 import { SkillMasteryUnlockReqsTableComponent } from './info-tab/skill-mastery-unlock-reqs-table/skill-mastery-unlock-reqs-table.component';
-import { TimerFormatPipe } from '../pipes/timer-format.pipe';
 import { ItemComponent } from '../shared/item/item.component';
 import { RangeGridComponent } from './info-tab/range-grid/range-grid.component';
 import { RangeTableComponent } from './info-tab/range-table/range-table.component';
@@ -54,7 +53,6 @@ import { BaseSkillTableComponent } from './info-tab/base-skill-table/base-skill-
     EliteUnlockReqsTableComponent,
     SkillLevelUnlockReqsTableComponent,
     SkillMasteryUnlockReqsTableComponent,
-    TimerFormatPipe,
     ItemComponent,
     RangeGridComponent,
     RangeTableComponent,
@@ -67,9 +65,6 @@ import { BaseSkillTableComponent } from './info-tab/base-skill-table/base-skill-
     DialogSettingsComponent,
     CheckboxComponent,
     BaseSkillTableComponent
-  ],
-  providers: [
-    TimerFormatPipe,
   ]
 })
 export class HomePageModule {}

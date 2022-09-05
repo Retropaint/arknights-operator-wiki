@@ -30,6 +30,11 @@
 @import './assets/scss/variables.scss';
 @import './assets/scss/slider.scss';
 
+.elite-img {
+  width: 20px;
+  transform: translateY(3px)
+}
+
 .skill-level {
   display: inline-block;
 

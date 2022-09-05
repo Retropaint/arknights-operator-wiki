@@ -22,6 +22,7 @@ export interface Operator {
   modules?: Module[];
   skins: Skin[];
   summons?: Summon[];
+  baseSkills?: OperatorBaseSkill[];
   voiceActors: {
     CN?: string;
     JP?: string;
@@ -126,4 +127,24 @@ export interface BaseSkill {
   iconId: string;
   description: string;
   color: string;
+
+  requirements?: {
+    elite: number;
+    level: number;
+  }
+}
+
+export interface OperatorBaseSkill {
+  iconId?: string;
+  color?: string;
+  levels: {
+    name: string;
+    id: string;
+    iconId: string;
+    description?: string;
+    requirements: {
+      elite: number;
+      level: number;
+    }
+  }[];
 }

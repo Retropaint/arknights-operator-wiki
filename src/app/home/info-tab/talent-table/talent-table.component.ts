@@ -1,5 +1,5 @@
 import { Component, Input, OnInit  } from '@angular/core';
-import { Operator } from 'src/app/interfaces/operator';
+import { Operator, Talent } from 'src/app/interfaces/operator';
 import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({

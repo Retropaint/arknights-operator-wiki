@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, ChildActivationEnd, NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { ActivatedRoute, ChildActivationEnd, NavigationEnd, Router, RouterEvent, Scroll } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { Operator } from '../interfaces/operator';
@@ -21,6 +21,9 @@ export class HomePage implements OnInit, OnDestroy {
   currentTab: 'info' | 'gallery' = 'info';
   isBlurry: boolean = false;
 
+  // prevents route subscription from triggering when site is newly loaded
+  isFirstLoad: boolean = false;
+
   routerSubscription: Subscription;
   transitionSubscription: Subscription;
 
@@ -35,24 +38,38 @@ export class HomePage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+
+    // random console logs that are the absolute peak of comedy
     const randomLog = ["Azur Lane is better", "I can code as well as Hibiscus can cook", "No I am NOT making a mobile view stop asking"];
-    const chosenLog = Math.floor(Math.random() * randomLog.length);
+    const chosenLog = Math.round(Math.random() * (randomLog.length-1));
     setTimeout(() => {
       console.log(randomLog[chosenLog]);
     }, 500) 
 
-    const urlParams = this.route.snapshot.queryParams;
+    let navigationParams;
 
+    // refresh page on navigation
     this.routerSubscription = this.router.events.subscribe((result: RouterEvent) => {
       if(result instanceof ChildActivationEnd) {
-        if(result['snapshot']) {
-          this.refresh(result['snapshot'].queryParams['operator'] != null ? result['snapshot'].queryParams['operator'] : 'Hibiscus')
+        navigationParams = result['snapshot'].queryParams['operator'];
+      } else if(result instanceof Scroll) {
+
+        // don't do anything for first operator
+        if(!this.isFirstLoad) {
+          this.isFirstLoad = true;
+          return;
         }
+
+        this.refresh(navigationParams != null ? navigationParams : 'Hibiscus')
       }
     })
 
+    // page refresher (for non-navigation)
+    const urlParams = this.route.snapshot.queryParams;
     this.transitionSubscription = this.transitioner.transition
       .subscribe(() => {
+
+        // ok I know I just said this is a page refresher, but if isBlurry is on then settings dialog was closed, so just refresh stats table instead
         if(this.isBlurry) {
           this.isBlurry = false;
           if(this.statTable != null) {
@@ -61,15 +78,17 @@ export class HomePage implements OnInit, OnDestroy {
         } else {
           this.refresh(urlParams['operator'] != null ? urlParams['operator'] : 'Hibiscus')
         }
+
       })
   }
 
   refresh(newOperator: string) {
-
-    this.operator = null; // destroy all components so they refresh
+    // destroy all components so they refresh
+    this.operator = null;
     
     setTimeout(() => {
-      this.operator = this.database.operators[this.database.operators.findIndex(operator => encodeURIComponent(operator.name.toLowerCase()) == newOperator.toLowerCase())];
+      const operatorIndex = this.database.operators.findIndex(operator => encodeURIComponent(operator.name.toLowerCase()) == newOperator.toLowerCase())
+      this.operator = this.database.operators[operatorIndex];
       console.log(this.operator)
     })
   }

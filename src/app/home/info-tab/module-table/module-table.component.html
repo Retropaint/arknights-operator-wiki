@@ -52,7 +52,7 @@
       </th>
       <td>
         <div class="stat" *ngFor="let stat of level.stats">
-          <ion-img src="../assets/icons/stats/{{stat.key}}.webp"></ion-img>
+          <ion-img src="assets/icons/stats/{{stat.key}}.webp"></ion-img>
           +{{stat.value}}
         </div>
         <ng-container *ngIf="level.summonStats != null">
@@ -60,7 +60,7 @@
             <p style="text-align: center">{{operator.summons[summonIndex].name}}</p>
             <div *ngFor="let stat of summonStat" class="stat" [ngClass]="{'no-margin' : stat.key == 'max_deck_stack_cnt' || stat.key == 'max_deploy_count'}">
               <ng-container *ngIf="stat.key != 'max_deck_stack_cnt' && stat.key != 'max_deploy_count'">
-                <ion-img src="../assets/icons/stats/{{stat.key}}.webp"></ion-img>
+                <ion-img src="assets/icons/stats/{{stat.key}}.webp"></ion-img>
                 {{stat.value}}
               </ng-container>
             </div>

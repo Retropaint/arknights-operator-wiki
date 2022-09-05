@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Item } from '../interfaces/item';
-import { EliteUnlockReqs, Module, ModuleMission, Operator, Skill, SkillLevel, SkillUnlockReqs, StatBreakpoint, Summon, Talent } from '../interfaces/operator';
+import { BaseSkill, EliteUnlockReqs, Module, ModuleMission, Operator, OperatorBaseSkill, Skill, SkillLevel, SkillUnlockReqs, StatBreakpoint, Summon, Talent } from '../interfaces/operator';
 import { Grid } from '../interfaces/range';
 import { DatabaseService } from './database.service';
 
@@ -26,18 +26,10 @@ export class DatabaseJsonParserService {
       const eliteStats = elite.attributesKeyFrames;
 
       let minStats = eliteStats[0].data
-      minStats = this.replaceKey(minStats, 'magicResistance', 'res');
-      minStats = this.replaceKey(minStats, 'blockCnt', 'blockCount');
-      minStats = this.replaceKey(minStats, 'maxHp', 'hp');
-      minStats = this.replaceKey(minStats, 'baseAttackTime', 'attackInterval');
-      minStats = this.replaceKey(minStats, 'respawnTime', 'redploy');
+      this.renameStats(minStats);
 
       let maxStats = eliteStats[1].data 
-      maxStats = this.replaceKey(maxStats, 'magicResistance', 'res');
-      maxStats = this.replaceKey(maxStats, 'blockCnt', 'blockCount');
-      maxStats = this.replaceKey(maxStats, 'maxHp', 'hp');
-      maxStats = this.replaceKey(maxStats, 'baseAttackTime', 'attackInterval');
-      maxStats = this.replaceKey(maxStats, 'respawnTime', 'redploy');
+      this.renameStats(maxStats);
 
       let eliteUnlockReqs: EliteUnlockReqs;
       if(elite.evolveCost) {
@@ -443,6 +435,73 @@ export class DatabaseJsonParserService {
     return this.database.items.find(thisItem => id == thisItem.id)
   }
 
+  getBaseSkills(buffJson: any) {
+    Object.keys(buffJson).forEach(buffName => {
+      const buff = buffJson[buffName];
+
+      const newBaseSkill: BaseSkill = {
+        name: buff.buffName,
+        id: buff.buffId,
+        description: buff.description,
+        iconId: buff.skillIcon,
+        color: buff.buffColor
+      }
+
+      this.database.baseSkills.push(newBaseSkill);
+    })
+  }
+
+  getOperatorBaseSkills(operatorId: string, baseSkillJson: any) {
+    const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == operatorId);
+    if(op) {
+
+      // treat her training skill separately
+      if(op.name == 'Aurora') {
+        baseSkillJson[1].buffData.push(baseSkillJson[0].buffData[1])
+        baseSkillJson[0].buffData.pop();
+      }
+
+      baseSkillJson.forEach(skill => {
+        let newBaseSkill: OperatorBaseSkill = {
+          levels: []
+        };
+
+        // even without an actual base skill, they will have a slot but no levels
+        if(skill.buffData.length == 0) {
+          return;
+        }
+
+        skill.buffData.forEach(level => {
+
+          const dbBaseSkill = this.database.baseSkills.find(baseSkill => baseSkill.id == level.buffId);
+          newBaseSkill.iconId = dbBaseSkill.iconId;
+          newBaseSkill.color = dbBaseSkill.color;
+
+          newBaseSkill.levels.push({
+            name: dbBaseSkill.name,
+            id: dbBaseSkill.id,
+            iconId: dbBaseSkill.iconId,
+            description: this.stylizeText(dbBaseSkill.description),
+            requirements: {
+              elite: level.cond.phase,
+              level: level.cond.level
+            }
+          })
+        })
+        op.baseSkills.push(newBaseSkill);
+      })
+    }
+  }
+
+  renameStats(stats) {
+    stats = this.replaceKey(stats, 'magicResistance', 'res');
+    stats = this.replaceKey(stats, 'blockCnt', 'blockCount');
+    stats = this.replaceKey(stats, 'maxHp', 'hp');
+    stats = this.replaceKey(stats, 'baseAttackTime', 'attackInterval');
+    stats = this.replaceKey(stats, 'respawnTime', 'redploy');
+    return stats;
+  }
+
   stylizeText(text: string) {
 
     text = text.replace(/<@ba.vdown>/g, '<span class="negative-effect"> ')
@@ -452,15 +511,22 @@ export class DatabaseJsonParserService {
     text = text.replace(/<@ba.talpu>/g, '<span class="positive-effect"> ')
     text = text.replace(/<@ba.vup>/g, '<span class="positive-effect"> ')
     text = text.replace(/<@ba.kw>/g, '<span class="positive-effect"> ')
+    text = text.replace(/<@cc.vup>/g, '<span class="positive-effect"> ')
+    text = text.replace(/<@cc.kw>/g, '<span class="positive-effect"> ')
+    text = text.replace(/<@cc.rem>/g, '<span class="positive-effect"> ')
+    
     text = text.replace(/<\$ba.shield>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.buffres>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.fragile>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.sluggish>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.stun>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.cold>/g, '<span class="special"> ')
+    text = text.replace(/<\$ba.camou>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.frozen>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.root>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.invisible>/g, '<span class="special"> ')
+    text = text.replace(/<\$cc.bd_b1>/g, '<span class="special"> ')
+    text = text.replace(/<\$cc.bd_a1>/g, '<span class="special"> ')
 
     const closingSpan = new RegExp('</>', 'g');
     text = text.replace(closingSpan, " </span>")
@@ -580,5 +646,9 @@ export class DatabaseJsonParserService {
           return '180k';
       }
     }
+  }
+
+  getPosition(operator: Operator) {
+    return operator.position.charAt(0).toUpperCase() + operator.position.slice(1, operator.position.length).toLowerCase();
   }
 }

@@ -1,10 +1,31 @@
 <table class="table">
   <tbody>
     <tr>
-      <th>Base Skill(s)</th>
+      <th>Base Skills</th>
+      <th>Elite Req.</th>
     </tr>
-    <tr>
-      <th></th>
+    <tr *ngFor="let baseSkill of operator.baseSkills; let i = index">
+      <td>
+        <div class="name-container">
+          <p *ngFor="let level of baseSkill.levels; let l = index" class="name" [style.color]="baseSkill.color">
+            <ion-img class="skill-icon" src="https://aceship.github.io/AN-EN-Tags/img/ui/infrastructure/skill/{{level.iconId}}.png"></ion-img>
+            <ng-container *ngIf="l == 0">
+              {{level.name}} 
+              <span *ngIf="operator.name == 'Aurora' && i == 1" style="margin-left: 10px; color: #e6e6e6">(replaces Defender Expert α)</span>
+            </ng-container>
+            <ng-container *ngIf="l > 0">
+              <div>
+                {{level.name}} (<ion-img *ngIf="level.requirements.elite > 0" class="elite-img" src="assets/icons/elitePhases/{{level.requirements.elite}}.webp"></ion-img>)
+              </div>
+            </ng-container>
+          </p>
+        </div>
+        <p [innerHTML]="descriptions[i]"></p>
+      </td>
+      <th> 
+        <p *ngIf="baseSkill.levels[0].requirements.elite == 0">-</p>
+        <ion-img *ngIf="baseSkill.levels[0].requirements.elite > 0" class="elite-img" src="assets/icons/elitePhases/{{baseSkill.levels[0].requirements.elite}}.webp"></ion-img>
+      </th>
     </tr>
   </tbody>
 </table>

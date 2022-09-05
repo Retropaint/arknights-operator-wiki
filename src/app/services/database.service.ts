@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Item } from '../interfaces/item';
-import { Operator } from '../interfaces/operator';
+import { BaseSkill, Operator } from '../interfaces/operator';
 import { Range } from '../interfaces/range';
 import { Skin } from '../interfaces/skin';
 
@@ -13,6 +13,7 @@ export class DatabaseService {
   items: Item[] = [];
   ranges: Range[] = [];
   skins: Skin[] = [];
+  baseSkills: BaseSkill[] = [];
 
   specialReserveOps = ['Sharp', 'Touch', 'Pith', 'Stormeye'];
 

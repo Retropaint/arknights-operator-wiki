@@ -10,6 +10,7 @@ import { DoctorService } from 'src/app/services/doctor.service';
 })
 export class SkillTableComponent implements OnInit {
 
+  // for use in HTML
   objectKeys = Object.keys;
 
   @Input() operator: Operator;
@@ -28,19 +29,16 @@ export class SkillTableComponent implements OnInit {
   };
 
   skills: any[] = [];
+
+  sliderLevel: number = 0;
+
+  doctor: Doctor;
+  
+  // keeps track of previous stat values to prevent repetition
   previousStatValues: {
     name: string,
     value: number
   }[] = [];
-
-  sliderLevel: number = 0;
-
-  m0img: string = '<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/m0.png" /> </span>'
-  m1img: string = '<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/m1.png" /> </span>'
-  m2img: string = '<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/m2.png" /> </span>'
-  m3img: string = '<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/m3.png" /> </span>'
-
-  doctor: Doctor;
 
   constructor(
     private doctorService: DoctorService
@@ -85,6 +83,7 @@ export class SkillTableComponent implements OnInit {
       newSkill.description = newSkill.description.replace('HP_RECOVERY_PER_SEC', 'hp_recovery_per_sec');
       newSkill.description = newSkill.description.replace('hp_recovery_per_sec_BY_MAX_HP_RATIO', "hp_recovery_per_sec_by_max_hp_ratio");
 
+      // here's where the skill parsing magic happens!
       newSkill.description = this.parseUnnumberedStats(newSkill.description, skill);
       newSkill.description = this.initialParse(skill, newSkill.description, firstSelectedSkillLevel)
       const maxLevel = this.operator.rarity > 3 ? 9: 6;
@@ -190,7 +189,7 @@ export class SkillTableComponent implements OnInit {
       let suffix = '';
       let prefix = '';
 
-      // add level image if it's not level 1
+      // add level image if level is not 1
       let level = `<span class="skill-level"> <img class="level" src="assets/icons/skillLevels/${levelNum+1}.png" /> </span>`;
       if(levelNum > 5) {
         level = `<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/${levelNum+1}.png" /> </span>`;
@@ -210,17 +209,11 @@ export class SkillTableComponent implements OnInit {
       }
 
       let statValue = (stat.value*multiplier).toString();
-      if(stat.value*multiplier % 1 != 0) {
 
-        // due to float imprecision some stats can look like 100.000001%
-        if(stat.value*multiplier > 100) {
-          statValue = (stat.value*multiplier).toFixed(0);
-        } 
-
-        // for values less than 100% it's usually better to show decimal places
-        else {
-          statValue = (stat.value*multiplier).toFixed(2);
-        }
+      // remove floating point imprecision (otherwise percentages will look like 100.000000001%)
+      const fixedStatValue = (stat.value*multiplier).toFixed(2);
+      if(fixedStatValue.includes('.00')) {
+        statValue = fixedStatValue.slice(0, fixedStatValue.indexOf('.'));
       }
 
       // during parsing, the tilde (~) lets 'middle' parsing know if to add more levels (as seen in continuousParse() parse variations)
@@ -255,7 +248,7 @@ export class SkillTableComponent implements OnInit {
 
   cleanUpSkillDescription(string: string) {
 
-    // regex contains colon (:) and whitespace
+    // this regex removes colons (:) and whitespaces
     // colon is for 's' representing seconds in stats, which is removed so the 's' letter is isolated and can be grouped with the value
     const split = string.split(/[\: ]/);
     
@@ -264,16 +257,16 @@ export class SkillTableComponent implements OnInit {
     for(let i = 0; i < split.length; i++) {
       const word = split[i];
 
+      // when parsing negative stat values, the actual negative symbol is isolated, so put it out of its misery
       if(word == '-') {
         split[i] = ''
       }
 
-      // grouping 's' with the number before it to form a second
+      // grouping 's' with the number before it, to form a second
       if(split[i+1] == 's') {
         split[i] += 's';
         split[i+1] = ''
       }
-    
     }
 
     split.forEach(word => {
@@ -295,7 +288,7 @@ export class SkillTableComponent implements OnInit {
 
       if(word == 'moderately') {
 
-        // a value less than 0 means it's negative, therefore it's reducing *by* and not *to*
+        // a value less than 0 means it's negative, therefore it's reduced/raised *by* and not *to*
         if(skill.levels[0].stats[0].value < 0) {
           split[i] = 'by base_attack_time:0%';
         } else {
@@ -344,10 +337,14 @@ export class SkillTableComponent implements OnInit {
       level: string;
     }[] = [];
 
-    // just push the one level that's selected
     if(firstSkillLevel == lastSkillLevel) {
+  
+      // just push the one level that's selected
       stats.push({value: skill.levels[firstSkillLevel][miscStat], level: firstSkillLevel+1});
+  
     } else {
+
+      // push all selected levels (if they do not repeat stats, that is)
       let maxLevel = (this.operator.rarity > 3) ? 10: 7;
       for(let i = firstSkillLevel; i < Math.min(lastSkillLevel+1, maxLevel); i++) {
         if(this.selectedSkillLevels[i]) {
@@ -367,6 +364,8 @@ export class SkillTableComponent implements OnInit {
   }
 
   toggleSkillLevel(level: number) {
+
+    // put away the slider bar
     this.sliderLevel = 0;
 
     this.selectedSkillLevels[level] = !this.selectedSkillLevels[level];

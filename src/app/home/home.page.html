@@ -43,6 +43,10 @@
         [operator]="operator"
       ></app-potential-table>
 
+      <app-base-skill-table
+        [operator]="operator"
+      ></app-base-skill-table>
+
       <app-module-table
         *ngIf="operator.modules.length > 0"
         [operator]="operator"
@@ -78,10 +82,6 @@
       <app-skill-level-unlock-reqs-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
         [operator]="operator"
       ></app-skill-level-unlock-reqs-table>
-
-      <app-base-skill-table
-        
-      ></app-base-skill-table>
 
       <p style="text-align: center" *ngIf="operator.rarity < 3 || operator.name.includes('Reserve')">Skill issue</p>
     </div>
