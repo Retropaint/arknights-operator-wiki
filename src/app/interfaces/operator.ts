@@ -148,3 +148,15 @@ export interface OperatorBaseSkill {
     }
   }[];
 }
+
+export interface FinalizedSkill {
+  name: string,
+  description: string,
+  recoveryType: string,
+  eliteUnlockReq: number,
+  activationType: string,
+  spCosts: {value: number, level: string}[],
+  initialSp: {value: number, level: string}[],
+  durations: {value: number, level: string}[],
+  ranges: {id: string, level: number}[]
+}

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Doctor } from 'src/app/interfaces/doctor';
-import { Operator, Skill } from 'src/app/interfaces/operator';
+import { FinalizedSkill, Operator, Skill } from 'src/app/interfaces/operator';
 import { DoctorService } from 'src/app/services/doctor.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class SkillTableComponent implements OnInit {
     9: true
   };
 
-  skills: any[] = [];
+  skills: FinalizedSkill[] = [];
 
   sliderLevel: number = 0;
 
@@ -68,7 +68,7 @@ export class SkillTableComponent implements OnInit {
     this.operator.skills.forEach(skill => {
       this.previousStatValues = [];
 
-      let newSkill = {
+      let newSkill: FinalizedSkill = {
         name: skill.name,
         description: skill.description,
         recoveryType: skill.spType,
@@ -97,6 +97,9 @@ export class SkillTableComponent implements OnInit {
 
       this.skills.push(newSkill)
     })
+
+    this.manualEdits();
+    
   }
 
   initialParse(skill: Skill, description: string, level: number) {
@@ -115,6 +118,7 @@ export class SkillTableComponent implements OnInit {
         `${stat.name}:s`,
       ];
 
+      // these values will be checked again to prevent repetition
       this.previousStatValues.push({name: stat.name, value: stat.value})
 
       description = this.parseDesc(description, stat, strings, level, 'first');
@@ -128,11 +132,7 @@ export class SkillTableComponent implements OnInit {
     
     skill.levels[level].stats.forEach(stat => {
 
-      // do not parse if values are the same
-      const index = this.previousStatValues.findIndex(findingStat => {
-        return findingStat.name == stat.name;
-      })
-      if(index != -1 && this.previousStatValues[index].value == stat.value) {
+      if(this.hasRepetition(stat)) {
         return;
       }
 
@@ -143,11 +143,6 @@ export class SkillTableComponent implements OnInit {
       ];
 
       description = this.parseDesc(description, stat, statParseVariations, level, 'middle');
-
-      // updated previousStatValues
-      if(index != -1) {
-        this.previousStatValues[index].value = stat.value;
-      }
       
     })
 
@@ -158,17 +153,14 @@ export class SkillTableComponent implements OnInit {
     
     skill.levels[level].stats.forEach(stat => {
 
-      const index = this.previousStatValues.findIndex(findingStat => {
-        return findingStat.name == stat.name;
-      })
-      if(index != -1 && this.previousStatValues[index].value == stat.value) {
-        // remove incomplete parsing left by continuousParse()
+      if(this.hasRepetition(stat)) {
         description = this.replaceWholeWord(description, stat.name + '~', '');
         description = this.replaceWholeWord(description, stat.name + '%~', '');
         description = this.replaceWholeWord(description, stat.name + ':s~', '');
         return;
       }
 
+      // parsed stats will always leave a tilde (~) to let it know this is where parsing continues, so check for it
       const statParseVariations = [
         `${stat.name}~`, 
         `${stat.name}%~`, 
@@ -216,7 +208,7 @@ export class SkillTableComponent implements OnInit {
         statValue = fixedStatValue.slice(0, fixedStatValue.indexOf('.'));
       }
 
-      // during parsing, the tilde (~) lets 'middle' parsing know if to add more levels (as seen in continuousParse() parse variations)
+      // during parsing, the tilde (~) lets 'middle' parsing know if to add more levels
       switch(parseType) {
         case 'first':
           description = this.replaceWholeWord(description, parseVariation, `${prefix}${statValue}${suffix} ${level} ${stat.name}${suffix}~`)
@@ -248,7 +240,6 @@ export class SkillTableComponent implements OnInit {
 
   cleanUpSkillDescription(string: string) {
 
-    // this regex removes colons (:) and whitespaces
     // colon is for 's' representing seconds in stats, which is removed so the 's' letter is isolated and can be grouped with the value
     const split = string.split(/[\: ]/);
     
@@ -282,6 +273,7 @@ export class SkillTableComponent implements OnInit {
     for(let i = 0; i < split.length; i++) {
       let word = split[i];
       
+      // wording lol
       if(word == 'reduces') {
         split[i] = 'reduced'
       }
@@ -301,12 +293,24 @@ export class SkillTableComponent implements OnInit {
       }
     }
 
+    // turn split into an actual string
     let result = '';
     split.forEach(word => {
       result += word + ' ';
     })
 
     return result;
+  }
+
+  hasRepetition(stat: {value: number, name: string}) {
+    const index = this.previousStatValues.findIndex(findingStat => findingStat.name == stat.name)
+
+    if(index != -1 && this.previousStatValues[index].value == stat.value) {
+      return true;
+    } else {
+      this.previousStatValues[index].value = stat.value;
+      return false;
+    }
   }
 
   getRanges(skill: Skill, firstSkillLevel, lastSkillLevel) {
@@ -330,7 +334,7 @@ export class SkillTableComponent implements OnInit {
     return ranges;
   }
 
-  getMiscSkillStats(skill: any, miscStat: 'duration' | 'spCost' | 'initialSp', firstSkillLevel, lastSkillLevel) {
+  getMiscSkillStats(skill: Skill, miscStat: 'duration' | 'spCost' | 'initialSp', firstSkillLevel, lastSkillLevel) {
     let previousValue: number = -999;
     let stats: {
       value: number;
@@ -401,6 +405,27 @@ export class SkillTableComponent implements OnInit {
     this.selectedSkillLevels[this.sliderLevel] = true;
 
     this.getSkillDescriptions();
+  }
+
+  manualEdits() {
+    
+    // add Mayer's s1 buff text if m0+ is active
+    if(this.operator.name == 'Mayer') {
+      for(let i = 6; i < 10; i++) {
+        if(this.selectedSkillLevels[i]) {
+          const m0img = '<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/7.png" /> </span>'
+          this.skills[0].description += "(Allies on Robotters' four adjacent tiles also gain the same buff " + m0img + ')';
+          break;
+        }
+      }
+    }
+
+    // remove SilverAsh's <br> tag on s2
+    if(this.operator.name == 'SilverAsh') {
+      console.log('w')
+      this.skills[1].description = this.skills[1].description.replace('<br>', '');
+    }
+
   }
 
 }

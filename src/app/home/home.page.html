@@ -48,9 +48,9 @@
       ></app-base-skill-table>
 
       <app-module-table
-        *ngIf="operator.modules.length > 0"
+        *ngFor="let item of operator.modules; let i = index;"
         [operator]="operator"
-        [moduleIndex]="1"
+        [moduleIndex]="i"
       ></app-module-table>
       
     </div>

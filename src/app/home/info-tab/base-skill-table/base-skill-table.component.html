@@ -20,7 +20,7 @@
             </ng-container>
           </p>
         </div>
-        <p [innerHTML]="descriptions[i]"></p>
+        <p [innerHTML]="baseSkill.levels[0].description"></p>
       </td>
       <th> 
         <p *ngIf="baseSkill.levels[0].requirements.elite == 0">-</p>

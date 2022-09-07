@@ -5,16 +5,13 @@
         Talents
       </th>
       <th>
-        Unlock Req.
+        Elite Req.
       </th>
     </tr>
-    <ng-container *ngFor="let ta of talents">
-      <tr *ngFor="let t of ta; let i = index">
-        <td class="center-aligned" style="font-weight: bold" *ngIf="i == 0">
+    <ng-container >
+      <tr *ngFor="let t of talents; let i = index">
+        <td class="center-aligned" style="font-weight: bold">
           {{t.name}}
-        </td>
-        <td class="center-aligned" *ngIf="i > 0">
-          ^
         </td>
         <td [innerHtml]="t.description">
         </td>
@@ -27,9 +24,11 @@
               <ion-img src="assets/icons/elitePhases/{{t.unlockConditions.elite}}.webp"></ion-img>
             </div>
             
-            <div *ngIf="t.unlockConditions.potential" class="unlock-stat">
+            <!--
+              <div *ngIf="t.unlockConditions.potential" class="unlock-stat">
               <ion-img src="assets/icons/potentials/{{t.unlockConditions.potential-1}}.webp"></ion-img>
             </div>
+            -->
   
             <div *ngIf="t.unlockConditions.level" class="unlock-stat">
               Lv {{t.unlockConditions.level}}

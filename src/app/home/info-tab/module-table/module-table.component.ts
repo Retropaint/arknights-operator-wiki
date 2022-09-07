@@ -16,6 +16,10 @@ export class ModuleTableComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(this.moduleIndex == 0) {
+      return;
+    }
+
     const module = this.operator.modules[this.moduleIndex];
     
     if(module.trait) {

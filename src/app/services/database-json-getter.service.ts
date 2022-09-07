@@ -7,6 +7,7 @@ import { Range } from '../interfaces/range';
 import { Skin } from '../interfaces/skin';
 import { DatabaseJsonParserService } from './database-json-parser.service';
 import { DatabaseService } from './database.service';
+import { ManualJsonParserService } from './manual-json-parser.service';
 import { OperatorTransitionerService } from './operator-transitioner.service';
 
 @Injectable({
@@ -18,7 +19,8 @@ export class DatabaseJsonGetterService {
     private http: HttpClient,
     private transitioner: OperatorTransitionerService,
     private database: DatabaseService,
-    private dbJsonParser: DatabaseJsonParserService
+    private dbJsonParser: DatabaseJsonParserService,
+    private manualParser: ManualJsonParserService
   ) { }
 
   init() {
@@ -203,8 +205,6 @@ export class DatabaseJsonGetterService {
         concatMap(results => {
           this.dbJsonParser.getBaseSkills(results['buffs']);
 
-          console.log(results['buffs'])
-
           Object.keys(results['chars']).forEach(char => {
             this.dbJsonParser.getOperatorBaseSkills(results['chars'][char].charId, results['chars'][char].buffChar)
           })
@@ -241,6 +241,9 @@ export class DatabaseJsonGetterService {
             }
 
           })
+
+          // rather just use this operator loop for manual edits than create an entirely new one
+          this.manualParser.edit(operator);
         })
 
         this.transitioner.transitionSubscription.next();

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { takeLast } from 'rxjs/operators';
 import { Item } from '../interfaces/item';
 import { BaseSkill, EliteUnlockReqs, Module, ModuleMission, Operator, OperatorBaseSkill, Skill, SkillLevel, SkillUnlockReqs, StatBreakpoint, Summon, Talent } from '../interfaces/operator';
 import { Grid } from '../interfaces/range';
 import { DatabaseService } from './database.service';
+import { ManualJsonParserService } from './manual-json-parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,8 @@ import { DatabaseService } from './database.service';
 export class DatabaseJsonParserService {
 
   constructor(
-    private database: DatabaseService
+    private database: DatabaseService,
+    private manualParser: ManualJsonParserService
   ) { }
 
   getStats(operator): StatBreakpoint[] {
@@ -65,11 +68,6 @@ export class DatabaseJsonParserService {
           level: lastMaxLevel,
           items: items
         }
-      }
-
-      // lmao frostleaf talent 
-      if(operator.name == 'Frostleaf' && eliteCount == 2) {
-        elite.rangeId = '3-1';
       }
 
       const newBreakpoint: StatBreakpoint = {
@@ -174,17 +172,7 @@ export class DatabaseJsonParserService {
 
       level.blackboard.forEach(stat => {
         stat = this.replaceKey(stat, 'key', 'name');
-
-        // multiply Exusiai's s3 values since it's bugged (it's been so long it might as well be a feature :okaychamp:)
-        if(operator.name == 'Exusiai' && skill.name == 'Overloading Mode' && stat.name == 'base_attack_time') {
-          stat.value *= 2;
-        }
       })
-
-      // Tuye's skill should instant, not infinite
-      if(skill.name == 'Aqua Loop') {
-        level.duration = 0;
-      }
 
       const newLevel: SkillLevel = {
         duration: level.duration,
@@ -230,6 +218,77 @@ export class DatabaseJsonParserService {
       newTalent.maxLevel = newTalent.descriptions.length;
 
       talents.push(newTalent);
+    })
+
+    // separate elite upgrades
+    let talentIndex = 0;
+    talents.forEach(talent => {
+      let currentElite = -1;
+      let startingEliteIndex = 0;
+      let startingElite2Index = 0;
+      let hasEliteUpgrade: boolean;
+      let hasElite2Upgrade: boolean;
+      talent.unlockConditions.forEach(condition => {
+        if(condition.elite == 1 && condition.level == 55) {
+          hasEliteUpgrade = true;
+          return;
+        }
+
+        // check if there are elite and/or elite 2 upgrades
+        if(currentElite != condition.elite) {
+          if(currentElite == -1) {
+            currentElite = condition.elite;
+          } else if(!hasEliteUpgrade) {
+            currentElite = condition.elite;
+            hasEliteUpgrade = true;
+          } else {
+            hasElite2Upgrade = true;
+            return;
+          }
+        }
+
+        startingElite2Index++;
+        if(!hasEliteUpgrade) {
+          startingEliteIndex++;
+        }
+      })
+
+      if(hasEliteUpgrade) {
+
+        // create new upgraded talent
+
+        // offset prevents elite 2 descriptions from being included
+        let offset = 0;
+        if(hasElite2Upgrade) {
+          offset = startingEliteIndex;
+        }
+
+        let newTalent: Talent = {
+          name: talent.name,
+          descriptions: talent.descriptions.slice(startingEliteIndex, talent.descriptions.length - offset),
+          unlockConditions: talent.unlockConditions.slice(startingEliteIndex, talent.descriptions.length - offset)
+        };
+        if(entry.name == 'Thorns') {
+          console.log(talents)
+        }
+        talents.splice(talentIndex+1, 0, newTalent)
+
+      }
+      if(hasElite2Upgrade) {
+
+        // create new upgraded talent
+        let newTalent: Talent = {
+          name: talent.name,
+          descriptions: talent.descriptions.slice(startingElite2Index, talent.descriptions.length),
+          unlockConditions: talent.unlockConditions.slice(startingElite2Index, talent.descriptions.length)
+        };
+        talents.splice(talentIndex+2, 0, newTalent)
+
+      }
+
+      // original talent should only keep original descriptions
+      talent.descriptions = talent.descriptions.slice(0, startingEliteIndex);
+      talentIndex++;
     })
 
     return talents;
@@ -455,16 +514,7 @@ export class DatabaseJsonParserService {
     const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == operatorId);
     if(op) {
 
-      // treat her training skill separately
-      if(op.name == 'Aurora') {
-        baseSkillJson[1].buffData.push(baseSkillJson[0].buffData[1])
-        baseSkillJson[0].buffData.pop();
-      }
-
       baseSkillJson.forEach(skill => {
-        let newBaseSkill: OperatorBaseSkill = {
-          levels: []
-        };
 
         // even without an actual base skill, they will have a slot but no levels
         if(skill.buffData.length == 0) {
@@ -472,11 +522,14 @@ export class DatabaseJsonParserService {
         }
 
         skill.buffData.forEach(level => {
+          let newBaseSkill: OperatorBaseSkill = {
+            levels: []
+          };
 
           const dbBaseSkill = this.database.baseSkills.find(baseSkill => baseSkill.id == level.buffId);
           newBaseSkill.iconId = dbBaseSkill.iconId;
           newBaseSkill.color = dbBaseSkill.color;
-
+          
           newBaseSkill.levels.push({
             name: dbBaseSkill.name,
             id: dbBaseSkill.id,
@@ -487,8 +540,8 @@ export class DatabaseJsonParserService {
               level: level.cond.level
             }
           })
+          op.baseSkills.push(newBaseSkill);
         })
-        op.baseSkills.push(newBaseSkill);
       })
     }
   }
@@ -505,15 +558,16 @@ export class DatabaseJsonParserService {
   stylizeText(text: string) {
 
     text = text.replace(/<@ba.vdown>/g, '<span class="negative-effect"> ')
+    text = text.replace(/<@cc.vdown>/g, '<span class="negative-effect"> ')
 
     text = text.replace(/<@ba.rem>/g, '<br> <span class="info"> ')
     
-    text = text.replace(/<@ba.talpu>/g, '<span class="positive-effect"> ')
-    text = text.replace(/<@ba.vup>/g, '<span class="positive-effect"> ')
-    text = text.replace(/<@ba.kw>/g, '<span class="positive-effect"> ')
-    text = text.replace(/<@cc.vup>/g, '<span class="positive-effect"> ')
-    text = text.replace(/<@cc.kw>/g, '<span class="positive-effect"> ')
-    text = text.replace(/<@cc.rem>/g, '<span class="positive-effect"> ')
+    text = text.replace(/<@ba.talpu>/g, ' <span class="positive-effect"> ')
+    text = text.replace(/<@ba.vup>/g, ' <span class="positive-effect"> ')
+    text = text.replace(/<@ba.kw>/g, ' <span class="positive-effect"> ')
+    text = text.replace(/<@cc.vup>/g, ' <span class="positive-effect"> ')
+    text = text.replace(/<@cc.kw>/g, ' <span class="positive-effect"> ')
+    text = text.replace(/<@cc.rem>/g, ' <span class="positive-effect"> ')
     
     text = text.replace(/<\$ba.shield>/g, '<span class="special"> ')
     text = text.replace(/<\$ba.buffres>/g, '<span class="special"> ')
@@ -527,6 +581,9 @@ export class DatabaseJsonParserService {
     text = text.replace(/<\$ba.invisible>/g, '<span class="special"> ')
     text = text.replace(/<\$cc.bd_b1>/g, '<span class="special"> ')
     text = text.replace(/<\$cc.bd_a1>/g, '<span class="special"> ')
+    text = text.replace(/<\$cc.g.sui>/g, '<span class="special"> ')
+    text = text.replace(/<\$cc.bd_ash>/g, '<span class="special"> ')
+    text = text.replace(/<\$cc.bd_tachanka>/g, '<span class="special"> ')
 
     const closingSpan = new RegExp('</>', 'g');
     text = text.replace(closingSpan, " </span>")
