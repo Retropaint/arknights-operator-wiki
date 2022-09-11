@@ -1,0 +1,27 @@
+<div class="profile-text-entry-container">
+  <ng-container *ngFor="let entry of operator.profileEntries; let i = index">
+    <table class="table profile-text-entry" *ngIf="i > 2">
+      <tbody>
+        <tr>
+          <th> {{entry.name}} 
+            <span *ngIf="entry.unlockRequirement.type == 2" style="color: #c3c2c2"> ({{entry.unlockRequirement.value}} Trust) </span>
+            <span *ngIf="entry.unlockRequirement.type == 1" style="color: #c3c2c2"> (Elite 2) </span>
+          </th>
+        </tr>
+        <tr>
+          <td [innerHTML]="entry.description"></td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+  <table class="table profile-text-entry" *ngIf="operator.modules.length > 0">
+    <tbody>
+      <tr>
+        <th> {{operator.modules[0].name}} <span style="color: #c3c2c2">(Elite 2, ORIGINAL Module)</span></th>
+      </tr>
+      <tr>
+        <td [innerHTML]="operator.modules[0].description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

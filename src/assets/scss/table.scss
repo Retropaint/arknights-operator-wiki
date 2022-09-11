@@ -7,7 +7,7 @@
 
   > tbody :first-child {
     th {
-      background: #575757;
+      background: var(--tableFirstHeader);
     }
   }
 

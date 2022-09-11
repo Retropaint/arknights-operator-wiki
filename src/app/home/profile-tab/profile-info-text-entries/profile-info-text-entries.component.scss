@@ -1,0 +1,15 @@
+.profile-text-entry-container {
+  display: flex;
+  flex-direction: column;
+  margin-right: 25px;
+  margin-left: 25px;
+  margin-bottom: 100px;
+}
+
+.profile-text-entry {
+  border: none;
+
+  th, td {
+    border: none;
+  }
+}

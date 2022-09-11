@@ -30,6 +30,8 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
 import { CheckboxComponent } from '../shared/checkbox/checkbox.component';
 import { BaseSkillTableComponent } from './info-tab/base-skill-table/base-skill-table.component';
+import { ProfileInfoTableComponent } from './profile-tab/profile-info-table/profile-info-table.component';
+import { ProfileInfoTextEntriesComponent } from './profile-tab/profile-info-text-entries/profile-info-text-entries.component';
 
 @NgModule({
   imports: [
@@ -64,7 +66,9 @@ import { BaseSkillTableComponent } from './info-tab/base-skill-table/base-skill-
     OperatorBrieferComponent,
     DialogSettingsComponent,
     CheckboxComponent,
-    BaseSkillTableComponent
+    BaseSkillTableComponent,
+    ProfileInfoTableComponent,
+    ProfileInfoTextEntriesComponent
   ]
 })
 export class HomePageModule {}

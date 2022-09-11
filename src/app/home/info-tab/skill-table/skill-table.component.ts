@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Doctor } from 'src/app/interfaces/doctor';
-import { FinalizedSkill, Operator, Skill } from 'src/app/interfaces/operator';
+import { FinalizedSkill } from 'src/app/interfaces/finalized-skill';
+import { Operator, Skill } from 'src/app/interfaces/operator';
 import { DoctorService } from 'src/app/services/doctor.service';
 
 @Component({
@@ -319,7 +320,9 @@ export class SkillTableComponent implements OnInit {
       level: number;
     }[] = [];
 
+    // prevents repetition
     let lastRange: string = '';
+    
     let maxLevel = (this.operator.rarity > 3) ? 10: 7;
     for(let i = firstSkillLevel; i < Math.min(lastSkillLevel+1, maxLevel); i++) {
       if(skill.levels[i].range != null && skill.levels[i].range != lastRange) {
@@ -338,7 +341,7 @@ export class SkillTableComponent implements OnInit {
     let previousValue: number = -999;
     let stats: {
       value: number;
-      level: string;
+      level: number;
     }[] = [];
 
     if(firstSkillLevel == lastSkillLevel) {

@@ -23,6 +23,7 @@ export interface Operator {
   skins: Skin[];
   summons?: Summon[];
   baseSkills?: OperatorBaseSkill[];
+  profileEntries: ProfileEntry[];
   voiceActors: {
     CN?: string;
     JP?: string;
@@ -149,14 +150,12 @@ export interface OperatorBaseSkill {
   }[];
 }
 
-export interface FinalizedSkill {
-  name: string,
-  description: string,
-  recoveryType: string,
-  eliteUnlockReq: number,
-  activationType: string,
-  spCosts: {value: number, level: string}[],
-  initialSp: {value: number, level: string}[],
-  durations: {value: number, level: string}[],
-  ranges: {id: string, level: number}[]
+export interface ProfileEntry {
+  name: string;
+  description: string;
+  unlockRequirement: {
+    type: number;
+    value: number;
+  }
 }
+

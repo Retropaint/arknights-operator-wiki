@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { concatMap } from 'rxjs/operators';
 import { Item } from '../interfaces/item';
-import { Operator, Skill } from '../interfaces/operator';
+import { ProfileEntry, Operator, Skill } from '../interfaces/operator';
 import { Range } from '../interfaces/range';
 import { Skin } from '../interfaces/skin';
 import { DatabaseJsonParserService } from './database-json-parser.service';
@@ -101,16 +101,23 @@ export class DatabaseJsonGetterService {
                 skills: skills,
                 statBreakpoints: this.dbJsonParser.getStats(op),
                 skillLevelUnlockReqs: this.dbJsonParser.getSkillLevelUnlockReqs(op),
+                summons: this.dbJsonParser.getSummons(results, op.tokenKey),
                 skins: [],
                 voiceActors: {},
                 modules: [],
-                summons: this.dbJsonParser.getSummons(results, op.tokenKey),
-                baseSkills: []
+                baseSkills: [],
+                profileEntries: []
               }
 
               this.database.operators.push(newOperator);
             }
           })
+
+          const opIds = [];
+          this.database.operators.forEach(operator => {
+            opIds.push(operator.id.replace('p_', ''));
+          })
+          console.log(opIds)
           
           return this.http.get('assets/json/range_table.json');
         }),
@@ -220,6 +227,33 @@ export class DatabaseJsonGetterService {
                 module = this.dbJsonParser.getModuleLevelStats(results[equipId], module);
               }
             })
+          })
+
+          return this.http.get('assets/json/handbook_info_table.json'); 
+        }),
+        concatMap(results => {
+          console.log(results)
+
+          Object.keys(results['handbookDict']).forEach(charId => {
+            const charEntry = results['handbookDict'][charId]
+            const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == charId);
+            if(!op) {
+              return;
+            }
+
+            charEntry.storyTextAudio.forEach(archive => {
+              const newEntry: ProfileEntry = {
+                name: archive.storyTitle,
+                description: archive.stories[0].storyText,
+                unlockRequirement: {
+                  type: archive.stories[0].unLockType,
+                  value: archive.stories[0].unLockParam
+                }
+              }
+
+              op.profileEntries.push(newEntry)
+            })
+            
           })
 
           return this.http.get('assets/json/skill_table.json'); 

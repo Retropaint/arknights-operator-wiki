@@ -11,6 +11,7 @@ export class ManualJsonParserService {
   edit(op: Operator) {
     this.skills(op);
     this.ranges(op);
+    this.talents(op);
   }
 
   skills(op: Operator) {
@@ -30,6 +31,17 @@ export class ManualJsonParserService {
           level.stats.find(stat => stat.name == 'base_attack_time').value *= 2;
         })
     }
+  }
+
+  talents(op: Operator) {
+
+    // show eyja's 2nd talent random SP range
+    if(op.name == 'Eyjafjalla') {
+      console.log(op.talents)
+      const pot = '<span class="positive-effect"> (+(3-4)) </span>'
+      op.talents[2].descriptions[1] = op.talents[2].descriptions[1].replace('Points', 'Points (10-20) ' + pot);
+    }
+
   }
 
   ranges(op: Operator) {

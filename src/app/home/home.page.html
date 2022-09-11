@@ -15,8 +15,10 @@
   <p *ngIf="operator" class="op-name">{{operator.name}}</p>
 
   <div class="tabs">
-    <p (click)="currentTab = 'info'" [ngClass]="{'selected' : currentTab == 'info'}">Info</p>
+    <p (click)="currentTab = 'info'" [ngClass]="{'selected' : currentTab == 'info'}">Gameplay Info</p>
     <p (click)="currentTab = 'gallery'" [ngClass]="{'selected' : currentTab == 'gallery'}">Gallery</p>
+    <p (click)="currentTab = 'profile'" [ngClass]="{'selected' : currentTab == 'profile'}">Profile</p>
+    <p (click)="currentTab = 'dialogue'" [ngClass]="{'selected' : currentTab == 'dialogue'}">Dialogue</p>
   </div>
   
   <div class="dead-zone container" *ngIf="operator && currentTab == 'info'">
@@ -56,7 +58,10 @@
     </div>
     
     <div class="right-container" *ngIf="operator">
+
+      <!--
       <p class="close-gallery" (click)="isGalleryOpen = !isGalleryOpen">{{isGalleryOpen ? 'Close' : 'Open'}} mini-gallery</p>
+      -->
 
       <app-operator-gallery
         *ngIf="isGalleryOpen"
@@ -95,4 +100,27 @@
     ></app-operator-gallery>
   </div>
 
+  <div *ngIf="operator && currentTab == 'profile'" >
+    <div class="dead-zone container profile">
+      <app-profile-info-table
+        [operator]="operator"
+        entry="basic"
+        style="margin-right: 5px; margin-bottom: 15px"
+      ></app-profile-info-table>
+
+      <app-profile-info-table
+        [operator]="operator"
+        entry="physical"
+        style="margin-left: 5px; margin-right: 5px; margin-bottom: 15px"
+      ></app-profile-info-table>
+    </div>
+
+    <app-profile-info-text-entries
+      [operator]="operator"
+    ></app-profile-info-text-entries>
+  </div>
+
+  <div *ngIf="operator && currentTab == 'dialogue'">
+
+  </div>
 </ion-content>

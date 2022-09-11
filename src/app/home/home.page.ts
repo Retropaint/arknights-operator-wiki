@@ -18,7 +18,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   operator: Operator;
   isGalleryOpen: boolean = false;
-  currentTab: 'info' | 'gallery' = 'info';
+  currentTab: string = 'info';
   isBlurry: boolean = false;
 
   // prevents route subscription from triggering when site is newly loaded
@@ -80,6 +80,7 @@ export class HomePage implements OnInit, OnDestroy {
         }
 
       })
+
   }
 
   refresh(newOperator: string) {

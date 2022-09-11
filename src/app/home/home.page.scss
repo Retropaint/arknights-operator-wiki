@@ -34,7 +34,12 @@ ion-header {
 
   &.container {
     display: flex;
-    margin-bottom: 100px
+    margin-bottom: 100px;
+
+    &.profile {
+      margin-bottom: 0px;
+      justify-content: center;
+    }
   }
 }
 
@@ -93,3 +98,4 @@ ion-content {
 .blur {
   filter: blur(7px);
 }
+

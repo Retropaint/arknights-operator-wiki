@@ -50,6 +50,10 @@ export class SearchBoxComponent implements OnInit {
       newResults.push('Ch\'en the Holungday')
     }
 
+    // prioritize shorter names, to allow original ops to appear before alters
+    // this helps the original ops to be selected via enter key
+    newResults.sort((a, b) => a.length > b.length ? 1 : -1)
+
     this.results = newResults;
   }
 

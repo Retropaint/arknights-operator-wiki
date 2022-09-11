@@ -195,6 +195,10 @@ export class DatabaseJsonParserService {
 
     let talents: Talent[] = [];
 
+    if(entry.name == 'Eyjafjalla') {
+      console.log(entry.talents)
+    }
+
     entry.talents.forEach(talent => {
 
       let newTalent: Talent = {
@@ -266,6 +270,8 @@ export class DatabaseJsonParserService {
         let newTalent: Talent = {
           name: talent.name,
           descriptions: talent.descriptions.slice(startingEliteIndex, talent.descriptions.length - offset),
+
+          // since it gets the exact unlock conditions, this parsing is compatible with elite upgrades from e0 to e2 (eg Amiya)
           unlockConditions: talent.unlockConditions.slice(startingEliteIndex, talent.descriptions.length - offset)
         };
         if(entry.name == 'Thorns') {
