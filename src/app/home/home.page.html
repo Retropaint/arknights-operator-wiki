@@ -121,6 +121,8 @@
   </div>
 
   <div *ngIf="operator && currentTab == 'dialogue'">
-
+    <app-dialogue-table
+      [operator]="operator"
+    ></app-dialogue-table>
   </div>
 </ion-content>

@@ -1,0 +1,18 @@
+<div class="container">
+  <ng-container *ngIf="audio != null">
+    <ion-icon class="playPause" name="play-outline" (click)="play()" *ngIf="audio.nativeElement.paused"></ion-icon>
+    <ion-icon class="playPause" name="pause-outline" (click)="pause()" *ngIf="!audio.nativeElement.paused"></ion-icon>
+    <p> {{timer}} </p>
+    <input 
+      #slider
+      type="range" 
+      [max]="audio.nativeElement.duration" 
+      [value]="audio.nativeElement.currentTime" 
+      [(ngModel)]="audio.nativeElement.currentTime" 
+      (ngModelChange)="getTime()"
+      step="0.01"
+      class="slider"
+    />
+  </ng-container>
+  <audio *ngIf="src != null" #audio> <source [src]="src"> </audio>
+</div>

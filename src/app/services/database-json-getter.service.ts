@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { concatMap } from 'rxjs/operators';
 import { Item } from '../interfaces/item';
-import { ProfileEntry, Operator, Skill } from '../interfaces/operator';
+import { ProfileEntry, Operator, Skill, Dialogue } from '../interfaces/operator';
 import { Range } from '../interfaces/range';
 import { Skin } from '../interfaces/skin';
 import { DatabaseJsonParserService } from './database-json-parser.service';
@@ -106,7 +106,8 @@ export class DatabaseJsonGetterService {
                 voiceActors: {},
                 modules: [],
                 baseSkills: [],
-                profileEntries: []
+                profileEntries: [],
+                dialogues: []
               }
 
               this.database.operators.push(newOperator);
@@ -133,8 +134,22 @@ export class DatabaseJsonGetterService {
           return this.http.get('assets/json/charword_table.json'); 
         }),
         concatMap((jsonCharwords: any) => {
-          Object.keys(jsonCharwords.voiceLangDict).forEach(char => {
 
+          Object.keys(jsonCharwords.charWords).forEach(char => {
+            const voiceEntry = jsonCharwords.charWords[char]
+
+            const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == char.slice(0, char.length - 7))
+            if(op != null) {
+              const newDialogue: Dialogue = {
+                name: voiceEntry.voiceTitle,
+                text: voiceEntry.voiceText,
+                fileIndex: char.slice(char.length-3, char.length)
+              }
+              op.dialogues.push(newDialogue)
+            }
+          })
+
+          Object.keys(jsonCharwords.voiceLangDict).forEach(char => {
             const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == char)
             if(op != null) {
               const charDict = jsonCharwords.voiceLangDict[char].dict;

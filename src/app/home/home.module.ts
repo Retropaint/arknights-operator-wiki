@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +32,8 @@ import { CheckboxComponent } from '../shared/checkbox/checkbox.component';
 import { BaseSkillTableComponent } from './info-tab/base-skill-table/base-skill-table.component';
 import { ProfileInfoTableComponent } from './profile-tab/profile-info-table/profile-info-table.component';
 import { ProfileInfoTextEntriesComponent } from './profile-tab/profile-info-text-entries/profile-info-text-entries.component';
+import { DialogueTableComponent } from './dialogue-tab/dialogue-table/dialogue-table.component';
+import { AudioPlayerComponent } from '../audio-player/audio-player.component';
 
 @NgModule({
   imports: [
@@ -68,7 +70,10 @@ import { ProfileInfoTextEntriesComponent } from './profile-tab/profile-info-text
     CheckboxComponent,
     BaseSkillTableComponent,
     ProfileInfoTableComponent,
-    ProfileInfoTextEntriesComponent
-  ]
+    ProfileInfoTextEntriesComponent,
+    DialogueTableComponent,
+    AudioPlayerComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class HomePageModule {}

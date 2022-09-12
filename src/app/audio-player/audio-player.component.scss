@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  align-items: center;
+  background: #1d1d1d;
+  padding: 5px;
+  width: 260px;
+  height: 35px;
+
+  p {
+    margin-left: 10px;
+    margin-right: 10px;
+    white-space: nowrap;
+  }
+}
+
+.playPause {
+  cursor: pointer;
+  font-size: 25px;
+}
+
+.slider {
+  background: black;
+}
+
+.slider::-webkit-slider-thumb {
+  background: white;
+}

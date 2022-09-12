@@ -24,6 +24,7 @@ export interface Operator {
   summons?: Summon[];
   baseSkills?: OperatorBaseSkill[];
   profileEntries: ProfileEntry[];
+  dialogues: Dialogue[];
   voiceActors: {
     CN?: string;
     JP?: string;
@@ -157,5 +158,11 @@ export interface ProfileEntry {
     type: number;
     value: number;
   }
+}
+
+export interface Dialogue {
+  name: string;
+  text: string;
+  fileIndex: string; // eg 002, 042, etc
 }
 
