@@ -3,28 +3,32 @@
     <tbody>
       <tr *ngFor="let dialogue of operator.dialogues">
         <th style="background: var(--tableFirstHeader)"> {{dialogue.name}} </th>
-        <td style="margin-bottom: 10px"> {{dialogue.text}} <br><br>
+        <td style="margin-bottom: 10px"> {{dialogue.text}} 
+          <ng-container *ngIf="operator.voiceActors['CN'] || operator.voiceActors['JP'] || operator.voiceActors['EN'] || operator.voiceActors['KR']">
+            <br><br>
+          </ng-container>
           <div style="display: flex">
+            
             <div class="audio" *ngIf="operator.voiceActors['CN'] && loadedLanguages[0]">
-              <p style="margin-right: 10px">CN: </p>
+              <p style="margin-right: 2px">CN: </p>
               <app-audio-player
                 src="https://github.com/Aceship/Arknight-voices/blob/main/voice_cn/{{charId}}/CN_{{dialogue.fileIndex}}.mp3?raw=true"
               ></app-audio-player>
             </div>
             <div class="audio" *ngIf="operator.voiceActors['JP'] && loadedLanguages[1]">
-              <p style="margin-right: 10px">JP: </p>
+              <p style="margin-right: 2px">JP: </p>
               <app-audio-player
                 src="https://github.com/Aceship/Arknight-voices/blob/main/voice/{{charId}}/CN_{{dialogue.fileIndex}}.mp3?raw=true"
               ></app-audio-player>
             </div>
             <div class="audio" *ngIf="operator.voiceActors['EN'] && loadedLanguages[2]">
-              <p style="margin-right: 10px">EN: </p>
+              <p style="margin-right: 2px">EN: </p>
               <app-audio-player
                 src="https://github.com/Aceship/Arknight-voices/blob/main/voice_en/{{charId}}/CN_{{dialogue.fileIndex}}.mp3?raw=true"
               ></app-audio-player>
             </div>
             <div class="audio" *ngIf="operator.voiceActors['KR'] && loadedLanguages[3]">
-              <p style="margin-right: 10px">KR: </p>
+              <p style="margin-right: 2px">KR: </p>
               <app-audio-player
                 src="https://github.com/Aceship/Arknight-voices/blob/main/voice_kr/{{charId}}/CN_{{dialogue.fileIndex}}.mp3?raw=true"
               ></app-audio-player>

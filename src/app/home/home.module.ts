@@ -34,6 +34,7 @@ import { ProfileInfoTableComponent } from './profile-tab/profile-info-table/prof
 import { ProfileInfoTextEntriesComponent } from './profile-tab/profile-info-text-entries/profile-info-text-entries.component';
 import { DialogueTableComponent } from './dialogue-tab/dialogue-table/dialogue-table.component';
 import { AudioPlayerComponent } from '../audio-player/audio-player.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { AudioPlayerComponent } from '../audio-player/audio-player.component';
     AutoCompleteModule,
     TabViewModule,
     NgxImageZoomModule,
+    TooltipModule
   ],
   declarations: [
     HomePage, 

@@ -1,6 +1,6 @@
 <ion-header class="header" [ngClass]="{'blur' : isBlurry}">
   <div>
-    <h1>Another Arknights Wiki</h1>
+    <h1>Retro's Arknights Wiki</h1>
     <app-search-box (homePageReset)="refresh($event)"></app-search-box>
   </div>
   <ion-icon name="settings-outline" class="settings-button" (click)="openSettingsModal()"></ion-icon>
@@ -21,9 +21,9 @@
     <p (click)="currentTab = 'dialogue'" [ngClass]="{'selected' : currentTab == 'dialogue'}">Dialogue</p>
   </div>
   
-  <div class="dead-zone container" *ngIf="operator && currentTab == 'info'">
+  <div class="dead-zone container" *ngIf="operator" [ngClass]="{'not-selected-tab' : currentTab != 'info'}">
 
-    <div class="left-container">
+    <div class="left-container" [ngClass]="{'no-skills' : operator.skills.length == 0}">
       
       <app-operator-briefer
         [operator]="operator"
@@ -87,20 +87,18 @@
       <app-skill-level-unlock-reqs-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
         [operator]="operator"
       ></app-skill-level-unlock-reqs-table>
-
-      <p style="text-align: center" *ngIf="operator.rarity < 3 || operator.name.includes('Reserve')">Skill issue</p>
     </div>
 
   </div>
 
-  <div *ngIf="operator && currentTab == 'gallery'">
+  <div *ngIf="operator" [ngClass]="{'not-selected-tab' : currentTab != 'gallery'}">
     <app-operator-gallery
       [isTab]="true"
       [operator]="operator"
     ></app-operator-gallery>
   </div>
 
-  <div *ngIf="operator && currentTab == 'profile'" >
+  <div *ngIf="operator" [ngClass]="{'not-selected-tab' : currentTab != 'profile'}" >
     <div class="dead-zone container profile">
       <app-profile-info-table
         [operator]="operator"
@@ -120,9 +118,11 @@
     ></app-profile-info-text-entries>
   </div>
 
-  <div *ngIf="operator && currentTab == 'dialogue'">
+  <div *ngIf="operator" [ngClass]="{'not-selected-tab' : currentTab != 'dialogue'}">
     <app-dialogue-table
       [operator]="operator"
     ></app-dialogue-table>
   </div>
+  
 </ion-content>
+

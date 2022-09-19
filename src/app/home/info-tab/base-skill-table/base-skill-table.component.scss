@@ -6,16 +6,24 @@
 
 .name-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+
+  .skill-icon {
+    width: 25px;
+    margin-bottom: 10px;
+  }
 
   .elite-img {
     width: 20px;
     display: inline-block;
-    transform: translateY(3px)
+    transform: translateY(3px);
   }
 }
 
 .name {
-  margin-bottom: 15px;
   white-space: nowrap;
   display: flex;
   justify-content: center;
@@ -24,7 +32,5 @@
   padding: 5px;
 }
 
-.skill-icon {
-  width: 25px;
-  margin-right: 5px;
-}
+
+

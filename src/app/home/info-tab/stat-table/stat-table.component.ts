@@ -32,12 +32,16 @@ export class StatTableComponent implements OnInit {
   // after changing breakpoints it takes a split second for visualBreakpoints to update, so this keeps previous data until getBreakpoints() is done to prevent jittering
   displayedBreakpoints: any;
 
+  includeTrust: boolean = true;
+
+  includePotentials: boolean = true;
+
   constructor(
     private doctorService: DoctorService
   ) { }
 
   ngOnInit() {
-    this.displayedBreakpoints = JSON.parse(JSON.stringify(this.visualBreakpoints));
+    this.displayedBreakpoints = this.visualBreakpoints.slice();
     this.visualBreakpoints = [];
     this.maxCustomLevel = 0;
 
@@ -56,8 +60,20 @@ export class StatTableComponent implements OnInit {
     })
   }
 
+  reset() {
+    this.displayedBreakpoints = this.visualBreakpoints.slice();
+    this.visualBreakpoints = [];
+
+    setTimeout(() => {
+      this.getBreakpoints();
+      this.parseCustomLevel();
+      this.displayedBreakpoints = this.visualBreakpoints;
+    })
+  }
+
   getBreakpoints() {
     this.doctor.levelBreakpoints.forEach(breakpoint => {
+
       if(this.operator.statBreakpoints[breakpoint.elite] == null) {
 
         // proceed if at least 1 breakpoint is valid
@@ -67,7 +83,7 @@ export class StatTableComponent implements OnInit {
           const opElite = this.operator.statBreakpoints.length - 1;
           const newBreakpoint = {
             elite: opElite,
-            level: Math.min(breakpoint.level, this.operator.statBreakpoints[opElite].maxLevel),
+            level: this.operator.statBreakpoints[opElite].maxLevel,
             stats: this.calculateStats(opElite, breakpoint.level)
           }
           this.visualBreakpoints.push(newBreakpoint)
@@ -95,12 +111,12 @@ export class StatTableComponent implements OnInit {
 
     // immediately get min and max stats if that's the level
     if(level == 0) {
-      return op.minStats;
+      return this.addTrustAndPotential(op.minStats);
     } else if(level == op.maxLevel) {
-      return op.maxStats;
+      return this.addTrustAndPotential(op.maxStats);
     }
 
-    let stats: any = [];
+    let stats: any = {};
     
     Object.keys(this.operator.statBreakpoints[0].minStats)
       .forEach(stat => {
@@ -112,8 +128,35 @@ export class StatTableComponent implements OnInit {
         }
     })
 
-    return stats;
+    return this.addTrustAndPotential(stats);
     
+  }
+
+  addTrustAndPotential(paramStats: any) {
+
+    const stats = JSON.parse(JSON.stringify(paramStats));
+
+    if(this.includeTrust) {
+      Object.keys(this.operator.trustStats).forEach(stat => {
+        stats[stat] += this.operator.trustStats[stat];
+      })
+    }
+
+    if(this.includePotentials) {
+      this.operator.potentials.forEach(rank => {
+        const split = rank.split(' ').filter(word => word != '');
+
+        for(let i = 0; i < split.length; i++) {
+          const word = split[i];
+          const nextWord = split[i+1];
+          if(nextWord != null) {
+            stats[word.toLowerCase()] += parseInt(nextWord)
+          }
+        }
+      })
+    }
+
+    return stats;
   }
 
   parseCustomLevel() {

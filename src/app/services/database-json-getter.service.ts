@@ -82,7 +82,9 @@ export class DatabaseJsonGetterService {
                 break; case 'Stormeye':
                   op.potentialItemId = 'char_511_asnipe';
                 break; case 'Conviction':
-                  op.potentialItemId = "p_char_159_peacok"
+                  op.potentialItemId = 'p_char_159_peacok';
+                break; case 'Nine-Colored Deer':
+                  op.potentialItemId = 'p_char_4019_ncdeer'
               }
 
               const newOperator: Operator = {
@@ -94,6 +96,7 @@ export class DatabaseJsonGetterService {
                 trait: this.dbJsonParser.stylizeText(op.description).replace('{heal_scale:0%}', '80%'),
                 class: this.dbJsonParser.getClass(op),
                 branch: this.dbJsonParser.getBranch(op),
+                originalBranch: op.subProfessionId,
                 talents: this.dbJsonParser.getTalents(op),
                 recruitTags: op.tagList,
                 obtainMethods: op.itemObtainApproach,
@@ -102,12 +105,17 @@ export class DatabaseJsonGetterService {
                 statBreakpoints: this.dbJsonParser.getStats(op),
                 skillLevelUnlockReqs: this.dbJsonParser.getSkillLevelUnlockReqs(op),
                 summons: this.dbJsonParser.getSummons(results, op.tokenKey),
+                trustStats: this.dbJsonParser.getTrustStats(op),
                 skins: [],
                 voiceActors: {},
                 modules: [],
                 baseSkills: [],
                 profileEntries: [],
                 dialogues: []
+              }
+
+              if(newOperator.branch == 'Pusher' || newOperator.branch == 'Hookmaster') {
+                newOperator.position = 'Melee & Ranged'
               }
 
               this.database.operators.push(newOperator);
@@ -118,7 +126,6 @@ export class DatabaseJsonGetterService {
           this.database.operators.forEach(operator => {
             opIds.push(operator.id.replace('p_', ''));
           })
-          console.log(opIds)
           
           return this.http.get('assets/json/range_table.json');
         }),
@@ -247,7 +254,6 @@ export class DatabaseJsonGetterService {
           return this.http.get('assets/json/handbook_info_table.json'); 
         }),
         concatMap(results => {
-          console.log(results)
 
           Object.keys(results['handbookDict']).forEach(charId => {
             const charEntry = results['handbookDict'][charId]
@@ -295,6 +301,7 @@ export class DatabaseJsonGetterService {
           this.manualParser.edit(operator);
         })
 
+        
         this.transitioner.transitionSubscription.next();
       })
   }

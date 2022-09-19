@@ -1,4 +1,4 @@
-import { Component, Input, OnInit  } from '@angular/core';
+import { Component, Input, OnInit, ViewChildren  } from '@angular/core';
 import { Operator, Talent } from 'src/app/interfaces/operator';
 import { DialogService } from 'primeng/dynamicdialog';
 
@@ -16,6 +16,8 @@ export class TalentTableComponent implements OnInit {
   talents: any = [];
 
   condenseElites: boolean = true;
+
+  @ViewChildren('description') descs: any;
   
   constructor(
     private dialogService: DialogService
@@ -24,12 +26,60 @@ export class TalentTableComponent implements OnInit {
   ngOnInit() {
     this.operator.talents.forEach(talent => {
 
-      this.talents.push(this.oldParseTalent(talent));
+      const name = this.operator.name;
+      if(name == 'Castle-3' || name == 'THRM-EX') {
+        this.talents.push(this.parseRobotTalent(talent));
+      } else {
+        this.talents.push(this.parseTalent(talent))
+      }
 
+    })
+
+    setTimeout(() => {
+      for(let i = 0; i < this.operator.talents.length; i++) {
+        const desc = this.descs._results[i];
+        desc.nativeElement.innerHTML = this.talents[i].description;
+      }
     })
   }
 
-  oldParseTalent(talent: Talent) {
+  parseRobotTalent(talent: Talent) {
+    let differences = [];
+    let firstDescSplit: string[] = null;
+    let finalSplit: string[] = null;
+
+    talent.descriptions.forEach(desc => {
+      const split = desc.split(' ');
+      if(!firstDescSplit) {
+        firstDescSplit = split.slice();
+        finalSplit = split.slice();
+      } else {
+        for(let i = 0; i < split.length; i++) {
+          if(firstDescSplit[i] != split[i]) {
+            differences.push(split[i]);
+
+            finalSplit[i] += '<span class="positive-effect">  (' + split[i] + ') </span>';
+          }
+        }
+      }
+    })
+
+    let result = '';
+    finalSplit.forEach(word => {
+      result += word + ' ';
+    })
+    
+    const newTalent = {
+      description: result,
+      unlockConditions: this.getRelevantUnlockConditions(talent.unlockConditions[0]),
+      level: 0,
+      name: talent.name
+    }
+
+    return newTalent;
+  }
+
+  parseTalent(talent: Talent) {
     // if no talent, just return normal description
     if(!talent.descriptions[1]) {
       const newTalent = {

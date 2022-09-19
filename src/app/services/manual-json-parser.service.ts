@@ -37,7 +37,6 @@ export class ManualJsonParserService {
 
     // show eyja's 2nd talent random SP range
     if(op.name == 'Eyjafjalla') {
-      console.log(op.talents)
       const pot = '<span class="positive-effect"> (+(3-4)) </span>'
       op.talents[2].descriptions[1] = op.talents[2].descriptions[1].replace('Points', 'Points (10-20) ' + pot);
     }

@@ -4,7 +4,10 @@
     <tbody>
       <tr>
         <th>Class</th>
-        <td>{{operator.class}}</td>
+        <td>
+          {{operator.class}}
+          <ion-img class="class-img" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/classes/class_{{operator.class.toLowerCase()}}.png"></ion-img>
+        </td>
       </tr>
       <tr>
         <th>Position</th>
@@ -12,11 +15,13 @@
       </tr>
       <tr>
         <th>Rarity</th>
-        <td>{{operator.rarity}}</td>
+        <td>
+          {{operator.rarity}}
+        <ion-img class="rarity-stars" src="assets/icons/rarityStars/{{operator.rarity}}.png"></ion-img>
+        </td>
       </tr>
     </tbody>
   </div>
-  
   
   <div class="right-side">
     <div class="range-container">
@@ -35,7 +40,13 @@
 </table>
 <table class="table">
   <tbody>
-      <th style="width: 20%">{{operator.branch}}</th>
+    <tr>
+      <th class="branch-header {{operator.originalBranch}}">
+        {{operator.branch}}
+        <ion-img class="class-img branch {{operator.originalBranch}}" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/ui/subclass/sub_{{operator.originalBranch}}_icon.png"></ion-img>
+        <ion-img class="class-img invisible {{operator.originalBranch}}" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/ui/subclass/sub_{{operator.originalBranch}}_icon.png"></ion-img>
+      </th>
       <td class="trait-description" [innerHTML]="operator.trait"></td>
+    </tr>
   </tbody>
 </table>

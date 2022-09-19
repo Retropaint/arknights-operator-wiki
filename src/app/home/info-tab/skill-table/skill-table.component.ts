@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChildren } from '@angular/core';
 import { Doctor } from 'src/app/interfaces/doctor';
 import { FinalizedSkill } from 'src/app/interfaces/finalized-skill';
 import { Operator, Skill } from 'src/app/interfaces/operator';
@@ -41,6 +41,8 @@ export class SkillTableComponent implements OnInit {
     value: number
   }[] = [];
 
+  @ViewChildren('description') descs: any;
+
   constructor(
     private doctorService: DoctorService
   ) { }
@@ -70,6 +72,7 @@ export class SkillTableComponent implements OnInit {
       this.previousStatValues = [];
 
       let newSkill: FinalizedSkill = {
+        id: skill.id,
         name: skill.name,
         description: skill.description,
         recoveryType: skill.spType,
@@ -100,11 +103,18 @@ export class SkillTableComponent implements OnInit {
     })
 
     this.manualEdits();
+
+    setTimeout(() => {
+      for(let i = 0; i < this.descs._results.length; i++) {
+        const desc = this.descs._results[i];
+        desc.nativeElement.innerHTML = this.skills[i].description;
+      }
+    })
     
   }
 
   initialParse(skill: Skill, description: string, level: number) {
-    
+
     skill.levels[level].stats.forEach(stat => {
 
       // behold, all stat value variations
@@ -227,11 +237,14 @@ export class SkillTableComponent implements OnInit {
   // since some stat names can have overlapping words, use this function instead of string.replace()
   replaceWholeWord(string: string, toCheck: string, replacement: string, isFinal: boolean = false) {
     const split = string.split(/[\{\} ]/);
-    const index = split.findIndex(word => word == toCheck);
-    if(index != -1) {
-      split[index] = replacement;
 
+    let index = split.findIndex(word => word == toCheck);
+    // use while-loop to replace all instances of checked word
+    while(index != -1) {
+      split[index] = replacement;
+      index = split.findIndex(word => word == toCheck);
     }
+
     let result = '';
     split.forEach(word => {
       result += word + ' ';
@@ -425,8 +438,13 @@ export class SkillTableComponent implements OnInit {
 
     // remove SilverAsh's <br> tag on s2
     if(this.operator.name == 'SilverAsh') {
-      console.log('w')
       this.skills[1].description = this.skills[1].description.replace('<br>', '');
+    }
+
+    // remove Chen's <br> tags on s2
+    if(this.operator.name == 'Ch\'en') {
+      const br = new RegExp('<br>', 'g');
+      this.skills[1].description = this.skills[1].description.replace(br, '');
     }
 
   }

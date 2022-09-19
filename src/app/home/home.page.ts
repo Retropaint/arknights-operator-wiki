@@ -1,9 +1,11 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ChildActivationEnd, NavigationEnd, Router, RouterEvent, Scroll } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { Operator } from '../interfaces/operator';
 import { DatabaseService } from '../services/database.service';
+import { OperatorAvatarService } from '../services/operator-avatar.service';
 import { OperatorTransitionerService } from '../services/operator-transitioner.service'
 import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
 import { StatTableComponent } from './info-tab/stat-table/stat-table.component';
@@ -20,6 +22,7 @@ export class HomePage implements OnInit, OnDestroy {
   isGalleryOpen: boolean = false;
   currentTab: string = 'info';
   isBlurry: boolean = false;
+  favIcon!: HTMLLinkElement;
 
   // prevents route subscription from triggering when site is newly loaded
   isFirstLoad: boolean = false;
@@ -34,7 +37,9 @@ export class HomePage implements OnInit, OnDestroy {
     private router: Router,
     private transitioner: OperatorTransitionerService,
     private dialogService: DialogService,
-    private database: DatabaseService
+    private database: DatabaseService,
+    private title: Title,
+    private opAvatarService: OperatorAvatarService
   ) {}
 
   ngOnInit(): void {
@@ -90,7 +95,9 @@ export class HomePage implements OnInit, OnDestroy {
     setTimeout(() => {
       const operatorIndex = this.database.operators.findIndex(operator => encodeURIComponent(operator.name.toLowerCase()) == newOperator.toLowerCase())
       this.operator = this.database.operators[operatorIndex];
-      console.log(this.operator)
+      //console.log(this.operator)
+      this.title.setTitle(this.operator.name + ' | Retro\'s Arknights Wiki');
+      this.changeFavicon();
     })
   }
 
@@ -101,6 +108,11 @@ export class HomePage implements OnInit, OnDestroy {
       transitionOptions: '0ms',
       maskStyleClass: 'modal-background',
     })
+  }
+
+  changeFavicon() {
+    this.favIcon = <HTMLLinkElement>document.getElementById('appIcon');
+    this.favIcon.href = 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.opAvatarService.getAvatar(this.operator) + '.png';
   }
 
   ngOnDestroy() {

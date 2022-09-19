@@ -7,6 +7,7 @@
 }
 
 .special {
+  cursor: help;
   text-decoration: underline;
   display: inline-block; // prevents underline under whitespaces
 
@@ -27,6 +28,25 @@
     color: #f6bf00;
     display: inline-block;
   }
+}
+
+.special:after {
+  content: attr(data-tip);
+  position: absolute;
+  margin-left: 15px;
+  white-space: pre-wrap;
+  background: black;
+  padding: 5px;
+  border: 1px solid #eee;
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+  z-index: 99;
+  box-shadow: 0px 0px 10px 5px rgb(0 0 0);
+}
+
+.special:hover:after {
+  opacity: 1;
 }
 
 .info {

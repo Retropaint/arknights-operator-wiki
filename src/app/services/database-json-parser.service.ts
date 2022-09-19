@@ -195,10 +195,6 @@ export class DatabaseJsonParserService {
 
     let talents: Talent[] = [];
 
-    if(entry.name == 'Eyjafjalla') {
-      console.log(entry.talents)
-    }
-
     entry.talents.forEach(talent => {
 
       let newTalent: Talent = {
@@ -216,6 +212,7 @@ export class DatabaseJsonParserService {
         candidate.unlockCondition = this.replaceKey(candidate.unlockCondition, 'phase', 'elite')
         
         newTalent.descriptions.push(this.stylizeText(candidate.description));
+
         newTalent.unlockConditions.push(candidate.unlockCondition);
         newTalent.name = candidate.name;
       })
@@ -274,9 +271,6 @@ export class DatabaseJsonParserService {
           // since it gets the exact unlock conditions, this parsing is compatible with elite upgrades from e0 to e2 (eg Amiya)
           unlockConditions: talent.unlockConditions.slice(startingEliteIndex, talent.descriptions.length - offset)
         };
-        if(entry.name == 'Thorns') {
-          console.log(talents)
-        }
         talents.splice(talentIndex+1, 0, newTalent)
 
       }
@@ -412,7 +406,7 @@ export class DatabaseJsonParserService {
 
   getModuleLevelStats(jsonModule: any, module: Module) {
     for(let i = 0; i < jsonModule.phases.length; i++) {
-      module.levels[i].stats = jsonModule.phases[i].attributeBlackboard;
+      module.levels[i].stats = this.renameStats(jsonModule.phases[i].attributeBlackboard);
 
       // summon stats
       if(jsonModule.phases[i].tokenAttributeBlackboard != null) {
@@ -528,15 +522,8 @@ export class DatabaseJsonParserService {
         }
 
         skill.buffData.forEach(level => {
-          let newBaseSkill: OperatorBaseSkill = {
-            levels: []
-          };
-
           const dbBaseSkill = this.database.baseSkills.find(baseSkill => baseSkill.id == level.buffId);
-          newBaseSkill.iconId = dbBaseSkill.iconId;
-          newBaseSkill.color = dbBaseSkill.color;
-          
-          newBaseSkill.levels.push({
+          let newBaseSkill: OperatorBaseSkill = {
             name: dbBaseSkill.name,
             id: dbBaseSkill.id,
             iconId: dbBaseSkill.iconId,
@@ -545,11 +532,16 @@ export class DatabaseJsonParserService {
               elite: level.cond.phase,
               level: level.cond.level
             }
-          })
+          };
+
           op.baseSkills.push(newBaseSkill);
         })
       })
     }
+  }
+
+  getTrustStats(operator: any) {
+    return this.renameStats(operator.favorKeyFrames[1].data);
   }
 
   renameStats(stats) {
@@ -557,7 +549,7 @@ export class DatabaseJsonParserService {
     stats = this.replaceKey(stats, 'blockCnt', 'blockCount');
     stats = this.replaceKey(stats, 'maxHp', 'hp');
     stats = this.replaceKey(stats, 'baseAttackTime', 'attackInterval');
-    stats = this.replaceKey(stats, 'respawnTime', 'redploy');
+    stats = this.replaceKey(stats, 'respawnTime', 'time');
     return stats;
   }
 
@@ -575,24 +567,36 @@ export class DatabaseJsonParserService {
     text = text.replace(/<@cc.kw>/g, ' <span class="positive-effect"> ')
     text = text.replace(/<@cc.rem>/g, ' <span class="positive-effect"> ')
     
-    text = text.replace(/<\$ba.shield>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.buffres>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.fragile>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.sluggish>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.stun>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.cold>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.camou>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.frozen>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.root>/g, '<span class="special"> ')
-    text = text.replace(/<\$ba.invisible>/g, '<span class="special"> ')
-    text = text.replace(/<\$cc.bd_b1>/g, '<span class="special"> ')
-    text = text.replace(/<\$cc.bd_a1>/g, '<span class="special"> ')
-    text = text.replace(/<\$cc.g.sui>/g, '<span class="special"> ')
-    text = text.replace(/<\$cc.bd_ash>/g, '<span class="special"> ')
-    text = text.replace(/<\$cc.bd_tachanka>/g, '<span class="special"> ')
+    text = text.replace(/<\$ba.shield>/g, '<span class="special" data-tip="Each stack of shield can block 1 instance of damage"> ')
+    text = text.replace(/<\$ba.buffres>/g, '<span class="special" data-tip="Reduce duration of abnormal effects such as Stun, Cold, Freeze by 50% (Does not stack)"> ')
+    text = text.replace(/<\$ba.fragile>/g, '<span class="special" data-tip="Increase all damage taken by the stated percentage (Does not stack, strongest effect takes precedence)"> ')
+    text = text.replace(/<\$ba.sluggish>/g, '<span class="special" data-tip="Movement Speed reduced by 80%"> ')
+    text = text.replace(/<\$ba.stun>/g, '<span class="special" data-tip="Unable to move, block, attack, or use skills"> ')
+    text = text.replace(/<\$ba.cold>/g, '<span class="special" data-tip="Attack Speed -30. If Cold effect is stacked, effect changes to Frozen"> ')
+    text = text.replace(/<\$ba.camou>/g, '<span class="special" data-tip="When not blocking, will not be targeted by enemy normal attacks (unable to avoid splash-type attacks)"> ')
+    text = text.replace(/<\$ba.frozen>/g, '<span class="special" data-tip="Unable to move, attack or use skills (Activated through Cold effect); When enemies are Frozen, RES -15"> ')
+    text = text.replace(/<\$ba.root>/g, '<span class="special" data-tip="Unable to move"> ')
+    text = text.replace(/<\$ba.invisible>/g, '<span class="special" data-tip="When unblocked/not blocking, will not be attacked by enemies"> ')
+    text = text.replace(/<\$cc.bd_b1>/g, '<span class="special" data-tip="Provided by the following Operator:\nDusk\nMr.Nothing"> ')
+    text = text.replace(/<\$cc.bd_a1>/g, '<span class="special" data-tip="Affects Chain of Thought\nProvided by the following Operator(s):\nRosmontis\nDusk\nWhisperain\nIris" > ')
+    text = text.replace(/<\$cc.g.sui>/g, '<span class="special" data-tip="Includes the following Operators:\nNian\nDusk\nLing"> ')
+    text = text.replace(/<\$cc.g.lgd>/g, '<span class="special" data-tip="Includes the following operators:\nChen\nHoshiguma\nSwire"> ')
+    text = text.replace(/<\$cc.bd_ash>/g, '<span class="special" data-tip="Provided by the following Operator:\nAsh"> ')
+    text = text.replace(/<\$cc.bd_tachanka>/g, '<span class="special" data-tip="Provided by the following Operator:\nTachanka"> ')
+    text = text.replace(/<\$cc.g.ussg>/g, '<span class="special" data-tip="Includes the following Operators:\nRosa\nZima\nIstina\nGummy"> ')
+    text = text.replace(/<\$cc.g.R6>/g, '<span class="special" data-tip="Includes the following Operators:\nAsh\nTachanka\nBlitz\nFrost"> ')
+    text = text.replace(/<\$cc.tag.knight>/g, '<span class="special" data-tip="Includes the following Operators:\nNearl the Radiant Knight\nNearl (mutually exclusive)\nBlemishine\nWhislash\nFlametail\nFartooth\nAshlock\nWild Mane\n\'Justice Knight\'\nGravel">')
+    text = text.replace(/<\$ba.protect>/g, '<span class="special" data-tip="Reduce Physical and Arts damage taken by the stated percentage (Does not stack, strongest effect takes precedence)"> ')
+    text = text.replace(/<\$cc.bd_a1_a1>/g, '<span class="special" data-tip="Affects Perception Information\nProvided by the following Operator(s):\nWhisperain"> ')
+    text = text.replace(/<\$cc.w.ncdeer1>/g, '<span class="special" data-tip="Whenever a recipe that consumes 4 or less Morale fails to produce a byproduct, gain 1 point of Causality for every 1 Morale consumed"> ')
+    text = text.replace(/<\$cc.w.ncdeer2>/g, '<span class="special" data-tip="Whenever a recipe that consumes 8 Morale fails to produce a byproduct, gain 1 point of Karma for every 1 Morale consumed"> ')
+    text = text.replace(/<\$ba.charged>/g, '<span class="special" data-tip="Can continue recovering SP after reaching the maximum.\nWhen SP reaches double the maximum, enter Charged state.\nSkills have additional effects when activated in Charged state (All SP is consumed whenever skill is activated)"> ')
 
     const closingSpan = new RegExp('</>', 'g');
     text = text.replace(closingSpan, " </span>")
+
+    text = text.replace('<Support Devices>', 'Support Devices')
+
     return text;
   }
 
@@ -658,7 +662,7 @@ export class DatabaseJsonParserService {
         return 'Deadeye';
       case 'bearer':
         return 'Standard Bearer';
-      case 'artsfighter':
+      case 'artsfghter':
         return 'Arts Fighter';
       case 'ringhealer':
         return 'Multi-Target Medic'
@@ -682,6 +686,8 @@ export class DatabaseJsonParserService {
         return 'Heavyshooter';
       case 'healer':
         return 'Therapist'
+      case 'traper': // really...
+        return 'Trapper'
     }
 
     return operator.subProfessionId.charAt(0).toUpperCase() + operator.subProfessionId.slice(1);
@@ -712,6 +718,7 @@ export class DatabaseJsonParserService {
   }
 
   getPosition(operator: Operator) {
+
     return operator.position.charAt(0).toUpperCase() + operator.position.slice(1, operator.position.length).toLowerCase();
   }
 }

@@ -9,7 +9,7 @@ ion-img {
 .elite-img {
   width: 30px;
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .header-cell {
@@ -20,7 +20,6 @@ ion-img {
 
 .req-cell {
   display: flex;
-  padding-left: 10px !important;
   justify-content: center;
   align-items: center;
 
@@ -28,7 +27,7 @@ ion-img {
     width: 30px;
     display: inline-block;
     transform: translateY(-5px);
-    margin-right: 10px;
+    margin-right: 5px;
   }
   
   .center-aligned {
@@ -38,5 +37,6 @@ ion-img {
   
   .level {
     padding-right: 15px;
+    white-space: nowrap;
   }
 }

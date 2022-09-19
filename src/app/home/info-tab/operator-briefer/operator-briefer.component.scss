@@ -35,12 +35,66 @@
 
   .elite-img {
     width: 30px;
-    margin-right: 10px;
+    margin-right: 5px;
   }
 
   .range-container {
     display: inline-flex;
     align-items: center;
-    margin-right: 20px;
+    margin-right: 10px;
   }
+}
+
+.class-img {
+  width: 25px;
+  display: inline-block;
+  position: absolute;
+  transform: translate(5px, -4px);
+
+  &.branch {
+    width: 20px;
+    transform: translate(5px, -0.5px);
+
+    &.funnel {
+      transform: translate(4px, 0px);
+    }
+  
+    &.healer, &.guardian {
+      transform: translate(8px, -2px);
+    }
+  
+    &.fearless {
+      transform: translate(8px, 0px);
+    }
+  
+    &.splashcaster {
+      transform: translate(4px, 0px);
+    }
+
+    &.protector, &.duelist {
+      transform: translate(8px, -4px);
+    }
+  }
+
+  &.invisible {
+    position: relative;
+    visibility: hidden;
+    height: 0px;
+    width: default;
+  }
+}
+
+.branch-header {
+  width: 20%;
+
+  &.splashcaster, &.reaperrange, &.phalanx {
+    white-space: nowrap;
+  }
+}
+
+.rarity-stars {
+  height: 25px;
+  display: inline-block;
+  position: absolute;
+  transform: translate(5px, -4px);
 }

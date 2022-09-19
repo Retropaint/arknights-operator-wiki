@@ -54,6 +54,10 @@ ion-header {
 .left-container {
   flex: 1 1 360px;
   padding-right: 15px;
+
+  &.no-skills {
+    transform: translateX(50%);
+  }
 }
 
 .right-container {
@@ -99,3 +103,6 @@ ion-content {
   filter: blur(7px);
 }
 
+.not-selected-tab {
+  display: none !important;
+}

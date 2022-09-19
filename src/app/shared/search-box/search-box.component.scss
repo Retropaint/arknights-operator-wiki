@@ -1,9 +1,47 @@
 .operator-suggestion {
-  padding: 5px;
+  padding: 0px 10px 0px 5px;
   margin: 0px;
-  background: black;
+  background: #333333;
+  display: flex;
+  align-items: center;
+  height: 51px;
 
   &.chosen {
     border: 1px solid white;
+  }
+
+  &.divider {
+    border-bottom: 1px solid grey;
+  }
+
+  ion-img {
+    width: 40px;
+    margin-right: 10px;
+  }
+
+  --border-thickness: 10px;
+
+  &.rarity-6 {
+    border-right: var(--border-thickness) solid #ff8127;
+  }
+
+  &.rarity-5 {
+    border-right: var(--border-thickness) solid #ffe590;
+  }
+
+  &.rarity-4 {
+    border-right: var(--border-thickness) solid #c99fc9;
+  }
+
+  &.rarity-3 {
+    border-right: var(--border-thickness) solid #0098d6;
+  }
+
+  &.rarity-2 {
+    border-right: var(--border-thickness) solid #94bc00;
+  }
+
+  &.rarity-1 {
+    border-right: var(--border-thickness) solid darkgrey
   }
 }

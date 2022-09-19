@@ -1,6 +1,14 @@
 <table class="table" style="margin-bottom: 0px" *ngIf="operator">
   <tbody>
     <tr>
+      <th colspan="5" class="button" [ngClass]="{'selected' : includeTrust}" (click)="includeTrust = !includeTrust; reset()">Include 200 Trust</th>
+      <th colspan="4" class="button" [ngClass]="{'selected' : includePotentials}" (click)="includePotentials = !includePotentials; reset()">Include All Potentials</th>
+    </tr>
+  </tbody>
+</table>
+<table class="table" style="margin-bottom: 0px" *ngIf="operator">
+  <tbody>
+    <tr class="stat-header">
       <th style="width: 125px">
         Stat
       </th>
@@ -48,7 +56,7 @@
         {{vb.stats.res}}
       </td>
       <td>
-        {{vb.stats.redploy}}
+        {{vb.stats.time}}
       </td>
       <td>
         {{vb.stats.cost}}
@@ -78,7 +86,7 @@
         {{customStats.res}}
       </td>
       <td>
-        {{customStats.redploy}}
+        {{customStats.time}}
       </td>
       <td>
         {{customStats.cost}}

@@ -45,8 +45,6 @@ export class ProfileInfoTableComponent implements OnInit {
       split.shift();
     }
 
-    console.log(split)
-
     split.forEach(word => {
       if(word == '') {
         // ignore empty elements after the first

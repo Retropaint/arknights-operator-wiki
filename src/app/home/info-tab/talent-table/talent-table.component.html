@@ -13,10 +13,7 @@
         <td class="center-aligned" style="font-weight: bold">
           {{t.name}}
         </td>
-        <td [innerHtml]="t.description">
-        </td>
-        <td *ngIf="t.maxLevel > 1" class="center-aligned">
-          [show all levels]
+        <td #description [innerHtml]="t.description">
         </td>
         <td >
           <div [ngClass]="{'unlock-condition-cell' : t.unlockConditions.elite || t.unlockConditions.potential || t.unlockConditions.level}">

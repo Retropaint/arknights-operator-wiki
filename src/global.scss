@@ -52,7 +52,7 @@
 
 .ngxImageZoomContainer {
   width: auto !important;
-  width: auto !important;
+  height: 565px !important;
 
   .ngxImageZoomThumbnail:hover {
     opacity: 0;
@@ -65,4 +65,8 @@
 
 p {
   margin: 0;
+}
+
+.p-tooltip {
+  position: absolute;
 }

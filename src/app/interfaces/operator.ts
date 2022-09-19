@@ -11,12 +11,12 @@ export interface Operator {
   trait: string;
   class: string;
   branch: string;
+  originalBranch: string; // unedited branch name, used for icon
   talents: Talent[];
   recruitTags: string[];
   obtainMethods: string[];
   statBreakpoints: StatBreakpoint[];
   position: string;
-  trustExtraStats?: any[];
   skills: Skill[];
   skillLevelUnlockReqs?: SkillUnlockReqs[];
   modules?: Module[];
@@ -25,6 +25,7 @@ export interface Operator {
   baseSkills?: OperatorBaseSkill[];
   profileEntries: ProfileEntry[];
   dialogues: Dialogue[];
+  trustStats: any;
   voiceActors: {
     CN?: string;
     JP?: string;
@@ -139,16 +140,13 @@ export interface BaseSkill {
 export interface OperatorBaseSkill {
   iconId?: string;
   color?: string;
-  levels: {
-    name: string;
-    id: string;
-    iconId: string;
-    description?: string;
-    requirements: {
-      elite: number;
-      level: number;
-    }
-  }[];
+  name: string;
+  id: string;
+  description?: string;
+  requirements: {
+    elite: number;
+    level: number;
+  }
 }
 
 export interface ProfileEntry {

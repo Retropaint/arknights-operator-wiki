@@ -43,7 +43,7 @@
           </ng-container>
         </td>
       </tr>
-      <tr>
+      <tr *ngIf="doctorService.doctor.levelBreakpoints.length < 5">
         <td class="add-breakpoint" [ngClass]="{'hoverable': editingBreakpoint == -1}" (click)="addBreakpoint()">
           + 
         </td>

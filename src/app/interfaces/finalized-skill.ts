@@ -1,4 +1,5 @@
 export interface FinalizedSkill {
+  id: string,
   name: string,
   description: string,
   recoveryType: string,

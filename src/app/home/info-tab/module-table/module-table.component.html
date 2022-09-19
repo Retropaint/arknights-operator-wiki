@@ -7,8 +7,8 @@
     </tr>
     <tr>
       <td class="module-header">
-        <ion-img *ngIf="moduleIndex == 0" src="https://aceship.github.io/AN-EN-Tags/img/equip/icon/original.png"></ion-img>
-        <ion-img *ngIf="moduleIndex > 0" src="https://aceship.github.io/AN-EN-Tags/img/equip/icon/{{operator.modules[moduleIndex].id}}.png"></ion-img>
+        <ion-img *ngIf="moduleIndex == 0" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/original.png"></ion-img>
+        <ion-img *ngIf="moduleIndex > 0" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/{{operator.modules[moduleIndex].id}}.png"></ion-img>
         <div class="content">
           <p>{{operator.modules[moduleIndex].name}}</p>
           <p [innerHTML]="trait"></p>
@@ -52,16 +52,24 @@
       </th>
       <td>
         <div class="stat" *ngFor="let stat of level.stats">
-          <ion-img src="assets/icons/stats/{{stat.key}}.webp"></ion-img>
-          +{{stat.value}}
+          <ng-container *ngIf="stat.key != 'attack_speed'">
+            <ion-img src="assets/icons/stats/{{stat.key}}.webp"></ion-img>
+            +{{stat.value}}
+          </ng-container>
+          <ng-container *ngIf="stat.key == 'attack_speed'">
+            ASPD +{{stat.value}}
+          </ng-container>
         </div>
         <ng-container *ngIf="level.summonStats != null">
           <div style="margin-top: 10px" *ngFor="let summonStat of level.summonStats; let summonIndex = index">
             <p style="text-align: center">{{operator.summons[summonIndex].name}}</p>
             <div *ngFor="let stat of summonStat" class="stat" [ngClass]="{'no-margin' : stat.key == 'max_deck_stack_cnt' || stat.key == 'max_deploy_count'}">
-              <ng-container *ngIf="stat.key != 'max_deck_stack_cnt' && stat.key != 'max_deploy_count'">
+              <ng-container *ngIf="stat.key != 'max_deck_stack_cnt' && stat.key != 'max_deploy_count' && stat.key != 'attack_speed'">
                 <ion-img src="assets/icons/stats/{{stat.key}}.webp"></ion-img>
                 {{stat.value}}
+              </ng-container>
+              <ng-container *ngIf="stat.key == 'attack_speed'">
+                ASPD {{stat.value}}
               </ng-container>
             </div>
           </div>

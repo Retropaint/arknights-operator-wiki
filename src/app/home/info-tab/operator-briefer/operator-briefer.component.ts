@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Operator } from 'src/app/interfaces/operator';
-import { DatabaseService } from 'src/app/services/database.service';
+import { OperatorAvatarService } from 'src/app/services/operator-avatar.service';
 
 @Component({
   selector: 'app-operator-briefer',
@@ -14,23 +14,12 @@ export class OperatorBrieferComponent implements OnInit {
   operatorImageLink: string;
 
   constructor(
-    private database: DatabaseService
+    private opAvatarService: OperatorAvatarService
   ) { }
 
   ngOnInit() {
-    this.operatorImageLink = this.operator.id;
 
-    const specialReserveOp = this.database.specialReserveOps.find(operator => operator == this.operator.name) != null;
-
-    if(this.operator != null && this.operator.id && !specialReserveOp) {
-
-      if(this.operator.name.includes('Reserve Operator')) {
-        this.operatorImageLink = this.operator.id.slice(0, this.operator.id.length - 2);
-      } else {
-        this.operatorImageLink = this.operator.id.slice(2, this.operator.id.length);
-      }
-
-    }
+    this.operatorImageLink = this.opAvatarService.getAvatar(this.operator);
   }
 
 }
