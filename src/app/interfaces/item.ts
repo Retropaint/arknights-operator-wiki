@@ -3,5 +3,5 @@ export interface Item {
   id: string;
   imgId: string;
   rarity: number;
-  amount?: string;
+  amount?: number;
 }

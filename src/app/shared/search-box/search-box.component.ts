@@ -11,6 +11,8 @@ import { OperatorAvatarService } from 'src/app/services/operator-avatar.service'
 })
 export class SearchBoxComponent implements OnInit {
 
+  encodeURI = encodeURI;
+
   text: any;
   results: {
     img: string,

@@ -1,4 +1,4 @@
-<table class="table" style="margin-bottom: 0px" *ngIf="operator">
+<table class="table no-bottom-border" *ngIf="subject && !isSummon">
   <tbody>
     <tr>
       <th colspan="5" class="button" [ngClass]="{'selected' : includeTrust}" (click)="includeTrust = !includeTrust; reset()">Include 200 Trust</th>
@@ -6,10 +6,10 @@
     </tr>
   </tbody>
 </table>
-<table class="table" style="margin-bottom: 0px" *ngIf="operator">
+<table class="table" [ngClass]="{'bottom-margin' : isSummon && !doctor.statSlider}" *ngIf="subject">
   <tbody>
     <tr class="stat-header">
-      <th style="width: 125px">
+      <th [ngClass]="{'opStatHeader' : !isSummon}">
         Stat
       </th>
       <th>
@@ -38,10 +38,12 @@
       </th>
     </tr>
     
-    <tr *ngFor="let vb of displayedBreakpoints">
-      <td class="level-cell">
-        <ion-img class="elite-img" src="assets/icons/elitePhases/{{vb.elite}}.webp"></ion-img>
-        {{vb.level}}
+    <tr *ngFor="let vb of displayedBreakpoints; let i = index">
+      <td>
+        <div class="level-cell">
+          <ion-img class="elite-img" src="assets/icons/elitePhases/{{vb.elite}}.webp"></ion-img>
+          {{vb.level}}
+        </div>
       </td>
       <td>
         {{vb.stats.hp}}
@@ -69,9 +71,11 @@
       </td>
     </tr>
     <tr *ngIf="doctor.statSlider">
-      <td class="level-cell" >
-        <ion-img class="elite-img" src="assets/icons/elitePhases/{{parsedCustomLevel.elite}}.webp"></ion-img>
-        {{parsedCustomLevel.level}}
+      <td>
+        <div class="level-cell">
+          <ion-img class="elite-img" src="assets/icons/elitePhases/{{parsedCustomLevel.elite}}.webp"></ion-img>
+          {{parsedCustomLevel.level}}
+        </div>
       </td>
       <td>
         {{customStats.hp}}
@@ -100,10 +104,10 @@
     </tr>
   </tbody>
 </table>
-<table class="table" draggable="false" *ngIf="operator && doctor.statSlider">
+<table class="table" style="border: none" draggable="false" [ngClass]="{'bottom-margin' : isSummon}" *ngIf="subject && doctor.statSlider">
   <tbody>
     <tr>
-      <td>
+      <td style="border-top: none">
         <input draggable="false" [(ngModel)]="customLevel" type="range" class="slider" min="1" [max]="maxCustomLevel" (ngModelChange)="parseCustomLevel()"/>
       </td>
     </tr>

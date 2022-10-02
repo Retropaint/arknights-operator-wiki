@@ -11,6 +11,9 @@ export class ProfileInfoTableComponent implements OnInit {
   @Input() operator: Operator;
   @Input() entry: 'basic' | 'physical'
 
+  // used for originium assimilation
+  finalColSpans: number = 1000;
+
   basicInfo: {
     key?: string;
     value?: string;
@@ -78,6 +81,10 @@ export class ProfileInfoTableComponent implements OnInit {
     })
 
     this.basicInfo[this.basicInfo.length - 1].value = fullString;
+
+    if(this.basicInfo[this.basicInfo.length -1].key == null) {
+      this.finalColSpans = 2;
+    }
   }
 
 }

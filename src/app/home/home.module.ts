@@ -14,11 +14,8 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { SkillTableComponent } from './info-tab/skill-table/skill-table.component';
 import { EliteUnlockReqsTableComponent } from './info-tab/elite-unlock-reqs-table/elite-unlock-reqs-table.component';
 import { SkillLevelUnlockReqsTableComponent } from './info-tab/skill-level-unlock-reqs-table/skill-level-unlock-reqs-table.component';
-import { SkillMasteryUnlockReqsTableComponent } from './info-tab/skill-mastery-unlock-reqs-table/skill-mastery-unlock-reqs-table.component';
 import { ItemComponent } from '../shared/item/item.component';
 import { RangeGridComponent } from './info-tab/range-grid/range-grid.component';
-import { RangeTableComponent } from './info-tab/range-table/range-table.component';
-import { SkillRangeTableComponent } from './info-tab/skill-range-table/skill-range-table.component';
 import { OperatorGalleryComponent } from './info-tab/operator-gallery/operator-gallery.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { TabViewModule } from 'primeng/tabview';
@@ -33,8 +30,15 @@ import { BaseSkillTableComponent } from './info-tab/base-skill-table/base-skill-
 import { ProfileInfoTableComponent } from './profile-tab/profile-info-table/profile-info-table.component';
 import { ProfileInfoTextEntriesComponent } from './profile-tab/profile-info-text-entries/profile-info-text-entries.component';
 import { DialogueTableComponent } from './dialogue-tab/dialogue-table/dialogue-table.component';
-import { AudioPlayerComponent } from '../audio-player/audio-player.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { NumberFormatterPipe } from '../pipes/number-formatter.pipe';
+import { ProfileTabComponent } from './profile-tab/profile-tab.component';
+import { AudioPlayerComponent } from '../shared/audio-player/audio-player.component';
+import { SummonTableComponent } from './info-tab/summon-table/summon-table.component';
+import { FilterTableComponent } from './filter-table/filter-table.component';
+import { OperatorListComponent } from './operator-list/operator-list.component';
+import { OperatorItemComponent } from './operator-list/operator-item/operator-item.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -48,7 +52,8 @@ import { TooltipModule } from 'primeng/tooltip';
     AutoCompleteModule,
     TabViewModule,
     NgxImageZoomModule,
-    TooltipModule
+    TooltipModule,
+    RouterModule
   ],
   declarations: [
     HomePage, 
@@ -58,11 +63,8 @@ import { TooltipModule } from 'primeng/tooltip';
     SkillTableComponent, 
     EliteUnlockReqsTableComponent,
     SkillLevelUnlockReqsTableComponent,
-    SkillMasteryUnlockReqsTableComponent,
     ItemComponent,
     RangeGridComponent,
-    RangeTableComponent,
-    SkillRangeTableComponent,
     OperatorGalleryComponent,
     SearchBoxComponent,
     OperatorTransitionerComponent,
@@ -75,6 +77,12 @@ import { TooltipModule } from 'primeng/tooltip';
     ProfileInfoTextEntriesComponent,
     DialogueTableComponent,
     AudioPlayerComponent,
+    NumberFormatterPipe,
+    ProfileTabComponent,
+    SummonTableComponent,
+    FilterTableComponent,
+    OperatorListComponent,
+    OperatorItemComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })

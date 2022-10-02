@@ -1,9 +1,8 @@
 .table {
-  table-layout: fixed;
   margin-bottom: 0px;
 
   &.bottom-margin {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 
   .elite-img {
@@ -16,15 +15,9 @@
   .level-cell {
     display: flex;
     align-items: center;
-    border: none;
-  }
-
-  tr {
-    border: 1px solid white;
   }
 
   th, td {
-    padding: 5px 10px 5px !important;
     height: 30px;
 
     &.button {
@@ -39,6 +32,7 @@
 
   td {
     text-align: right;
+    white-space: nowrap;
   }
 
   ion-img {
@@ -52,5 +46,9 @@
       background: var(--tableFirstHeader);
     }
   }
-  
+
+  .opStatHeader {
+    width: 125px;
+  }
+
 }

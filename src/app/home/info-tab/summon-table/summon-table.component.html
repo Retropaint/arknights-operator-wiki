@@ -1,0 +1,26 @@
+<table class="table" style="margin-bottom: 0px">
+  <tbody>
+    <tr>
+      <th>Summon</th>
+      <th>Position</th>
+      <th>Range</th>
+    </tr>
+    <tr>
+      <td>
+        <div class="summon-col">
+          <div *ngIf="summon.associatedSkillIndex != 0" style="margin-bottom: 10px;">
+            Skill {{summon.associatedSkillIndex}}
+          </div>
+          <ion-img class="special" [attr.data-tip]="summon.name" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/{{summon.id}}.png"></ion-img>
+        </div>
+      </td>
+      <td style="text-align: center">{{summon.position}}</td>
+      <td style="text-align: center"> 
+        <app-range-grid [id]="summon.statBreakpoints[0].rangeId"></app-range-grid>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<app-stat-table
+  [subject]="summon"
+></app-stat-table>

@@ -1,6 +1,8 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Operator } from 'src/app/interfaces/operator';
 import { DatabaseService } from 'src/app/services/database.service';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-operator-gallery',
@@ -21,8 +23,11 @@ export class OperatorGalleryComponent implements OnInit {
   reserveOpImageLink: string;
   defaultOpIconLink: string;
 
+  baseUrl = 'assets/operatorSkins/'
+
   constructor(
-    private database: DatabaseService
+    private database: DatabaseService,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -35,10 +40,19 @@ export class OperatorGalleryComponent implements OnInit {
       this.defaultOpIconLink = this.operator.id.slice(2, this.operator.id.length);
     }
 
-
     if(this.operator.name.includes('Reserve Operator') || specialReserveOp) {
       this.reserveOpImageLink = this.operator.id
     }
+
+    // check if this operator's skin images exist locally
+    this.http.get('assets/operatorSkins/' + this.operator.skins[0].id + '.png')
+      .subscribe(result => {}, 
+      error => {
+        if(error.status != '200') {
+          // get image from aceship because I was too lazy to download it apparently
+          this.baseUrl = 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/'
+        }
+      })
   }
 
   onHover() {

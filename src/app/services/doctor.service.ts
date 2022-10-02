@@ -19,17 +19,17 @@ export class DoctorService {
         if(doctor == null) {
           const bp1: LevelBreakpoint = {
             elite: 1,
-            level: 999
+            level: 99
           }
           const bp2: LevelBreakpoint = {
             elite: 2,
-            level: 999
+            level: 99
           }
 
           const newDoctor: Doctor = {
             levelBreakpoints: [bp1, bp2],
-            statSlider: true,
-            skillSlider: true
+            statSlider: false,
+            skillSlider: false
           }
 
           this.storage.set('doctor', newDoctor);

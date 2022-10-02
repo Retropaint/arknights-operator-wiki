@@ -4,7 +4,6 @@ import { Skin } from "./skin";
 export interface Operator {
   id: string;
   name: string;
-  nation: string;
   rarity: number;
   thumbnailLink?: string;
   potentials: string[];
@@ -13,7 +12,7 @@ export interface Operator {
   branch: string;
   originalBranch: string; // unedited branch name, used for icon
   talents: Talent[];
-  recruitTags: string[];
+  tags: string[];
   obtainMethods: string[];
   statBreakpoints: StatBreakpoint[];
   position: string;
@@ -23,8 +22,14 @@ export interface Operator {
   skins: Skin[];
   summons?: Summon[];
   baseSkills?: OperatorBaseSkill[];
+  recruitmentContract: string;
+  potentialToken: string;
   profileEntries: ProfileEntry[];
   dialogues: Dialogue[];
+  group: {
+    name: string,
+    id: string;
+  }
   trustStats: any;
   voiceActors: {
     CN?: string;
@@ -122,6 +127,10 @@ export interface Summon {
   id: string;
   associatedSkillIndex: number;
   statBreakpoints: StatBreakpoint[];
+  position: string;
+
+  trustStats?: any;
+  potentials?: string[];
 }
 
 export interface BaseSkill {

@@ -1,34 +1,24 @@
-<table class="table" [ngClass]="{'not-first-module' : moduleIndex > 0}" *ngIf="moduleIndex > 0">
+<table class="table" style="margin-bottom: 0px;" *ngIf="moduleIndex > 0">
   <tbody>
     <tr>
-      <th>
+      <th colspan="100">
         Module
       </th>
     </tr>
     <tr>
-      <td class="module-header">
-        <ion-img *ngIf="moduleIndex == 0" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/original.png"></ion-img>
-        <ion-img *ngIf="moduleIndex > 0" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/{{operator.modules[moduleIndex].id}}.png"></ion-img>
-        <div class="content">
-          <p>{{operator.modules[moduleIndex].name}}</p>
-          <p [innerHTML]="trait"></p>
+      <td colspan="100">
+        <div class="module-header">
+          <ion-img *ngIf="moduleIndex == 0" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/original.png"></ion-img>
+          <ion-img *ngIf="moduleIndex > 0" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/{{operator.modules[moduleIndex].id}}.png"></ion-img>
+          <div class="content">
+            <p>{{operator.modules[moduleIndex].name}}</p>
+            <p [innerHTML]="trait"></p>
+          </div>
         </div>
       </td>
     </tr>
-  </tbody>
-</table>
-<table class="table" style="margin-bottom: 0px;" *ngIf="moduleIndex > 0">
-  <tbody>
-    <!--
-      <tr>
-      <th class="header">Missions</th>
-      <td colspan="2">
-        <p *ngFor="let mission of operator.modules[moduleIndex].missions"> {{mission.description}} </p>
-      </td>
-    </tr>
-    -->
     <tr>
-      <th  colspan="3">
+      <th class="header" colspan="3">
         Missions
       </th>
     </tr>

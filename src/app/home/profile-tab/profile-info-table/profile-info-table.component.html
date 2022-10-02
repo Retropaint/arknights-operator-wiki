@@ -4,8 +4,8 @@
       <th colspan="2" class="header">{{entry=='basic' ? 'Basic Info' : 'Physical Exam'}}</th>
     </tr>
     <tr *ngFor="let info of basicInfo">
-      <th> {{info.key}} </th>
-      <td [innerHTML]="info.value" [ngClass]="{'basic' : entry == 'basic'}"></td>
+      <th *ngIf="info.key"> {{info.key}} </th>
+      <td [attr.colspan]="finalColSpans" [innerHTML]="info.value" [ngClass]="{'basic' : entry == 'basic'}"></td>
     </tr>
   </tbody>
 </table>

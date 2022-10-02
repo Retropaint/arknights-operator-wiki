@@ -1,6 +1,6 @@
 <ion-header class="header" [ngClass]="{'blur' : isBlurry}">
   <div>
-    <h1>Retro's Arknights Wiki</h1>
+    <h1 routerLink="/" (click)="goToMainPage()" style="cursor: pointer">Retropaint's Arknights Wiki</h1>
     <app-search-box (homePageReset)="refresh($event)"></app-search-box>
   </div>
   <ion-icon name="settings-outline" class="settings-button" (click)="openSettingsModal()"></ion-icon>
@@ -12,117 +12,113 @@
 
 <ion-content [ngClass]="{'blur' : isBlurry}">
 
-  <p *ngIf="operator" class="op-name">{{operator.name}}</p>
-
-  <div class="tabs">
-    <p (click)="currentTab = 'info'" [ngClass]="{'selected' : currentTab == 'info'}">Gameplay Info</p>
-    <p (click)="currentTab = 'gallery'" [ngClass]="{'selected' : currentTab == 'gallery'}">Gallery</p>
-    <p (click)="currentTab = 'profile'" [ngClass]="{'selected' : currentTab == 'profile'}">Profile</p>
-    <p (click)="currentTab = 'dialogue'" [ngClass]="{'selected' : currentTab == 'dialogue'}">Dialogue</p>
-  </div>
-  
-  <div class="dead-zone container" *ngIf="operator" [ngClass]="{'not-selected-tab' : currentTab != 'info'}">
-
-    <div class="left-container" [ngClass]="{'no-skills' : operator.skills.length == 0}">
-      
-      <app-operator-briefer
-        [operator]="operator"
-      ></app-operator-briefer>
-
-      <app-stat-table
-        [operator]="operator"
-      ></app-stat-table>
-
-      <app-elite-unlock-reqs-table
-        [operator]="operator"
-      ></app-elite-unlock-reqs-table>
-
-      <app-talent-table
-        [operator]="operator"
-      ></app-talent-table>
-
-      <app-potential-table
-        [operator]="operator"
-      ></app-potential-table>
-
-      <app-base-skill-table
-        [operator]="operator"
-      ></app-base-skill-table>
-
-      <app-module-table
-        *ngFor="let item of operator.modules; let i = index;"
-        [operator]="operator"
-        [moduleIndex]="i"
-      ></app-module-table>
-      
+  <div *ngIf="!operator && hasLoaded" class="dead-zone container">
+    <div class="left-container filter-table">
+      <app-filter-table></app-filter-table>
     </div>
-    
-    <div class="right-container" *ngIf="operator">
+    <div class="right-container operator-list">
+      <app-operator-list></app-operator-list>
+    </div>
+  </div>
 
-      <!--
-      <p class="close-gallery" (click)="isGalleryOpen = !isGalleryOpen">{{isGalleryOpen ? 'Close' : 'Open'}} mini-gallery</p>
-      -->
+  <ng-container *ngIf="operator && hasLoaded">
+    <p class="op-name">{{operator.name}}</p>
 
+    <div class="tabs">
+      <p (click)="currentTab = 'info'" [ngClass]="{'selected' : currentTab == 'info'}">Gameplay Info</p>
+      <p (click)="currentTab = 'gallery'" [ngClass]="{'selected' : currentTab == 'gallery'}">Gallery</p>
+      <p (click)="currentTab = 'profile'" [ngClass]="{'selected' : currentTab == 'profile'}">Profile</p>
+      <p (click)="currentTab = 'dialogue'" [ngClass]="{'selected' : currentTab == 'dialogue'}">Dialogue</p>
+    </div>
+
+    <div class="dead-zone" [ngClass]="{'not-selected-tab' : currentTab != 'info', 'container' : windowWidth > 780}">
+
+      <div class="left-container" [ngClass]="{'no-skills' : operator.skills.length == 0, 'desktop' : windowWidth > 780}">
+
+        <app-operator-briefer
+          [operator]="operator"
+        ></app-operator-briefer>
+
+        <app-stat-table
+          [subject]="operator"
+        ></app-stat-table>
+
+        <app-elite-unlock-reqs-table
+          [operator]="operator"
+        ></app-elite-unlock-reqs-table>
+
+        <app-talent-table
+          [operator]="operator"
+        ></app-talent-table>
+
+        <app-potential-table
+          [operator]="operator"
+        ></app-potential-table>
+
+        <app-base-skill-table
+          [operator]="operator"
+        ></app-base-skill-table>
+
+        <app-module-table
+          *ngFor="let item of operator.modules; let i = index;"
+          [operator]="operator"
+          [moduleIndex]="i"
+        ></app-module-table>
+
+      </div>
+
+      <div class="right-container">
+
+        <!--
+        <p class="close-gallery" (click)="isGalleryOpen = !isGalleryOpen">{{isGalleryOpen ? 'Close' : 'Open'}} mini-gallery</p>
+        -->
+
+        <app-operator-gallery
+          *ngIf="isGalleryOpen"
+          [operator]="operator"
+        ></app-operator-gallery>
+
+        <app-skill-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
+          [operator]="operator"
+        ></app-skill-table>
+
+        <app-summon-table
+          *ngFor="let summon of operator.summons"
+          [summon]="summon"
+        ></app-summon-table>
+        <!--
+          <app-stat-table
+          *ngFor="let summon of operator.summons"
+          [subject]="summon"
+        ></app-stat-table>
+        -->
+
+
+        <app-skill-level-unlock-reqs-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
+          [operator]="operator"
+        ></app-skill-level-unlock-reqs-table>
+      </div>
+
+    </div>
+
+    <div [ngClass]="{'not-selected-tab' : currentTab != 'gallery'}">
       <app-operator-gallery
-        *ngIf="isGalleryOpen"
+        [isTab]="true"
         [operator]="operator"
       ></app-operator-gallery>
-
-      <app-skill-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
-        [operator]="operator"
-      ></app-skill-table>
-      
-      <!--
-        <app-skill-range-table
-        [operator]="operator"
-      ></app-skill-range-table>
-      -->
-      
-      <!--
-        <app-skill-mastery-unlock-reqs-table
-        [operator]="operator"
-      ></app-skill-mastery-unlock-reqs-table>
-      -->
-      
-      <app-skill-level-unlock-reqs-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
-        [operator]="operator"
-      ></app-skill-level-unlock-reqs-table>
     </div>
 
-  </div>
-
-  <div *ngIf="operator" [ngClass]="{'not-selected-tab' : currentTab != 'gallery'}">
-    <app-operator-gallery
-      [isTab]="true"
-      [operator]="operator"
-    ></app-operator-gallery>
-  </div>
-
-  <div *ngIf="operator" [ngClass]="{'not-selected-tab' : currentTab != 'profile'}" >
-    <div class="dead-zone container profile">
-      <app-profile-info-table
-        [operator]="operator"
-        entry="basic"
-        style="margin-right: 5px; margin-bottom: 15px"
-      ></app-profile-info-table>
-
-      <app-profile-info-table
-        [operator]="operator"
-        entry="physical"
-        style="margin-left: 5px; margin-right: 5px; margin-bottom: 15px"
-      ></app-profile-info-table>
+    <div [ngClass]="{'not-selected-tab' : currentTab != 'profile'}" >
+      <app-profile-tab [operator]="operator"></app-profile-tab>
     </div>
 
-    <app-profile-info-text-entries
-      [operator]="operator"
-    ></app-profile-info-text-entries>
-  </div>
+    <div [ngClass]="{'not-selected-tab' : currentTab != 'dialogue'}">
+      <app-dialogue-table
+        [operator]="operator"
+      ></app-dialogue-table>
+    </div>
+  </ng-container>
 
-  <div *ngIf="operator" [ngClass]="{'not-selected-tab' : currentTab != 'dialogue'}">
-    <app-dialogue-table
-      [operator]="operator"
-    ></app-dialogue-table>
-  </div>
-  
+  <div (window:resize)="onResize($event)"></div>
 </ion-content>
 

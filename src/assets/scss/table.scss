@@ -5,6 +5,30 @@
   color: #e6e6e6;
   margin-bottom: 15px;
   border-collapse: collapse;
+  
+  &.no-bottom-border {
+    border-bottom: none;
+
+    > tbody {
+      tr {
+        th, td {
+          border-bottom: none !important;
+        }
+      }
+    }
+  }
+
+  &.no-top-border {
+    border-top: none;
+
+    > tbody {
+      tr {
+        th, td {
+          border-top: none !important;
+        }
+      }
+    }
+  }
 
   > tbody :first-child {
     th {
@@ -13,7 +37,7 @@
   }
 
   th, td {
-    padding: 7px;
+    padding: 6px;
     border: 1px solid white;
   }
 

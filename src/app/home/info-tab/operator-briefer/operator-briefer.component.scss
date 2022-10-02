@@ -4,6 +4,7 @@
   border: 1px solid white;
   display: flex;
   justify-content: space-between;
+  border-bottom: none;
 
   th {
     padding-right: 10px;
@@ -73,6 +74,10 @@
 
     &.protector, &.duelist {
       transform: translate(8px, -4px);
+    }
+
+    &.pusher {
+      transform: translate(8px, 3px);
     }
   }
 

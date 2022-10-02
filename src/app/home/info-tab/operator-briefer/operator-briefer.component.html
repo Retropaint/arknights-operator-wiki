@@ -20,6 +20,14 @@
         <ion-img class="rarity-stars" src="assets/icons/rarityStars/{{operator.rarity}}.png"></ion-img>
         </td>
       </tr>
+      <tr>
+        <th>Tags</th>
+        <td>
+          <ng-container *ngFor="let tag of operator.tags; let i = index">
+            {{tag}}<ng-container *ngIf="i < operator.tags.length-1">,</ng-container>
+          </ng-container>
+        </td>
+      </tr>
     </tbody>
   </div>
   
@@ -46,7 +54,7 @@
         <ion-img class="class-img branch {{operator.originalBranch}}" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/ui/subclass/sub_{{operator.originalBranch}}_icon.png"></ion-img>
         <ion-img class="class-img invisible {{operator.originalBranch}}" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/ui/subclass/sub_{{operator.originalBranch}}_icon.png"></ion-img>
       </th>
-      <td class="trait-description" [innerHTML]="operator.trait"></td>
+      <td #description class="trait-description" [innerHTML]="operator.trait"></td>
     </tr>
   </tbody>
 </table>

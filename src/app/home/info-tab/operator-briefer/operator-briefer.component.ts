@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Operator } from 'src/app/interfaces/operator';
 import { OperatorAvatarService } from 'src/app/services/operator-avatar.service';
 
@@ -9,6 +9,8 @@ import { OperatorAvatarService } from 'src/app/services/operator-avatar.service'
 })
 export class OperatorBrieferComponent implements OnInit {
 
+  @ViewChild('description') desc: any;
+
   @Input() operator: Operator;
 
   operatorImageLink: string;
@@ -18,8 +20,11 @@ export class OperatorBrieferComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.operatorImageLink = this.opAvatarService.getAvatar(this.operator);
+
+    setTimeout(() => {
+      this.desc.nativeElement.innerHTML = this.operator.trait;
+    })
   }
 
 }

@@ -1,0 +1,27 @@
+  <ion-grid *ngFor="let category of filters" class="filter-container">
+      
+      <!-- sort button -->
+      <ion-row style="text-align: center">
+        <ion-col style="padding: 0px">
+          <div class="individual-box center" [ngClass]="{'selected': selectedAll == category.name}" style="font-size: 13px; text-align: center" (click)="sortCategory(category.name)">
+            {{category.name}}
+          </div>
+          <ion-icon *ngIf="category.isFolded" (click)="category.isFolded = false" class="fold-button" name="chevron-up-outline"></ion-icon>
+          <ion-icon *ngIf="!category.isFolded" (click)="category.isFolded = true" class="fold-button" name="chevron-down-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+      <!-- individual buttons -->
+      <ng-container *ngIf="!category.isFolded">
+        <ion-col
+          *ngFor="let filter of category.filters" 
+          style="padding: 0px;"
+        >
+        <div (click)="filter.toggle = !filter.toggle; toggleFilter()" class="individual-box" [ngClass]="{'selected': filter.toggle, 'disabled': category.name == 'Branches' && !filter.isHighlighted}">
+          <ion-img *ngIf="category.imgUrl" src="{{category.imgUrl}}{{filter.iconId}}{{category.imgUrlSuffix}}.png"></ion-img>
+          <p style="display: inline-block">{{filter.name}}</p>
+        </div>
+      </ion-col>
+      </ng-container>
+      
+  </ion-grid>

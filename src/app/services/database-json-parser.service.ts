@@ -46,7 +46,7 @@ export class DatabaseJsonParserService {
           name: itemFromDb.name,
           imgId: itemFromDb.imgId,
           rarity: itemFromDb.rarity,
-          amount: this.getEliteLmdUnlockReq(operator.rarity+1, eliteCount).toLocaleString()
+          amount: this.getEliteLmdUnlockReq(operator.rarity+1, eliteCount)
         }
         items.push(lmd);
 
@@ -362,45 +362,28 @@ export class DatabaseJsonParserService {
       module.missions.push(mission);
     })
 
-    // itemCost in EN is an array of level 1 items, while in CN it's an array of each level containing the items
-    // The change is therefore automatically detected so site doesn't break when EN updates
     if(jsonModule.itemCost) {
-      try {
-        Object.keys(jsonModule.itemCost).forEach(phase => {
-          module.levels.push({
-            itemCosts: [],
-            stats: []
-          })
-          jsonModule.itemCost[phase].forEach(item => {
-            const newItem = this.getItem(item.id);
-            newItem.amount = item.count;
-            if(newItem.amount == '80000') {
-              newItem.amount = '80k'
-            }
-            module.levels[module.levels.length - 1].itemCosts.push(newItem);
-          })
-        })
-      } catch (error) {
-        // delete stray level created from top
-        module.levels.pop();
+      module.levels.push({
+        itemCosts: [],
+        stats: []
+      })
 
-        module.levels.push({
-          itemCosts: [],
-          stats: []
-        })
-        Object.keys(jsonModule.itemCost).forEach(item => {
-          const newItem = this.getItem(jsonModule.itemCost[item].id);
-          if(newItem != null) {
-            newItem.amount = jsonModule.itemCost[item].count;
-            if(newItem.amount == '80000') {
-              newItem.amount = '80k'
-            }
-            module.levels[0].itemCosts.push(newItem);
-          }
-        })
-      }
+      jsonModule.itemCost.forEach(item => {
+
+        const newItem = this.getItem(item.id);
+        
+        if(newItem != null) {
+          newItem.amount = item.count;
+
+          // item.count changes and I have no idea where, so just separate the reference altogether
+          const clonedItem = JSON.parse(JSON.stringify(newItem))
+
+          module.levels[0].itemCosts.push(clonedItem);
+        }
+      })
+      
     }
-    
+
     return module;
   }
 
@@ -425,7 +408,7 @@ export class DatabaseJsonParserService {
 
     module.traitStats = jsonModule.phases[0].parts[0].overrideTraitDataBundle.candidates[0].blackboard;
 
-    // one or the other has the description 
+    // one or the other has the trait upgrade description
     const additionalDescription = jsonModule.phases[0].parts[0].overrideTraitDataBundle.candidates[0].additionalDescription;
     const overrideDescription = jsonModule.phases[0].parts[0].overrideTraitDataBundle.candidates[0].overrideDescripton; // yes it's misspelt
     
@@ -438,9 +421,9 @@ export class DatabaseJsonParserService {
     return module
   }
 
-  getSummons(charJson: any, tokenKey: string) {
+  getSummons(charJson: any, tokenKey, op) {
     if(tokenKey == null) {
-      return null;
+      return [];
     }
 
     let summons: Summon[] = [];
@@ -453,7 +436,8 @@ export class DatabaseJsonParserService {
         name: jsonSummon.name,
         id: tokenKey,
         statBreakpoints: this.getStats(charJson[tokenKey]),
-        associatedSkillIndex: 0
+        associatedSkillIndex: 0,
+        position: jsonSummon.position.charAt(0).toUpperCase() + jsonSummon.position.slice(1, jsonSummon.position.length).toLowerCase()
       }
 
       summons.push(newSummon)
@@ -469,7 +453,8 @@ export class DatabaseJsonParserService {
           name: jsonSummon.name,
           id: tokenKey.slice(0, tokenKey.length - 1) + index,
           statBreakpoints: this.getStats(charJson[tokenKey.slice(0, tokenKey.length - 1) + index]),
-          associatedSkillIndex: index
+          associatedSkillIndex: index,
+          position: jsonSummon.position.charAt(0).toUpperCase() + jsonSummon.position.slice(1, jsonSummon.position.length).toLowerCase()
         }
   
         summons.push(newSummon)
@@ -591,7 +576,8 @@ export class DatabaseJsonParserService {
     text = text.replace(/<\$cc.w.ncdeer1>/g, '<span class="special" data-tip="Whenever a recipe that consumes 4 or less Morale fails to produce a byproduct, gain 1 point of Causality for every 1 Morale consumed"> ')
     text = text.replace(/<\$cc.w.ncdeer2>/g, '<span class="special" data-tip="Whenever a recipe that consumes 8 Morale fails to produce a byproduct, gain 1 point of Karma for every 1 Morale consumed"> ')
     text = text.replace(/<\$ba.charged>/g, '<span class="special" data-tip="Can continue recovering SP after reaching the maximum.\nWhen SP reaches double the maximum, enter Charged state.\nSkills have additional effects when activated in Charged state (All SP is consumed whenever skill is activated)"> ')
-
+    text = text.replace(/<\$ba.strong>/g, '<span class="special" data-tip="When HP is higher than a certain percentage, gain a certain amount of ATK (Does not stack, strongest effect takes precedence)"> ')
+    
     const closingSpan = new RegExp('</>', 'g');
     text = text.replace(closingSpan, " </span>")
 
@@ -676,7 +662,7 @@ export class DatabaseJsonParserService {
         return 'Phalanx Caster';
       case 'wandermedic':
         return 'Wandering Medic';
-      case 'underminder':
+      case 'underminer':
         return 'Hexer';
       case 'stalker':
         return 'Ambusher';
@@ -688,37 +674,63 @@ export class DatabaseJsonParserService {
         return 'Therapist'
       case 'traper': // really...
         return 'Trapper'
+      case 'librator':
+        return 'Liberator'
+      case 'blastcaster':
+        return 'Blast Caster'
+      default:
+        return operator.subProfessionId.charAt(0).toUpperCase() + operator.subProfessionId.slice(1);
     }
+  }
 
-    return operator.subProfessionId.charAt(0).toUpperCase() + operator.subProfessionId.slice(1);
+  getGroupName(groupId: string) {
+    switch(groupId) {
+      case 'penguin':
+        return 'Penguin Logistics';
+      case 'rhodes':
+        return 'Rhodes Island'
+      case 'elite':
+        return 'Rhodes Elite Op'
+      case 'ursus':
+        return 'U.S.S.G'
+      case 'rhine':
+        return 'Rhine-Lab'
+      case 'sui':
+        return 'Yan-Sui'
+      case 'rim':
+        return 'Rim Billiton'
+      default:
+        if(groupId != null) {
+          return groupId.charAt(0).toUpperCase() + groupId.slice(1);
+        }
+    }
   }
 
   getEliteLmdUnlockReq(rarity: number, elite: number) {
     if(elite == 1) {
       switch(rarity) {
         case 3: 
-          return '10k';
+          return 10000;
         case 4:
-          return '15k';
+          return 15000;
         case 5: 
-          return '20k';
+          return 20000;
         case 6: 
-          return '30k';
+          return 30000;
       }
     } else if(elite == 2) {
       switch(rarity) {
         case 4:
-          return '60k';
+          return 60000;
         case 5:
-          return '120k';
+          return 120000;
         case 6: 
-          return '180k';
+          return 180000;
       }
     }
   }
 
   getPosition(operator: Operator) {
-
     return operator.position.charAt(0).toUpperCase() + operator.position.slice(1, operator.position.length).toLowerCase();
   }
 }

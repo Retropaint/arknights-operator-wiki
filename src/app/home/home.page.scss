@@ -34,12 +34,6 @@ ion-header {
 
   &.container {
     display: flex;
-    margin-bottom: 100px;
-
-    &.profile {
-      margin-bottom: 0px;
-      justify-content: center;
-    }
   }
 }
 
@@ -53,15 +47,35 @@ ion-header {
 
 .left-container {
   flex: 1 1 360px;
-  padding-right: 15px;
+  margin-bottom: 15px;
 
   &.no-skills {
     transform: translateX(50%);
+  }
+
+  &.desktop {
+    padding-right: 15px;
+  }
+
+  &.filter-table {
+    border: 1px solid white; 
+    padding: 10px; 
+    margin-right: 10px; 
+    margin-bottom: 0px;
+    height: 90vh;
+    overflow: auto;
   }
 }
 
 .right-container {
   flex: 1 1 360px;
+
+  &.operator-list {
+    border: 1px solid white; 
+    padding: 10px;
+    height: 90vh;
+    overflow: auto;
+  }
 }
 
 .close-gallery {

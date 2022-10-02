@@ -15,6 +15,9 @@ import { OperatorTransitionerService } from './operator-transitioner.service';
 })
 export class DatabaseJsonGetterService {
 
+  baseUrl: string = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/"
+  //baseUrl: string = "assets/json/"
+
   constructor(
     private http: HttpClient,
     private transitioner: OperatorTransitionerService,
@@ -24,7 +27,8 @@ export class DatabaseJsonGetterService {
   ) { }
 
   init() {
-    this.http.get('assets/json/item_table.json')
+    console.time("item");
+    this.http.get(this.baseUrl + 'item_table.json')
       .pipe(
         concatMap(itemJson => {
           Object.keys(itemJson['items']).forEach(item => {
@@ -41,7 +45,7 @@ export class DatabaseJsonGetterService {
           
           })
 
-          return this.http.get('assets/json/character_table.json');
+          return this.http.get(this.baseUrl + 'character_table.json');
         }),
         concatMap(results => {
 
@@ -87,10 +91,18 @@ export class DatabaseJsonGetterService {
                   op.potentialItemId = 'p_char_4019_ncdeer'
               }
 
+              let groupId = '';
+              if(op.groupId != null) {
+                groupId = op.groupId;
+              } else if(op.nationId != null) {
+                groupId = op.nationId;
+              } else {
+                groupId = op.teamId;
+              }
+
               const newOperator: Operator = {
                 id: op.potentialItemId,
                 name: op.name,
-                nation: op.nationId,
                 rarity: op.rarity + 1,
                 potentials: this.dbJsonParser.getPotentials(op),
                 trait: this.dbJsonParser.stylizeText(op.description).replace('{heal_scale:0%}', '80%'),
@@ -98,14 +110,20 @@ export class DatabaseJsonGetterService {
                 branch: this.dbJsonParser.getBranch(op),
                 originalBranch: op.subProfessionId,
                 talents: this.dbJsonParser.getTalents(op),
-                recruitTags: op.tagList,
+                tags: op.tagList,
                 obtainMethods: op.itemObtainApproach,
                 position: this.dbJsonParser.getPosition(op),
                 skills: skills,
                 statBreakpoints: this.dbJsonParser.getStats(op),
                 skillLevelUnlockReqs: this.dbJsonParser.getSkillLevelUnlockReqs(op),
-                summons: this.dbJsonParser.getSummons(results, op.tokenKey),
+                summons: this.dbJsonParser.getSummons(results, op.tokenKey, op),
                 trustStats: this.dbJsonParser.getTrustStats(op),
+                recruitmentContract: op.itemDesc,
+                potentialToken: op.itemUsage,
+                group: {
+                  name: this.dbJsonParser.getGroupName(groupId),
+                  id: groupId
+                },
                 skins: [],
                 voiceActors: {},
                 modules: [],
@@ -127,7 +145,7 @@ export class DatabaseJsonGetterService {
             opIds.push(operator.id.replace('p_', ''));
           })
           
-          return this.http.get('assets/json/range_table.json');
+          return this.http.get(this.baseUrl + 'range_table.json');
         }),
         concatMap(jsonRanges => {
           Object.keys(jsonRanges).forEach(jsonRange => {
@@ -138,7 +156,7 @@ export class DatabaseJsonGetterService {
             this.database.ranges.push(newRange);
           })
 
-          return this.http.get('assets/json/charword_table.json'); 
+          return this.http.get(this.baseUrl + 'charword_table.json'); 
         }),
         concatMap((jsonCharwords: any) => {
 
@@ -167,7 +185,7 @@ export class DatabaseJsonGetterService {
             }
           })
 
-          return this.http.get('assets/json/skin_table.json'); 
+          return this.http.get(this.baseUrl + 'skin_table.json'); 
         }),
         concatMap((jsonSkins: any) => {
 
@@ -213,7 +231,7 @@ export class DatabaseJsonGetterService {
             skinJson.skins.push(skin.id)
           })
           
-          return this.http.get('assets/json/uniequip_table.json'); 
+          return this.http.get(this.baseUrl + 'uniequip_table.json'); 
         }),
         concatMap((results: any) => {
 
@@ -229,7 +247,21 @@ export class DatabaseJsonGetterService {
             
           })
 
-          return this.http.get('assets/json/building_data.json'); 
+          return this.http.get(this.baseUrl + 'battle_equip_table.json'); 
+        }),
+        concatMap(results => {
+
+          Object.keys(results).forEach(equipId => {
+            this.database.operators.forEach(op => {
+              let module = op.modules.find(module => module.id == equipId)
+              
+              if(module != null) {
+                module = this.dbJsonParser.getModuleLevelStats(results[equipId], module);
+              }
+            })
+          })
+
+          return this.http.get(this.baseUrl + 'building_data.json'); 
         }),
         concatMap(results => {
           this.dbJsonParser.getBaseSkills(results['buffs']);
@@ -238,23 +270,9 @@ export class DatabaseJsonGetterService {
             this.dbJsonParser.getOperatorBaseSkills(results['chars'][char].charId, results['chars'][char].buffChar)
           })
 
-          return this.http.get('assets/json/battle_equip_table.json'); 
+          return this.http.get(this.baseUrl + 'handbook_info_table.json');
         }),
         concatMap(results => {
-
-          Object.keys(results).forEach(equipId => {
-            this.database.operators.forEach(op => {
-              let module = op.modules.find(module => module.id == equipId)
-              if(module != null) {
-                module = this.dbJsonParser.getModuleLevelStats(results[equipId], module);
-              }
-            })
-          })
-
-          return this.http.get('assets/json/handbook_info_table.json'); 
-        }),
-        concatMap(results => {
-
           Object.keys(results['handbookDict']).forEach(charId => {
             const charEntry = results['handbookDict'][charId]
             const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == charId);
@@ -272,16 +290,17 @@ export class DatabaseJsonGetterService {
                 }
               }
 
-              op.profileEntries.push(newEntry)
+              op.profileEntries.push(newEntry);
             })
             
           })
 
-          return this.http.get('assets/json/skill_table.json'); 
+          return this.http.get(this.baseUrl + 'skill_table.json'); 
         })
       )
       .subscribe(skills => {
         this.database.operators.forEach(operator => {
+
           operator.skills.forEach(skill => {
             const jsonSkill = skills[skill.id];
 
@@ -294,15 +313,13 @@ export class DatabaseJsonGetterService {
 
               skill.levels = this.dbJsonParser.getSkillLevels(skill, jsonSkill, operator);
             }
-
           })
 
           // rather just use this operator loop for manual edits than create an entirely new one
           this.manualParser.edit(operator);
         })
-
         
-        this.transitioner.transitionSubscription.next();
+        this.transitioner.transitionSubscription.next()
       })
   }
 }

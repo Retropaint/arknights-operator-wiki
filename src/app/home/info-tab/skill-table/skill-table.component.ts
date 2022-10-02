@@ -75,7 +75,10 @@ export class SkillTableComponent implements OnInit {
         id: skill.id,
         name: skill.name,
         description: skill.description,
-        recoveryType: skill.spType,
+        recoveryType: {
+          name: skill.spType,
+          tip: this.getSpTypeTip(skill.spType)
+        },
         eliteUnlockReq: skill.eliteUnlockReq,
         activationType: skill.activationType,
         spCosts: this.getMiscSkillStats(skill, 'spCost', firstSelectedSkillLevel, lastSelecedSkillLevel),
@@ -101,6 +104,7 @@ export class SkillTableComponent implements OnInit {
 
       this.skills.push(newSkill)
     })
+
 
     this.manualEdits();
 
@@ -255,8 +259,8 @@ export class SkillTableComponent implements OnInit {
   cleanUpSkillDescription(string: string) {
 
     // colon is for 's' representing seconds in stats, which is removed so the 's' letter is isolated and can be grouped with the value
-    const split = string.split(/[\: ]/);
-    
+    const split = string.split(/[\: ]/).filter(word => word != '');
+
     let result = '';
 
     for(let i = 0; i < split.length; i++) {
@@ -274,9 +278,15 @@ export class SkillTableComponent implements OnInit {
       }
     }
 
-    split.forEach(word => {
-      result += word + ' '
-    })
+    // turn split into an actual string
+    for(let i = 0; i < split.length; i++) {
+      // don't add spacing between punctuation, a plus (it should be grouped with its stat value)
+      if(split[i+1] != '</span>.' && split[i+1] != '</span>;' && split[i+1] != '</span>,' && split[i] != '+') {
+        result += split[i] + ' '
+      } else {
+        result += split[i]
+      }
+    }
 
     return result;
   }
@@ -292,8 +302,7 @@ export class SkillTableComponent implements OnInit {
         split[i] = 'reduced'
       }
 
-      if(word == 'moderately') {
-
+      if(word == 'moderately' || word == 'dramatically' || word == 'slightly') {
         // a value less than 0 means it's negative, therefore it's reduced/raised *by* and not *to*
         if(skill.levels[0].stats[0].value < 0) {
           split[i] = 'by base_attack_time:0%';
@@ -421,6 +430,19 @@ export class SkillTableComponent implements OnInit {
     this.selectedSkillLevels[this.sliderLevel] = true;
 
     this.getSkillDescriptions();
+  }
+
+  getSpTypeTip(spType: string) {
+    switch(spType) {
+      case 'Auto Recovery':
+        return 'Generates 1 SP per second'
+      case 'Defensive Recovery':
+        return 'Generates 1 SP when hit'
+      case 'Offensive Recovery':
+        return 'Generates 1 SP per attack'
+      case 'Passive':
+        return 'Does not generate SP'
+    }
   }
 
   manualEdits() {

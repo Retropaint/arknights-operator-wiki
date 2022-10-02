@@ -1,4 +1,4 @@
-<table class="table connect header-table">
+<table class="table connect header-table no-bottom-border">
   <tbody>
     <tr>
       <td [ngClass]="{'selected' : selectedSkillLevels[skillLevel]}" *ngFor="let skillLevel of objectKeys(selectedSkillLevels); let i=index" (click)="toggleSkillLevel(i)" style="text-align: center">
@@ -50,7 +50,7 @@
       </td>
       <td class="skill-description">
 
-        <p class="recovery {{s.recoveryType.split(' ')[0]}}"> {{s.recoveryType}} </p>
+        <p class="special recovery {{s.recoveryType.name.split(' ')[0]}}" [attr.data-tip]="s.recoveryType.tip"> {{s.recoveryType.name}} </p>
 
         <p class="activation"> {{s.activationType}} </p>
         

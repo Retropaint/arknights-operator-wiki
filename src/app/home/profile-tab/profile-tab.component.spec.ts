@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SkillRangeTableComponent } from './skill-range-table.component';
+import { ProfileTabComponent } from './profile-tab.component';
 
-describe('SkillRangeTableComponent', () => {
-  let component: SkillRangeTableComponent;
-  let fixture: ComponentFixture<SkillRangeTableComponent>;
+describe('ProfileTabComponent', () => {
+  let component: ProfileTabComponent;
+  let fixture: ComponentFixture<ProfileTabComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SkillRangeTableComponent ],
+      declarations: [ ProfileTabComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SkillRangeTableComponent);
+    fixture = TestBed.createComponent(ProfileTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

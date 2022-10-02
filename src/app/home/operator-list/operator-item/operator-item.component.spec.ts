@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RangeTableComponent } from './range-table.component';
+import { OperatorItemComponent } from './operator-item.component';
 
-describe('RangeTableComponent', () => {
-  let component: RangeTableComponent;
-  let fixture: ComponentFixture<RangeTableComponent>;
+describe('OperatorItemComponent', () => {
+  let component: OperatorItemComponent;
+  let fixture: ComponentFixture<OperatorItemComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RangeTableComponent ],
+      declarations: [ OperatorItemComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RangeTableComponent);
+    fixture = TestBed.createComponent(OperatorItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

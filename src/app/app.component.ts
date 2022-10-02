@@ -20,11 +20,11 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    
-
     this.storage.create();
 
     this.dbJsonGetter.init();
     this.doctorService.init();
   }
+
+  
 }

@@ -1,6 +1,7 @@
 table {
   border: none;
   height: 100%;
+  max-width: 400px;
 
   .header {
     text-align: center;
@@ -9,10 +10,5 @@ table {
 
   th {
     text-align: left;
-    white-space: nowrap;
-  }
-
-  .basic {
-    max-width: 400px;
   }
 }

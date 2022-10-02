@@ -1,0 +1,40 @@
+.profile {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 100px;
+  margin-bottom: 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.recruitAndTokenContainer {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  margin-left: 5px;
+
+  .table {
+    height: 100%;
+  
+    th {
+      height: 35px;
+    }
+  }
+}
+
+.group-img-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-between;
+
+  .group-img {
+    padding: 10px;
+    width: 300px;
+  }
+
+  p {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+}

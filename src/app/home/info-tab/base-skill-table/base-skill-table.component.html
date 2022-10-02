@@ -5,10 +5,12 @@
       <th>Elite Req.</th>
     </tr>
     <tr *ngFor="let baseSkill of operator.baseSkills; let i = index">
-      <td class="name-container">
-        <ion-img class="skill-icon" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/ui/infrastructure/skill/{{baseSkill.iconId}}.png"></ion-img>
-        {{baseSkill.name}} 
-        <span *ngIf="operator.name == 'Aurora' && i == 1" style="margin-left: 10px; color: #e6e6e6">(replaces Defender Expert α)</span>
+      <td >
+        <div class="name-container">  
+          <ion-img class="skill-icon" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/ui/infrastructure/skill/{{baseSkill.iconId}}.png"></ion-img>
+          {{baseSkill.name}} 
+          <span *ngIf="operator.name == 'Aurora' && i == 1" style="margin-left: 10px; color: #e6e6e6">(replaces Defender Expert α)</span>
+        </div>
       </td>
       <td>
         <div #description [innerHTML]="baseSkill.description"></div>

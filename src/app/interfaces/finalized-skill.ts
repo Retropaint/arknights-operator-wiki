@@ -2,7 +2,10 @@ export interface FinalizedSkill {
   id: string,
   name: string,
   description: string,
-  recoveryType: string,
+  recoveryType: {
+    name: string,
+    tip: string;
+  },
   eliteUnlockReq: number,
   activationType: string,
   spCosts: {value: number, level: number}[],
