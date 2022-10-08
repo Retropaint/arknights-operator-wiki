@@ -36,6 +36,8 @@ export class DatabaseJsonGetterService {
     this.http.get(this.baseUrl + 'item_table.json')
       .pipe(
         concatMap(itemJson => {
+          console.log(itemJson)
+
           Object.keys(itemJson['items']).forEach(item => {
             const thisItem = itemJson['items'][item]
             
@@ -43,7 +45,8 @@ export class DatabaseJsonGetterService {
               name: thisItem.name,
               id: thisItem.itemId,
               imgId: thisItem.iconId,
-              rarity: thisItem.rarity+1
+              rarity: thisItem.rarity+1,
+              type: thisItem.classifyType
             }
 
             this.database.items.push(newItem);

@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { FilterTableComponent } from '../operator/filter-table/filter-table.component';
 import { OperatorListComponent } from '../operator/operator-list/operator-list.component';
+import { ItemListComponent } from './items-tab/item-list/item-list.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { OperatorListComponent } from '../operator/operator-list/operator-list.c
     DialogSettingsComponent,
     FilterTableComponent,
     OperatorListComponent,
+    ItemListComponent
   ],
   schemas: []
 })

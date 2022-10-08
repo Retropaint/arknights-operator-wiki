@@ -3,15 +3,13 @@
   <p class="header">Settings</p>
 
   <div class="stat-slider-checkbox">
-    Skill Slider
-    <app-checkbox [value]="skillSlider" (onChanged)="skillSlider = $event"></app-checkbox>
+    <app-checkbox label="Stat Slider" [value]="skillSlider" (onChanged)="skillSlider = $event"></app-checkbox>
   </div>
 
   <br>
 
   <div class="stat-slider-checkbox">
-    Stat Slider
-    <app-checkbox [value]="statSlider" (onChanged)="statSlider = $event"></app-checkbox>
+    <app-checkbox label="Skill Slider" [value]="statSlider" (onChanged)="statSlider = $event"></app-checkbox>
   </div>
 
   <table class="table">

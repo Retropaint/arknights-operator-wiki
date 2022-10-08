@@ -19,7 +19,7 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class HomePage implements OnInit, OnDestroy {
 
-  currentHomeTab: 'operators' | 'items' = 'operators';
+  currentTab: 'operators' | 'items' = 'operators';
   isBlurry: boolean = false;
   favIcon: HTMLLinkElement;
   hasLoaded: boolean = false;
@@ -31,10 +31,10 @@ export class HomePage implements OnInit, OnDestroy {
   windowWidth: number;
 
   constructor(
+    public dbGetter: DatabaseJsonGetterService,
     private database: DatabaseService,
     private title: Title,
     private platform: Platform,
-    public dbGetter: DatabaseJsonGetterService,
     private sharedService: SharedService
   ) {}
 

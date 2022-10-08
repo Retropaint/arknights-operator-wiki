@@ -1,0 +1,70 @@
+<div>
+  <app-checkbox label="Grouping" [value]="grouped" (onChanged)="grouped = !grouped"></app-checkbox>
+</div>
+
+<ng-container *ngIf="grouped">
+  <div class="grouped-item-container">
+    <table class="table" style="margin-left: 5px; margin-right: 5px" *ngFor="let category of groupedItems">
+      <tbody>
+        <tr> <th>{{category.name}}</th> </tr>
+        <tr>
+          <ng-container *ngFor="let item of category.items; let i = index">
+            <br *ngIf="i == category.items.length/2 && i != category.items.length - 1">
+            <app-item
+              [item]="item"
+              [isGrouped]="true"
+            ></app-item>
+            <br *ngIf="item.name == 'Skill Summary - 2'">
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="grouped-chip-container">
+    <table class="table" style="margin-left: 5px; margin-right: 5px" *ngFor="let category of groupedChips">
+      <tbody>
+        <tr> <th>{{category.name}}</th> </tr>
+        <tr>
+          <ng-container *ngFor="let item of category.items; let i = index">
+            <br *ngIf="i == category.items.length/2">
+            <app-item
+              [item]="item"
+              [isGrouped]="true"
+            ></app-item>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <table class="table">
+    <tbody>
+      <tr> <th>Miscellaneous</th> </tr>
+      <tr>
+        <ng-container *ngFor="let item of miscellaneousItems; let i = index">
+          <app-item
+            [item]="item"
+            [isGrouped]="true"
+          ></app-item>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<ng-container *ngIf="!grouped">
+  <table class="table">
+    <tbody>
+      <tr> <th>Growth Materials</th> </tr>
+      <tr>
+        <ng-container *ngFor="let item of allItems; let i = index">
+          <app-item
+            [item]="item"
+            [isGrouped]="true"
+          ></app-item>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

@@ -2,9 +2,17 @@
   display: inline-flex;
   align-items: center;
   padding-right: 10px;
+  --container-offset: 28px;
+  --container-y-offset: -70px;
 
-  &.is-mastery-true {
+  &.mastery {
     padding-right: 3px;
+  }
+
+  &.grouped {
+    padding-right: 0px;
+    --container-offset: 38px;
+    --container-y-offset: -80px;
   }
 
   &:hover {
@@ -24,10 +32,9 @@
     }
 
     .name {
-      --container-offset: 28px;
       --container-center: -50%;
       transform-origin: bottom;
-      transform: translate(calc(var(--container-center) + var(--container-offset)), -70px) scale(1.25);
+      transform: translate(calc(var(--container-center) + var(--container-offset)), var(--container-y-offset)) scale(1.25);
       z-index: 100;
       opacity: 1;
     }
@@ -37,6 +44,11 @@
 .item-bg {
   width: 50px;
   height: 50px;
+
+  &.grouped {
+    height: 70px;
+    width: 70px;
+  }
 }
 
 .item-img {
@@ -44,6 +56,12 @@
   width: 35px;
   height: 35px;
   transform: translate(7px, 0px);
+
+  &.grouped {
+    width: 49px;
+    height: 49px;
+    transform: translate(10px, 0px);
+  }
 }
 
 .amount {

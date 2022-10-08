@@ -10,6 +10,7 @@ export class ItemComponent implements OnInit {
 
   @Input() item: Item;
   @Input() isMastery: boolean = false;
+  @Input() isGrouped: boolean = false;
 
   constructor() { }
 

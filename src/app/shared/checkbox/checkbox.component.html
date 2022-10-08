@@ -1,5 +1,8 @@
-<div class="check-box" [ngClass]="{'on' : value}" (click)="changeValue()">
-  <p class="toggle-text on">On</p>
-  <p class="toggle-text off">Off</p>
-  <div class="toggle-state" [ngClass]="{'on' : value}"></div>
+<div class="container">
+  <p>{{label}}</p>
+  <div class="check-box" [ngClass]="{'on' : value}" (click)="changeValue()">
+    <p class="toggle-text on">On</p>
+    <p class="toggle-text off">Off</p>
+    <div class="toggle-state" [ngClass]="{'on' : value}"></div>
+  </div>
 </div>

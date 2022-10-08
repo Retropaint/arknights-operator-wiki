@@ -6,17 +6,21 @@
 
   <div *ngIf="hasLoaded">
     <div class="tabs">
-      <p (click)="currentHomeTab = 'operators'" [ngClass]="{'selected' : currentHomeTab == 'operators'}">Operators</p>
-      <p (click)="currentHomeTab = 'items'" [ngClass]="{'selected' : currentHomeTab == 'items'}">Items</p>
+      <p (click)="currentTab = 'operators'" [ngClass]="{'selected' : currentTab == 'operators'}">Operators</p>
+      <p (click)="currentTab = 'items'" [ngClass]="{'selected' : currentTab == 'items'}">Items</p>
     </div>
 
-    <div class="dead-zone container">
+    <div class="dead-zone container" *ngIf="currentTab == 'operators'">
       <div class="left-container filter-table">
         <app-filter-table></app-filter-table>
       </div>
       <div class="right-container operator-list">
         <app-operator-list></app-operator-list>
       </div>
+    </div>
+
+    <div class="dead-zone" *ngIf="currentTab == 'items'">
+      <app-item-list></app-item-list>
     </div>
   </div>
 

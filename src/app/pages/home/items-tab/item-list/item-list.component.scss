@@ -1,0 +1,25 @@
+.grouped-item-container {
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.grouped-chip-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.grouped-miscellaneous {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+th {
+  border-bottom: 1px solid white !important;
+  border: none;
+}
+
+tr {
+  text-align: center;
+}
