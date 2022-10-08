@@ -9,7 +9,7 @@
   [suggestions]="results" 
   (completeMethod)="search($event)" 
   field="name"
-  (keyup.enter)="clickedSuggestion(results[0].name)">
+  (keyup.enter)="clickedSuggestion(results[0].name, true)">
     <ng-template let-operator pTemplate="operator" let-idx="index">
       <a routerLink="/operator" [queryParams]="{'name': encodeURI(operator.name)}" (click)="clickedSuggestion()" class="operator-suggestion rarity-{{operator.rarity}}" [ngClass]="{'divider' : idx < results.length-1}" (click)="clickedSuggestion(operator.name)">
         <ion-img [src]="operator.img"></ion-img>

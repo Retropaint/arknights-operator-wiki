@@ -6,7 +6,7 @@
       </th>
     </tr>
     <tr *ngFor="let level of operator.skillLevelUnlockReqs; let i = index">
-      <th style="width: 20%;">
+      <th style="width: 20%; height: 85px">
         {{i+2}}
       </th>
       <td>
@@ -18,7 +18,7 @@
     </tr>
     <ng-container *ngIf="operator.rarity > 3 && operator.skills[0].masteryUnlockReqs.length != 0">
       <tr *ngFor="let mastery of emptyArray(3); let m = index">
-        <th style="width: 20%;">Mastery {{m+1}}</th>
+        <th style="width: 20%; height: 140px">Mastery {{m+1}}</th>
         <td>
           
           <div class="mastery">

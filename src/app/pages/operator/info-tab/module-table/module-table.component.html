@@ -8,8 +8,7 @@
     <tr>
       <td colspan="100">
         <div class="module-header">
-          <ion-img *ngIf="moduleIndex == 0" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/original.png"></ion-img>
-          <ion-img *ngIf="moduleIndex > 0" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/{{operator.modules[moduleIndex].id}}.png"></ion-img>
+          <ion-img src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/{{operator.modules[moduleIndex].id}}.png"></ion-img>
           <div class="content">
             <p>{{operator.modules[moduleIndex].name}}</p>
             <p [innerHTML]="trait"></p>

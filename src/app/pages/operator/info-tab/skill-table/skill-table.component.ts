@@ -473,18 +473,6 @@ export class SkillTableComponent implements OnInit {
         }
       }
     }
-
-    // remove SilverAsh and Mountain's <br> tag on s2
-    if(this.operator.name == 'SilverAsh' || this.operator.name == 'Mountain') {
-      this.skills[1].description = this.skills[1].description.replace('<br>', '');
-    }
-
-    // remove Chen's <br> tags on s2
-    if(this.operator.name == 'Ch\'en') {
-      const br = new RegExp('<br>', 'g');
-      this.skills[1].description = this.skills[1].description.replace(br, '');
-    }
-
   }
 
 }

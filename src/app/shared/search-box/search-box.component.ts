@@ -22,8 +22,6 @@ export class SearchBoxComponent implements OnInit {
 
   chosenResult: number = 0;
 
-  @Output() homePageReset = new EventEmitter<string>();
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -67,7 +65,7 @@ export class SearchBoxComponent implements OnInit {
       const firstResultWord = newResults[0].name.split(' ')[0];
       const secondResultWord = newResults[1].name.split(' ')[0];
       if(firstResultWord == secondResultWord) {
-        isAlter = true;
+          isAlter = true;
       }
     }
 
@@ -76,17 +74,33 @@ export class SearchBoxComponent implements OnInit {
       newResults.sort((a, b) => a.name < b.name ? 1 : -1)
       newResults.sort((a, b) => a.rarity < b.rarity ? 1 : -1)
     } else {
-      // for ops and their alter, put original first
-      newResults.sort((a, b) => a.name.length > b.name.length ? 1 : -1)
+      // put original op before alter
+      newResults.sort((a, b) => a.name.length < b.name.length ? 1 : -1)
     }
 
     this.results = newResults;
   }
 
-  async clickedSuggestion(suggestion: string) {
+  async clickedSuggestion(suggestion: string, fromKeyboard: boolean = false) {
     if(suggestion != null) {
       this.text = "";
     }
+
+    if(!fromKeyboard) return;
+
+    let urlParams = {
+      'name': encodeURI(suggestion)
+    }
+
+    await this.router.navigate(
+      ['/operator'], 
+      {
+        replaceUrl: true,
+        queryParams: urlParams,
+      }
+    )
+
+    this.results = [];
   }
 
   cycleChosenResult(increment: number) {

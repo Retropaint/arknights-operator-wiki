@@ -39,6 +39,11 @@ export class ManualJsonParserService {
     if(op.name == 'Ambriel') {
       op.skills[1].description = op.skills[1].description.replace('a bit', '');
     }
+
+    if(op.name == 'SilverAsh' || op.name == 'Mountain' || op.name == 'Ch\'en') {
+      const br = new RegExp('<br>', 'g');
+      op.skills[1].description = op.skills[1].description.replace(br, '');
+    }
   }
 
   talents(op: Operator) {
