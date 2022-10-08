@@ -17,5 +17,7 @@ export class DatabaseService {
 
   specialReserveOps = ['Sharp', 'Touch', 'Pith', 'Stormeye'];
 
+  isLoaded: boolean;
+
   constructor() { }
 }

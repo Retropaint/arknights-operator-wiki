@@ -1,0 +1,25 @@
+<app-header></app-header>
+
+<ion-content [ngClass]="{'blur' : isBlurry}">
+
+  <p *ngIf="!hasLoaded" style="text-align: center; margin-top: 10px">Loading... {{dbGetter.jsonLoadingProgress / dbGetter.maxJsonFiles | numberFormatter: 'percent'}}</p>
+
+  <div *ngIf="hasLoaded">
+    <div class="tabs">
+      <p (click)="currentHomeTab = 'operators'" [ngClass]="{'selected' : currentHomeTab == 'operators'}">Operators</p>
+      <p (click)="currentHomeTab = 'items'" [ngClass]="{'selected' : currentHomeTab == 'items'}">Items</p>
+    </div>
+
+    <div class="dead-zone container">
+      <div class="left-container filter-table">
+        <app-filter-table></app-filter-table>
+      </div>
+      <div class="right-container operator-list">
+        <app-operator-list></app-operator-list>
+      </div>
+    </div>
+  </div>
+
+  <div (window:resize)="onResize($event)"></div>
+</ion-content>
+

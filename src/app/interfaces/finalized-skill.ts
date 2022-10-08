@@ -1,5 +1,6 @@
 export interface FinalizedSkill {
   id: string,
+  iconId: string,
   name: string,
   description: string,
   recoveryType: {

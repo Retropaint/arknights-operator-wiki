@@ -68,4 +68,8 @@ export class AudioPlayerComponent implements AfterViewInit {
     }
   }
 
+  ngOnDestroy() {
+    this.audio.src = '';
+  }
+
 }

@@ -11,15 +11,20 @@ import { DoctorService } from './services/doctor.service';
 })
 export class AppComponent implements OnInit {
 
-
   constructor(
     private dbJsonGetter: DatabaseJsonGetterService,
     private doctorService: DoctorService,
     private storage: Storage,
-    private sanitized: DomSanitizer
   ) {}
 
   ngOnInit() {
+    // random console logs that are the absolute peak of comedy
+    const randomLog = ["Azur Lane is better", "I can code as well as Hibiscus can cook", "No I am NOT making a mobile view stop asking"];
+    const chosenLog = Math.round(Math.random() * (randomLog.length-1));
+    setTimeout(() => {
+      console.log(randomLog[chosenLog]);
+    }, 500) 
+
     this.storage.create();
 
     this.dbJsonGetter.init();

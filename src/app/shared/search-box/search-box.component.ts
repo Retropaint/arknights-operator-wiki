@@ -31,7 +31,9 @@ export class SearchBoxComponent implements OnInit {
     public opAvatarService: OperatorAvatarService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.text = '';
+  }
 
   search(event) {
     this.chosenResult = -1;
@@ -64,15 +66,8 @@ export class SearchBoxComponent implements OnInit {
     if(newResults.length == 2) {
       const firstResultWord = newResults[0].name.split(' ')[0];
       const secondResultWord = newResults[1].name.split(' ')[0];
-      // if it's only an op and their alter, place original first
       if(firstResultWord == secondResultWord) {
-        // ...or don't do anything if it's already correct
-        if(newResults[1].name.length > newResults[0].name.length) {
-          const alterOp = newResults.slice()[1];
-          newResults[1] = newResults.slice()[0];
-          newResults[1] = alterOp;
-          isAlter = true;
-        } 
+        isAlter = true;
       }
     }
 
@@ -80,32 +75,18 @@ export class SearchBoxComponent implements OnInit {
       // sort by rarity, then alphabetically
       newResults.sort((a, b) => a.name < b.name ? 1 : -1)
       newResults.sort((a, b) => a.rarity < b.rarity ? 1 : -1)
+    } else {
+      // for ops and their alter, put original first
+      newResults.sort((a, b) => a.name.length > b.name.length ? 1 : -1)
     }
 
     this.results = newResults;
   }
 
   async clickedSuggestion(suggestion: string) {
-    if(suggestion == null) return;
-    
-    this.text = "";
-
-    let urlParams = {
-      'operator': encodeURI(suggestion)
+    if(suggestion != null) {
+      this.text = "";
     }
-
-    await this.router.navigate(
-      [], 
-      {
-        relativeTo: this.route,
-        queryParams: urlParams,
-      }
-    )
-
-    this.results = [];
-
-    //this.transitioner.transitionSubscription.next(encodeURI(suggestion));
-    this.homePageReset.emit(encodeURI(suggestion));
   }
 
   cycleChosenResult(increment: number) {

@@ -9,6 +9,7 @@ import { DatabaseJsonParserService } from './database-json-parser.service';
 import { DatabaseService } from './database.service';
 import { ManualJsonParserService } from './manual-json-parser.service';
 import { OperatorTransitionerService } from './operator-transitioner.service';
+import { SharedService } from './shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,16 +18,20 @@ export class DatabaseJsonGetterService {
 
   baseUrl: string = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/"
   //baseUrl: string = "assets/json/"
+  jsonLoadingProgress: number;
+  maxJsonFiles: number = 10;
 
   constructor(
     private http: HttpClient,
     private transitioner: OperatorTransitionerService,
     private database: DatabaseService,
     private dbJsonParser: DatabaseJsonParserService,
-    private manualParser: ManualJsonParserService
+    private manualParser: ManualJsonParserService,
+    private sharedService: SharedService
   ) { }
 
   init() {
+    this.jsonLoadingProgress = 0;
     console.time("item");
     this.http.get(this.baseUrl + 'item_table.json')
       .pipe(
@@ -45,6 +50,7 @@ export class DatabaseJsonGetterService {
           
           })
 
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'character_table.json');
         }),
         concatMap(results => {
@@ -63,6 +69,10 @@ export class DatabaseJsonGetterService {
                 }
                 skills.push(newSkill)
               })
+
+              if(op.potentialItemId == "p_char_512_aprot") {
+                return;
+              }
 
               if(op.name.includes('Reserve Operator')) {
                 if(op.name.includes('Melee')) {
@@ -133,7 +143,7 @@ export class DatabaseJsonGetterService {
               }
 
               if(newOperator.branch == 'Pusher' || newOperator.branch == 'Hookmaster') {
-                newOperator.position = 'Melee & Ranged'
+                newOperator.position = 'All'
               }
 
               this.database.operators.push(newOperator);
@@ -145,6 +155,7 @@ export class DatabaseJsonGetterService {
             opIds.push(operator.id.replace('p_', ''));
           })
           
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'range_table.json');
         }),
         concatMap(jsonRanges => {
@@ -156,6 +167,7 @@ export class DatabaseJsonGetterService {
             this.database.ranges.push(newRange);
           })
 
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'charword_table.json'); 
         }),
         concatMap((jsonCharwords: any) => {
@@ -185,6 +197,7 @@ export class DatabaseJsonGetterService {
             }
           })
 
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'skin_table.json'); 
         }),
         concatMap((jsonSkins: any) => {
@@ -231,6 +244,7 @@ export class DatabaseJsonGetterService {
             skinJson.skins.push(skin.id)
           })
           
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'uniequip_table.json'); 
         }),
         concatMap((results: any) => {
@@ -247,6 +261,7 @@ export class DatabaseJsonGetterService {
             
           })
 
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'battle_equip_table.json'); 
         }),
         concatMap(results => {
@@ -261,6 +276,7 @@ export class DatabaseJsonGetterService {
             })
           })
 
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'building_data.json'); 
         }),
         concatMap(results => {
@@ -270,6 +286,7 @@ export class DatabaseJsonGetterService {
             this.dbJsonParser.getOperatorBaseSkills(results['chars'][char].charId, results['chars'][char].buffChar)
           })
 
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'handbook_info_table.json');
         }),
         concatMap(results => {
@@ -295,6 +312,7 @@ export class DatabaseJsonGetterService {
             
           })
 
+          this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'skill_table.json'); 
         })
       )
@@ -311,6 +329,12 @@ export class DatabaseJsonGetterService {
               skill.levels = [];
               skill.activationType = jsonSkill.levels[0].skillType == 1 ? 'Manual' : 'Auto';
 
+              if(jsonSkill.iconId != null) {
+                skill.iconId = jsonSkill.iconId;
+              } else {
+                skill.iconId = skill.id;
+              }
+
               skill.levels = this.dbJsonParser.getSkillLevels(skill, jsonSkill, operator);
             }
           })
@@ -319,7 +343,10 @@ export class DatabaseJsonGetterService {
           this.manualParser.edit(operator);
         })
         
-        this.transitioner.transitionSubscription.next()
+        this.jsonLoadingProgress++;
+        this.sharedService.allJsonsLoaded();
+        this.database.isLoaded = true;
+        //this.transitioner.transitionSubscription.next()
       })
   }
 }

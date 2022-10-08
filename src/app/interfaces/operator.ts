@@ -60,6 +60,7 @@ export interface Skill {
   levels?: SkillLevel[];
   masteryUnlockReqs?: SkillUnlockReqs[]; 
   eliteUnlockReq: number;
+  iconId?: string;
 }
 
 export interface SkillLevel {

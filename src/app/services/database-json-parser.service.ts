@@ -444,7 +444,6 @@ export class DatabaseJsonParserService {
     } else { 
       
       // get all summons
-      
       let index = 1;
       while(charJson[tokenKey.slice(0, tokenKey.length - 1) + index] != null) {
         const jsonSummon = charJson[tokenKey.slice(0, tokenKey.length - 1) + index]
@@ -501,7 +500,6 @@ export class DatabaseJsonParserService {
 
       baseSkillJson.forEach(skill => {
 
-        // even without an actual base skill, they will have a slot but no levels
         if(skill.buffData.length == 0) {
           return;
         }
@@ -552,31 +550,39 @@ export class DatabaseJsonParserService {
     text = text.replace(/<@cc.kw>/g, ' <span class="positive-effect"> ')
     text = text.replace(/<@cc.rem>/g, ' <span class="positive-effect"> ')
     
-    text = text.replace(/<\$ba.shield>/g, '<span class="special" data-tip="Each stack of shield can block 1 instance of damage"> ')
-    text = text.replace(/<\$ba.buffres>/g, '<span class="special" data-tip="Reduce duration of abnormal effects such as Stun, Cold, Freeze by 50% (Does not stack)"> ')
-    text = text.replace(/<\$ba.fragile>/g, '<span class="special" data-tip="Increase all damage taken by the stated percentage (Does not stack, strongest effect takes precedence)"> ')
-    text = text.replace(/<\$ba.sluggish>/g, '<span class="special" data-tip="Movement Speed reduced by 80%"> ')
-    text = text.replace(/<\$ba.stun>/g, '<span class="special" data-tip="Unable to move, block, attack, or use skills"> ')
-    text = text.replace(/<\$ba.cold>/g, '<span class="special" data-tip="Attack Speed -30. If Cold effect is stacked, effect changes to Frozen"> ')
-    text = text.replace(/<\$ba.camou>/g, '<span class="special" data-tip="When not blocking, will not be targeted by enemy normal attacks (unable to avoid splash-type attacks)"> ')
-    text = text.replace(/<\$ba.frozen>/g, '<span class="special" data-tip="Unable to move, attack or use skills (Activated through Cold effect); When enemies are Frozen, RES -15"> ')
-    text = text.replace(/<\$ba.root>/g, '<span class="special" data-tip="Unable to move"> ')
-    text = text.replace(/<\$ba.invisible>/g, '<span class="special" data-tip="When unblocked/not blocking, will not be attacked by enemies"> ')
-    text = text.replace(/<\$cc.bd_b1>/g, '<span class="special" data-tip="Provided by the following Operator:\nDusk\nMr.Nothing"> ')
-    text = text.replace(/<\$cc.bd_a1>/g, '<span class="special" data-tip="Affects Chain of Thought\nProvided by the following Operator(s):\nRosmontis\nDusk\nWhisperain\nIris" > ')
-    text = text.replace(/<\$cc.g.sui>/g, '<span class="special" data-tip="Includes the following Operators:\nNian\nDusk\nLing"> ')
-    text = text.replace(/<\$cc.g.lgd>/g, '<span class="special" data-tip="Includes the following operators:\nChen\nHoshiguma\nSwire"> ')
-    text = text.replace(/<\$cc.bd_ash>/g, '<span class="special" data-tip="Provided by the following Operator:\nAsh"> ')
-    text = text.replace(/<\$cc.bd_tachanka>/g, '<span class="special" data-tip="Provided by the following Operator:\nTachanka"> ')
-    text = text.replace(/<\$cc.g.ussg>/g, '<span class="special" data-tip="Includes the following Operators:\nRosa\nZima\nIstina\nGummy"> ')
-    text = text.replace(/<\$cc.g.R6>/g, '<span class="special" data-tip="Includes the following Operators:\nAsh\nTachanka\nBlitz\nFrost"> ')
-    text = text.replace(/<\$cc.tag.knight>/g, '<span class="special" data-tip="Includes the following Operators:\nNearl the Radiant Knight\nNearl (mutually exclusive)\nBlemishine\nWhislash\nFlametail\nFartooth\nAshlock\nWild Mane\n\'Justice Knight\'\nGravel">')
-    text = text.replace(/<\$ba.protect>/g, '<span class="special" data-tip="Reduce Physical and Arts damage taken by the stated percentage (Does not stack, strongest effect takes precedence)"> ')
-    text = text.replace(/<\$cc.bd_a1_a1>/g, '<span class="special" data-tip="Affects Perception Information\nProvided by the following Operator(s):\nWhisperain"> ')
-    text = text.replace(/<\$cc.w.ncdeer1>/g, '<span class="special" data-tip="Whenever a recipe that consumes 4 or less Morale fails to produce a byproduct, gain 1 point of Causality for every 1 Morale consumed"> ')
-    text = text.replace(/<\$cc.w.ncdeer2>/g, '<span class="special" data-tip="Whenever a recipe that consumes 8 Morale fails to produce a byproduct, gain 1 point of Karma for every 1 Morale consumed"> ')
-    text = text.replace(/<\$ba.charged>/g, '<span class="special" data-tip="Can continue recovering SP after reaching the maximum.\nWhen SP reaches double the maximum, enter Charged state.\nSkills have additional effects when activated in Charged state (All SP is consumed whenever skill is activated)"> ')
-    text = text.replace(/<\$ba.strong>/g, '<span class="special" data-tip="When HP is higher than a certain percentage, gain a certain amount of ATK (Does not stack, strongest effect takes precedence)"> ')
+    const openSpan = '<span class="special" data-tip="';
+    const closeSpan = '">';
+    text = text.replace(/<\$ba.shield>/g, openSpan + "Each stack of shield can block 1 instance of damage" + closeSpan )
+    text = text.replace(/<\$ba.buffres>/g, openSpan + "Reduce duration of abnormal effects such as Stun, Cold, Freeze by 50% (Does not stack)" + closeSpan)
+    text = text.replace(/<\$ba.fragile>/g, openSpan + "Increase all damage taken by the stated percentage (Does not stack, strongest effect takes precedence)" + closeSpan)
+    text = text.replace(/<\$ba.sluggish>/g, openSpan + "Movement Speed reduced by 80%" + closeSpan)
+    text = text.replace(/<\$ba.stun>/g, openSpan + "Unable to move, block, attack, or use skills" + closeSpan)
+    text = text.replace(/<\$ba.cold>/g, openSpan + "Attack Speed -30. If Cold effect is stacked, effect changes to Frozen" + closeSpan)
+    text = text.replace(/<\$ba.camou>/g, openSpan + "When not blocking, will not be targeted by enemy normal attacks (unable to avoid splash-type attacks)" + closeSpan)
+    text = text.replace(/<\$ba.frozen>/g, openSpan + "Unable to move, attack or use skills (Activated through Cold effect); When enemies are Frozen, RES -15" + closeSpan)
+    text = text.replace(/<\$ba.root>/g, openSpan + "Unable to move" + closeSpan)
+    text = text.replace(/<\$ba.invisible>/g, openSpan + "When unblocked/not blocking, will not be attacked by enemies" + closeSpan)
+    text = text.replace(/<\$cc.bd_b1>/g, openSpan + "Provided by the following Operator:\nDusk\nMr.Nothing" + closeSpan)
+    text = text.replace(/<\$cc.bd_a1>/g, openSpan + "Affects Chain of Thought\nProvided by the following Operator(s):\nRosmontis\nDusk\nWhisperain\nIris"  + closeSpan)
+    text = text.replace(/<\$cc.g.sui>/g, openSpan + "Includes the following Operators:\nNian\nDusk\nLing" + closeSpan)
+    text = text.replace(/<\$cc.g.lgd>/g, openSpan + "Includes the following operators:\nChen\nHoshiguma\nSwire" + closeSpan)
+    text = text.replace(/<\$cc.bd_ash>/g, openSpan + "Provided by the following Operator:\nAsh" + closeSpan)
+    text = text.replace(/<\$cc.bd_tachanka>/g, openSpan + "Provided by the following Operator:\nTachanka" + closeSpan)
+    text = text.replace(/<\$cc.g.ussg>/g, openSpan + "Includes the following Operators:\nRosa\nZima\nIstina\nGummy" + closeSpan)
+    text = text.replace(/<\$cc.g.R6>/g, openSpan + "Includes the following Operators:\nAsh\nTachanka\nBlitz\nFrost" + closeSpan)
+    text = text.replace(/<\$cc.tag.knight>/g, openSpan + "Includes the following Operators:\nNearl the Radiant Knight\nNearl (mutually exclusive)\nBlemishine\nWhislash\nFlametail\nFartooth\nAshlock\nWild Mane\n\'Justice Knight\'\nGravel" + closeSpan)
+    text = text.replace(/<\$ba.protect>/g, openSpan + "Reduce Physical and Arts damage taken by the stated percentage (Does not stack, strongest effect takes precedence)" + closeSpan)
+    text = text.replace(/<\$cc.bd_a1_a1>/g, openSpan + "Affects Perception Information\nProvided by the following Operator(s):\nWhisperain" + closeSpan)
+    text = text.replace(/<\$cc.w.ncdeer1>/g, openSpan + "Whenever a recipe that consumes 4 or less Morale fails to produce a byproduct, gain 1 point of Causality for every 1 Morale consumed" + closeSpan)
+    text = text.replace(/<\$cc.w.ncdeer2>/g, openSpan + "Whenever a recipe that consumes 8 Morale fails to produce a byproduct, gain 1 point of Karma for every 1 Morale consumed" + closeSpan)
+    text = text.replace(/<\$ba.charged>/g, openSpan + "Can continue recovering SP after reaching the maximum.\nWhen SP reaches double the maximum, enter Charged state.\nSkills have additional effects when activated in Charged state (All SP is consumed whenever skill is activated)" + closeSpan)
+    text = text.replace(/<\$ba.strong>/g, openSpan + "When HP is higher than a certain percentage, gain a certain amount of ATK (Does not stack, strongest effect takes precedence)" + closeSpan)
+    text = text.replace(/<\$ba.sleep>/g, openSpan + "Invulnerable and unable to take action" + closeSpan)
+    text = text.replace(/<\$ba.inspire>/g, openSpan + "Adds basic stats, only the highest effect of this type is applied" + closeSpan)
+    text = text.replace(/<\$cc.g.abyssal>/g, openSpan + "Includes the following Operators:\nGladiia\nSkadi\nSpecter\nAndreana" + closeSpan)
+    text = text.replace(/<\$cc.c.abyssal2_1>/g, openSpan + "For every Abyssal Hunter operator stationed in a Factory, the Control Center provides 5% Productivity for every Factory with an Abyssal Hunter operator stationed within it, up to a maximum of 45% Productivity" + closeSpan)
+    text = text.replace(/<\$cc.c.abyssal2_2>/g, openSpan + "For every Abyssal Hunter operator stationed in a Factory, the Control Center provides 10% Productivity for every Factory with an Abyssal Hunter operator stationed within it, up to a maximum of 90% Productivity" + closeSpan)
+    text = text.replace(/<\$cc.c.abyssal2_3>/g, openSpan + "Takes priority over Cooperative Will, and does not stack.\nDoes not stack with Automation α, Automation β, or Bionic Seadragon, and the 'set to 0' effect will take priority" + closeSpan)
     
     const closingSpan = new RegExp('</>', 'g');
     text = text.replace(closingSpan, " </span>")
@@ -674,7 +680,7 @@ export class DatabaseJsonParserService {
         return 'Therapist'
       case 'traper': // really...
         return 'Trapper'
-      case 'librator':
+      case 'librator': // BRO
         return 'Liberator'
       case 'blastcaster':
         return 'Blast Caster'
@@ -699,6 +705,20 @@ export class DatabaseJsonParserService {
         return 'Yan-Sui'
       case 'rim':
         return 'Rim Billiton'
+      case 'egir':
+        return 'Ægir'
+      case 'rainbow':
+        return 'Team Rainbow'
+      case 'sweep':
+        return 'S.W.E.E.P'
+      case 'lgd':
+        return 'L.G.D.'
+      case 'karlan':
+        return 'Karlan Trade'
+      case 'abyssal':
+        return 'Abyssal Hunters'
+      case 'pinus':
+        return 'Pinus Sylvestris Knightclub';
       default:
         if(groupId != null) {
           return groupId.charAt(0).toUpperCase() + groupId.slice(1);

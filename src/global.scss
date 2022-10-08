@@ -36,6 +36,7 @@
   transform: translateY(3px)
 }
 
+// skill images on text
 .skill-level {
   display: inline-block;
 
@@ -51,26 +52,36 @@
 }
 
 .ngxImageZoomContainer {
+  // force sizes
   width: auto !important;
   height: 565px !important;
 
+  // remove thumbnail when hovering, as only zoomed image should appear
   .ngxImageZoomThumbnail:hover {
     opacity: 0;
   }
 
+  // make zoom image smaller so it's more sensitive to movement (allows viewing edges easier)
   .ngxImageZoomFull {
     transform: scale(0.85)
   }
 }
 
+// remove default margin on p tags
 p {
   margin: 0;
 }
 
-.p-tooltip {
-  position: absolute;
-}
-
 .scroll-y {
   overflow: auto;
+}
+
+// animate blur on all pages
+ion-content {
+  transition: filter 0.25s;
+}
+
+// blur on opening settings
+.blur {
+  filter: blur(7px);
 }

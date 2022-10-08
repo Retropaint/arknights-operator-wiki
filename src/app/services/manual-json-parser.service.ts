@@ -31,6 +31,14 @@ export class ManualJsonParserService {
           level.stats.find(stat => stat.name == 'base_attack_time').value *= 2;
         })
     }
+
+    if(op.name == 'Vulcan') {
+      op.skills[1].description = op.skills[1].description.replace('slightly', '');
+    }
+
+    if(op.name == 'Ambriel') {
+      op.skills[1].description = op.skills[1].description.replace('a bit', '');
+    }
   }
 
   talents(op: Operator) {

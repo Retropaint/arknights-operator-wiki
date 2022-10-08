@@ -11,7 +11,7 @@
   field="name"
   (keyup.enter)="clickedSuggestion(results[0].name)">
     <ng-template let-operator pTemplate="operator" let-idx="index">
-      <a routerLink="/main" [queryParams]="{'operator': encodeURI(operator.name)}" class="operator-suggestion rarity-{{operator.rarity}}" [ngClass]="{'divider' : idx < results.length-1}" (click)="clickedSuggestion(operator.name)">
+      <a routerLink="/operator" [queryParams]="{'name': encodeURI(operator.name)}" (click)="clickedSuggestion()" class="operator-suggestion rarity-{{operator.rarity}}" [ngClass]="{'divider' : idx < results.length-1}" (click)="clickedSuggestion(operator.name)">
         <ion-img [src]="operator.img"></ion-img>
         <p [ngClass]="{'chosen' : chosenResult == idx}" >{{operator.name}}</p>
       </a>
