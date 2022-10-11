@@ -38,6 +38,14 @@
       background: #2a2929;
       height: 57.2px;
       cursor: pointer;
+
+      &:hover {
+        background: var(--hovergrey)
+      }
+
+      &.selected {
+        background: var(--blue)
+      }
     }
   
     .name {

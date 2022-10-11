@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { NoPreloading, PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -14,10 +14,6 @@ const routes: Routes = [
   {
     path: 'operator',
     loadChildren: () => import('./pages/operator/operator.module').then( m => m.OperatorPageModule)
-  },
-  {
-    path: 'item',
-    loadChildren: () => import('./item/item.module').then( m => m.ItemPageModule)
   },
 ];
 

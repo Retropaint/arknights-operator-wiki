@@ -25,9 +25,6 @@ export class ModuleTableComponent implements OnInit {
     if(module.trait) {
       this.trait = module.trait;
 
-      // fast-redploy modules
-      this.trait = this.trait.replace('a large portion', '80%')
-
       // parse stat values, just like skill table 
       module.traitStats.forEach(stat => {
         const statStrings = [

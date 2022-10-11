@@ -22,7 +22,9 @@ export class OperatorGalleryComponent implements OnInit {
   reserveOpImageLink: string;
   defaultOpIconLink: string;
 
-  baseUrls: string[] = [];
+  loading: boolean = false;
+
+  baseUrl: string = 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/';
 
   constructor(
     private database: DatabaseService,
@@ -30,6 +32,7 @@ export class OperatorGalleryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     // special reserve ops are so quirkyyyy!!! UwU
     const specialReserveOp = this.database.specialReserveOps.find(operator => operator == this.operator.name);
 
@@ -42,19 +45,12 @@ export class OperatorGalleryComponent implements OnInit {
     if(this.operator.name.includes('Reserve Operator') || specialReserveOp) {
       this.reserveOpImageLink = this.operator.id
     }
+  }
 
-    // check if this operator's skin images exist locally
-    for(let i = 0; i < this.operator.skins.length; i++) {
-      this.baseUrls.push('assets/operatorSkins/');
-      
-      this.http.get('assets/operatorSkins/' + this.operator.skins[i].id + '.png')
-        .subscribe(result => {}, 
-        error => {
-          if(error.status != '200') {
-            // get image from aceship because I was too lazy to download it apparently
-            this.baseUrls[i] = 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/'
-          }
-        })
+  changedSkin(newIndex: number) {
+    if(this.chosenSkin != newIndex) {
+      this.chosenSkin = newIndex;
+      this.loading = true;
     }
   }
 
@@ -65,6 +61,10 @@ export class OperatorGalleryComponent implements OnInit {
     } else {
       this.magnificationMultiplier = 1;
     }
+  }
+
+  imageLoaded() {
+    this.loading = false;
   }
 
 }

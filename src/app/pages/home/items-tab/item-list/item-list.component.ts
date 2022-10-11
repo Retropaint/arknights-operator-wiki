@@ -123,8 +123,6 @@ export class ItemListComponent implements OnInit {
     })
 
     this.allItems = this.database.items.slice().filter(item => item.type == 'MATERIAL' && !item.name.includes('Token') && !item.name.includes('Letter'))
-
-    console.log(this.miscellaneousItems)
   }
 
   includes(itemName: string, string: string) {

@@ -1,7 +1,10 @@
 <ion-header class="header" [ngClass]="{'blur' : isBlurry}">
   <div>
     <h1 routerLink="/main" (click)="mainPageFaviconAndTitle()" style="cursor: pointer">Retropaint's Arknights Wiki</h1>
-    <app-search-box (homePageReset)="refresh($event)"></app-search-box>
+    <app-search-box></app-search-box>
   </div>
-  <ion-icon name="settings-outline" class="settings-button" (click)="openSettingsModal()"></ion-icon>
+  <div>
+    <ion-icon name="information-circle-outline" class="settings-button" style="margin-right: 10px;" (click)="openAboutModal()"></ion-icon>
+    <ion-icon name="settings-outline" class="settings-button" (click)="openSettingsModal()"></ion-icon>
+  </div>
 </ion-header>

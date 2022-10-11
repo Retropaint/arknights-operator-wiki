@@ -12,6 +12,7 @@ export class ManualJsonParserService {
     this.skills(op);
     this.ranges(op);
     this.talents(op);
+    this.modules(op);
   }
 
   skills(op: Operator) {
@@ -63,5 +64,17 @@ export class ManualJsonParserService {
       op.statBreakpoints[2].rangeId = '3-1'
     }
 
+  }
+
+  modules(op: Operator) {
+
+    if(op.modules[1]) {
+      // fast-redploy modules
+      op.modules[1].trait = op.modules[1].trait.replace('a large portion', '80%')
+      
+      // Bagpipe's module
+      op.modules[1].trait = op.modules[1].trait.replace('{cost:0}', '2')
+    }
+    
   }
 }

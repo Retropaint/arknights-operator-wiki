@@ -8,16 +8,15 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DialogModule } from 'primeng/dialog';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { ItemComponent } from '../../shared/item/item.component';
 import { TabViewModule } from 'primeng/tabview';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { DialogSettingsComponent } from '../../dialogs/dialog-settings/dialog-settings.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
-import { FilterTableComponent } from '../operator/filter-table/filter-table.component';
-import { OperatorListComponent } from '../operator/operator-list/operator-list.component';
 import { ItemListComponent } from './items-tab/item-list/item-list.component';
+import { FilterTableComponent } from './operators-tab/filter-table/filter-table.component';
+import { OperatorListComponent } from './operators-tab/operator-list/operator-list.component';
 
 @NgModule({
   imports: [
@@ -36,7 +35,6 @@ import { ItemListComponent } from './items-tab/item-list/item-list.component';
   ],
   declarations: [
     HomePage, 
-    ItemComponent,
     DialogSettingsComponent,
     FilterTableComponent,
     OperatorListComponent,

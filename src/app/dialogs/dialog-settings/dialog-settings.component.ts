@@ -62,7 +62,6 @@ export class DialogSettingsComponent implements OnInit {
     this.doctorService.doctor.statSlider = this.statSlider;
     this.doctorService.doctor.skillSlider = this.skillSlider;
     this.doctorService.save();
-    this.sharedService.toggleDialog(false);
   }
 
 }

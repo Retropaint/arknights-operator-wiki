@@ -73,12 +73,6 @@ export class FilterTableComponent {
     isFolded: false
   };
 
-  artists: FilterCategory = {
-    name: 'Artists',
-    filters: this.createCategoryFilter('artist'),
-    isFolded: false
-  };
-
   groups: FilterCategory = {
     name: 'Groups',
     filters: this.createCategoryFilter('group'),
@@ -86,7 +80,13 @@ export class FilterTableComponent {
     isFolded: false,
   };
 
-  filters = [this.classes, this.branches, this.artists, this.groups];
+  artists: FilterCategory = {
+    name: 'Artists',
+    filters: this.createCategoryFilter('artist'),
+    isFolded: false
+  };
+
+  filters = [this.classes, this.branches, this.groups, this.artists];
 
   constructor(
     private sharedService: SharedService,

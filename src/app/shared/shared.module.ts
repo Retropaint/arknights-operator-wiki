@@ -30,7 +30,6 @@ import { ItemComponent } from './item/item.component';
     AudioPlayerComponent,
     CheckboxComponent,
     NumberFormatterPipe,
-    DialogService,
     OperatorItemComponent,
     ItemComponent
   ],
@@ -41,7 +40,6 @@ import { ItemComponent } from './item/item.component';
     AudioPlayerComponent,
     CheckboxComponent,
     NumberFormatterPipe,
-    DialogService,
     ItemComponent
   ],
   schemas: []

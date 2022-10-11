@@ -79,6 +79,9 @@ p {
 // animate blur on all pages
 ion-content {
   transition: filter 0.25s;
+  &.blur {
+    filter: blur(7px);
+  }
 }
 
 // blur on opening settings

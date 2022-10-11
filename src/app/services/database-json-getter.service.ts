@@ -36,8 +36,6 @@ export class DatabaseJsonGetterService {
     this.http.get(this.baseUrl + 'item_table.json')
       .pipe(
         concatMap(itemJson => {
-          console.log(itemJson)
-
           Object.keys(itemJson['items']).forEach(item => {
             const thisItem = itemJson['items'][item]
             
@@ -314,6 +312,7 @@ export class DatabaseJsonGetterService {
             })
             
           })
+
 
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'skill_table.json'); 

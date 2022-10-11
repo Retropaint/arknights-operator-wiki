@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
+import { DialogAboutComponent } from 'src/app/dialogs/dialog-about/dialog-about.component';
 import { DialogSettingsComponent } from 'src/app/dialogs/dialog-settings/dialog-settings.component';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -37,11 +38,22 @@ export class HeaderComponent implements OnInit {
   }
 
   openSettingsModal() {
+    this.openDialog(DialogSettingsComponent)
+  }
+  
+  openAboutModal() {
+    this.openDialog(DialogAboutComponent)
+  }
+
+  openDialog(component: any) {
     this.sharedService.toggleDialog(true);
-    this.dialogService.open(DialogSettingsComponent, {
+    this.dialogService.open(component, {
       dismissableMask: true,
       transitionOptions: '0ms',
       maskStyleClass: 'modal-background',
+    })
+    .onClose.subscribe(() => {
+      this.sharedService.toggleDialog(false);
     })
   }
 

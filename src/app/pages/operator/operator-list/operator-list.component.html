@@ -1,4 +1,0 @@
-<div *ngFor="let division of operatorDivisions" style="margin-bottom: 20px;">
-  <p *ngIf="division.name != null">{{division.name}}</p>
-  <app-operator-item *ngFor="let operator of division.operators" [operator]="operator"></app-operator-item>
-</div>

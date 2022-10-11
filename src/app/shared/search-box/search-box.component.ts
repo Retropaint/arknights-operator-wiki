@@ -82,7 +82,7 @@ export class SearchBoxComponent implements OnInit {
   }
 
   async clickedSuggestion(suggestion: string, fromKeyboard: boolean = false) {
-    if(suggestion != null) {
+    if(suggestion != null || !fromKeyboard) {
       this.text = "";
     }
 

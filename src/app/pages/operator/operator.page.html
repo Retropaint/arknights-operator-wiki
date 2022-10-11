@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<ion-content>
+<ion-content [ngClass]="{'blur' : isBlurry}">
   <p *ngIf="!database.isLoaded" style="text-align: center; margin-top: 10px">Loading... {{dbGetter.jsonLoadingProgress / dbGetter.maxJsonFiles | numberFormatter: 'percent'}}</p>
   
   <ng-container *ngIf="database.isLoaded && operator">
@@ -15,7 +15,7 @@
 
     <div class="dead-zone container" [ngClass]="{'not-selected-tab' : currentTab != 'info'}">
 
-      <div class="left-container">
+      <div class="left-container" [ngClass]="{'no-skills' : operator.skills.length == 0}">
 
         <app-operator-briefer
           [operator]="operator"
@@ -51,15 +51,6 @@
 
       <div class="right-container">
 
-        <!--
-        <p class="close-gallery" (click)="isGalleryOpen = !isGalleryOpen">{{isGalleryOpen ? 'Close' : 'Open'}} mini-gallery</p>
-        -->
-
-        <app-operator-gallery
-          *ngIf="isGalleryOpen"
-          [operator]="operator"
-        ></app-operator-gallery>
-
         <app-skill-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
           [operator]="operator"
         ></app-skill-table>
@@ -68,13 +59,6 @@
           *ngFor="let summon of operator.summons"
           [summon]="summon"
         ></app-summon-table>
-        <!--
-          <app-stat-table
-          *ngFor="let summon of operator.summons"
-          [subject]="summon"
-        ></app-stat-table>
-        -->
-
 
         <app-skill-level-unlock-reqs-table *ngIf="operator.rarity > 2 && !operator.name.includes('Reserve')"
           [operator]="operator"

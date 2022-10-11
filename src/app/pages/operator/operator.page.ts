@@ -20,14 +20,16 @@ export class OperatorPage implements OnInit {
   operator: Operator;
   isFirstLoad: boolean = false;
   currentTab: 'info' | 'gallery' | 'profile' | 'dialogue' = 'info';
+  isBlurry: boolean = false;
 
   jsonsLoadedSubscription: Subscription;
+  toggledDialogSubscription: Subscription;
   routerSubscription: Subscription;
 
   favIcon!: HTMLLinkElement;
   
   constructor(
-    private database: DatabaseService,
+    public database: DatabaseService,
     public dbGetter: DatabaseJsonGetterService,
     private sharedService: SharedService,
     private router: Router,
@@ -50,12 +52,6 @@ export class OperatorPage implements OnInit {
         navigationParams = result['snapshot'].queryParams['name'];
       } else if(result instanceof Scroll) {
 
-        // don't do anything for first operator
-        if(!this.isFirstLoad) {
-          this.isFirstLoad = true;
-          return;
-        }
-
         if(navigationParams != null) {
           this.refresh(navigationParams)
         }
@@ -67,6 +63,11 @@ export class OperatorPage implements OnInit {
       .subscribe(() => {
         const queryParams = this.route.snapshot.queryParams;
         this.refresh(queryParams.name)
+      })
+
+    this.toggledDialogSubscription = this.sharedService.toggledDialog
+      .subscribe(result => {
+        this.isBlurry = result;
       })
   }
 
@@ -88,7 +89,7 @@ export class OperatorPage implements OnInit {
     setTimeout(() => {
       const operatorIndex = this.database.operators.findIndex(operator => encodeURIComponent(operator.name.toLowerCase()) == newOpName.toLowerCase())
       this.operator = this.database.operators[operatorIndex];
-      console.log(this.operator)
+      //console.log(this.operator)
       this.changeTabDisplay();
     })
   }
