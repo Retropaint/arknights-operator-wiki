@@ -1,15 +1,16 @@
 .module-header {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 
   ion-img {
     max-width: 150px;
-    padding-right: 10px;
+    padding: 10px;
+    padding-bottom: 0px;
   }
 
-  .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+  p {
+    text-align: center;
   }
 }
 
@@ -34,5 +35,31 @@
 
   ion-img {
     width: 23px;
+  }
+}
+
+.unlock-reqs-elite-and-level {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .elite-img {
+    width: 25px;
+    margin-right: 10px;
+  }
+}
+
+.trust {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.table {
+  &.no-border {
+    tr {
+      td {
+        border-bottom: none;
+      }
+    } 
   }
 }

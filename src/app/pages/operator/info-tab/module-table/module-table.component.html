@@ -1,24 +1,43 @@
-<table class="table" style="margin-bottom: 0px;" *ngIf="moduleIndex > 0">
+<table class="table no-border" style="margin-bottom: 0px; border-bottom: none" *ngIf="moduleIndex > 0">
   <tbody>
     <tr>
-      <th colspan="100">
+      <th colspan="2">
         Module
+      </th>
+      <th>
+        Unlock Requirements
       </th>
     </tr>
     <tr>
-      <td colspan="100">
+      <td>
         <div class="module-header">
           <ion-img src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/equip/icon/{{operator.modules[moduleIndex].id}}.png"></ion-img>
-          <div class="content">
-            <p>{{operator.modules[moduleIndex].name}}</p>
-            <p [innerHTML]="trait"></p>
-          </div>
+          <p>{{operator.modules[moduleIndex].name}}</p>
         </div>
       </td>
+      <td>
+        <div *ngIf="operator.name == 'Dusk'" style="text-align: center">
+          <p [innerHTML]="trait" style="margin-bottom: 10px"></p>
+          <app-range-grid id="3-1"></app-range-grid>
+        </div>
+        <p *ngIf="operator.name != 'Dusk'" [innerHTML]="trait"></p>
+      </td>
+      <td>
+        <div class="unlock-reqs-elite-and-level">
+          <ion-img class="elite-img" src="assets/icons/elitePhases/2.webp"></ion-img>
+          <p>Lv 60</p>
+        </div>
+        <p class="trust">100 Trust</p>
+      </td>
     </tr>
+  </tbody>
+</table>
+
+<table class="table" style="margin-bottom: 0px;" *ngIf="moduleIndex > 0">
+  <tbody>
     <tr>
       <th class="header" colspan="3">
-        Missions
+        Unlock Missions
       </th>
     </tr>
     <tr *ngFor="let mission of operator.modules[moduleIndex].missions">
