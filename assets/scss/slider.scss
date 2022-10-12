@@ -1,0 +1,16 @@
+.slider {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 5px;
+  background: black;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 15px;
+  background: white;
+  cursor: pointer;
+}

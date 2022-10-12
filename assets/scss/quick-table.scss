@@ -1,0 +1,16 @@
+.quick-table {
+  th {
+    text-align: right;
+    border-right: 1px solid white;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: var(--tableTextGrey);
+    vertical-align: top;
+  }
+  td {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}

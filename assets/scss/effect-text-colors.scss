@@ -1,0 +1,55 @@
+.positive-effect {
+  color: #00c9ff;
+}
+
+.negative-effect {
+  color: rgb(246, 99, 57);
+}
+
+.special {
+  cursor: help;
+  text-decoration: underline;
+  display: inline-block; // prevents underline under whitespaces
+
+  .positive-effect {
+    text-decoration: underline;
+    text-decoration-color: #00c9ff;
+    display: inline-block;
+  }
+
+  .negative-effect {
+    text-decoration: underline;
+    text-decoration-color: rgb(246, 99, 57);
+    display: inline-block;
+  }
+
+  .info {
+    text-decoration: underline;
+    color: #f6bf00;
+    display: inline-block;
+  }
+}
+
+.special:after {
+  content: attr(data-tip);
+  position: absolute;
+  margin-left: 15px;
+  white-space: pre-wrap;
+  background: black;
+  padding: 5px;
+  border: 1px solid #eee;
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+  z-index: 99;
+  box-shadow: 0px 0px 10px 5px rgb(0 0 0);
+  width: 400px;
+}
+
+.special:hover:after {
+  opacity: 1;
+}
+
+.info {
+  color: #f6bf00;
+}

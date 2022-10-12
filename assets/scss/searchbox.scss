@@ -1,0 +1,27 @@
+.search-input {
+  border: none;
+  outline: none;
+  background: grey;
+  padding: 5px;
+  color: white;
+  width: 300px;
+  
+  &::placeholder {
+    color: #d4d4d4;
+  }
+
+  :focus {
+    border: none;
+  }
+}
+
+.search-input-class {
+  .p-autocomplete-panel {
+    max-height: calc(100vh - 53px) !important;
+    border: 4px solid #000000;
+  }
+}
+
+.p-autocomplete-empty-message {
+  background: #333333;
+}
