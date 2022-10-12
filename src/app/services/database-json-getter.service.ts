@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { concatMap } from 'rxjs/operators';
+import { concatMap, mergeMap } from 'rxjs/operators';
 import { Item } from '../interfaces/item';
 import { ProfileEntry, Operator, Skill, Dialogue } from '../interfaces/operator';
 import { Range } from '../interfaces/range';
@@ -8,7 +8,6 @@ import { Skin } from '../interfaces/skin';
 import { DatabaseJsonParserService } from './database-json-parser.service';
 import { DatabaseService } from './database.service';
 import { ManualJsonParserService } from './manual-json-parser.service';
-import { OperatorTransitionerService } from './operator-transitioner.service';
 import { SharedService } from './shared.service';
 
 @Injectable({
@@ -16,14 +15,13 @@ import { SharedService } from './shared.service';
 })
 export class DatabaseJsonGetterService {
 
-  baseUrl: string = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/"
-  //baseUrl: string = "assets/json/"
+  //baseUrl: string = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/"
+  baseUrl: string = "assets/json/"
   jsonLoadingProgress: number;
   maxJsonFiles: number = 10;
 
   constructor(
     private http: HttpClient,
-    private transitioner: OperatorTransitionerService,
     private database: DatabaseService,
     private dbJsonParser: DatabaseJsonParserService,
     private manualParser: ManualJsonParserService,
@@ -35,7 +33,7 @@ export class DatabaseJsonGetterService {
     console.time("item");
     this.http.get(this.baseUrl + 'item_table.json')
       .pipe(
-        concatMap(itemJson => {
+        mergeMap(itemJson => {
           Object.keys(itemJson['items']).forEach(item => {
             const thisItem = itemJson['items'][item]
             
@@ -49,6 +47,15 @@ export class DatabaseJsonGetterService {
 
             this.database.items.push(newItem);
           
+          })
+
+          this.jsonLoadingProgress++;
+          return this.http.get(this.baseUrl + 'stage_table.json');
+        }),
+        mergeMap(stageJson => {
+          console.log(stageJson)
+          Object.keys(stageJson['stages']).forEach(item => {
+            
           })
 
           this.jsonLoadingProgress++;
@@ -159,7 +166,8 @@ export class DatabaseJsonGetterService {
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'range_table.json');
         }),
-        concatMap(jsonRanges => {
+        mergeMap(jsonRanges => {
+          console.log('loading range')
           Object.keys(jsonRanges).forEach(jsonRange => {
             const newRange: Range = {
               id: jsonRanges[jsonRange].id,
@@ -171,7 +179,8 @@ export class DatabaseJsonGetterService {
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'charword_table.json'); 
         }),
-        concatMap((jsonCharwords: any) => {
+        mergeMap((jsonCharwords: any) => {
+          console.log('loading profile')
 
           Object.keys(jsonCharwords.charWords).forEach(char => {
             const voiceEntry = jsonCharwords.charWords[char]
@@ -201,7 +210,8 @@ export class DatabaseJsonGetterService {
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'skin_table.json'); 
         }),
-        concatMap((jsonSkins: any) => {
+        mergeMap((jsonSkins: any) => {
+          console.log('loading skins')
 
           Object.keys(jsonSkins.charSkins).forEach(jsonSkin => {
             const thisSkin = jsonSkins.charSkins[jsonSkin];
@@ -248,7 +258,7 @@ export class DatabaseJsonGetterService {
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'uniequip_table.json'); 
         }),
-        concatMap((results: any) => {
+        mergeMap((results: any) => {
 
           Object.keys(results.equipDict).forEach(equip => {
             const jsonModule = results.equipDict[equip]
@@ -263,9 +273,10 @@ export class DatabaseJsonGetterService {
           })
 
           this.jsonLoadingProgress++;
+          console.log(this.jsonLoadingProgress)
           return this.http.get(this.baseUrl + 'battle_equip_table.json'); 
         }),
-        concatMap(results => {
+        mergeMap(results => {
 
           Object.keys(results).forEach(equipId => {
             this.database.operators.forEach(op => {
@@ -280,7 +291,7 @@ export class DatabaseJsonGetterService {
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'building_data.json'); 
         }),
-        concatMap(results => {
+        mergeMap(results => {
           this.dbJsonParser.getBaseSkills(results['buffs']);
 
           Object.keys(results['chars']).forEach(char => {
@@ -290,7 +301,7 @@ export class DatabaseJsonGetterService {
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'handbook_info_table.json');
         }),
-        concatMap(results => {
+        mergeMap(results => {
           Object.keys(results['handbookDict']).forEach(charId => {
             const charEntry = results['handbookDict'][charId]
             const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == charId);
@@ -313,39 +324,42 @@ export class DatabaseJsonGetterService {
             
           })
 
-
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'skill_table.json'); 
-        })
-      )
-      .subscribe(skills => {
-        this.database.operators.forEach(operator => {
+        }),
+        mergeMap(skills => {
+          this.database.operators.forEach(operator => {
 
-          operator.skills.forEach(skill => {
-            const jsonSkill = skills[skill.id];
-
-            if(jsonSkill.levels) {
-              skill.name = jsonSkill.levels[0].name;
-              skill.description = this.dbJsonParser.stylizeText(jsonSkill.levels[6].description);
-              skill.spType = this.dbJsonParser.getSpType(jsonSkill);
-              skill.levels = [];
-              skill.activationType = jsonSkill.levels[0].skillType == 1 ? 'Manual' : 'Auto';
-
-              if(jsonSkill.iconId != null) {
-                skill.iconId = jsonSkill.iconId;
-              } else {
-                skill.iconId = skill.id;
+            operator.skills.forEach(skill => {
+              const jsonSkill = skills[skill.id];
+  
+              if(jsonSkill.levels) {
+                skill.name = jsonSkill.levels[0].name;
+                skill.description = this.dbJsonParser.stylizeText(jsonSkill.levels[6].description);
+                skill.spType = this.dbJsonParser.getSpType(jsonSkill);
+                skill.levels = [];
+                skill.activationType = jsonSkill.levels[0].skillType == 1 ? 'Manual' : 'Auto';
+  
+                if(jsonSkill.iconId != null) {
+                  skill.iconId = jsonSkill.iconId;
+                } else {
+                  skill.iconId = skill.id;
+                }
+  
+                skill.levels = this.dbJsonParser.getSkillLevels(skill, jsonSkill, operator);
               }
-
-              skill.levels = this.dbJsonParser.getSkillLevels(skill, jsonSkill, operator);
-            }
+            })
+  
+            // rather just use this operator loop for manual edits than create an entirely new one
+            this.manualParser.edit(operator);
           })
 
-          // rather just use this operator loop for manual edits than create an entirely new one
-          this.manualParser.edit(operator);
+          this.jsonLoadingProgress++;
+          return new Array(1); 
         })
-        
-        this.jsonLoadingProgress++;
+      )
+      .subscribe(() => {
+        console.log(this.jsonLoadingProgress)
         this.sharedService.allJsonsLoaded();
         this.database.isLoaded = true;
         //this.transitioner.transitionSubscription.next()

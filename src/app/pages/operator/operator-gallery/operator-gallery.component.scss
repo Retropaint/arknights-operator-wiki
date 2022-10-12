@@ -59,19 +59,18 @@
 .skin-img-container {
   text-align: center;
   width: 100%;
-  height: 565px;
   margin: auto;
 
   .img {
-    width: 375px;
-    display: inline-block;
+    width: 550px;
+    display: none;
 
     &:hover {
       border: 1px solid white;
     }
 
-    &.is-tab {
-      width: 75vh;
+    &.selected {
+      display: inline-block;
     }
   }
 }

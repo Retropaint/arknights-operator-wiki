@@ -5,6 +5,7 @@ export interface Item {
   rarity: number;
   amount?: number;
   type?: string;
+  dropChance?: number;
 }
 
 export interface ItemCategory {

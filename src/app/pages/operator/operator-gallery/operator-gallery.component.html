@@ -37,16 +37,14 @@
     <!-- invisible image, whose only purpose is the (load) function -->
     <img style="display: none" (load)="imageLoaded()" src="{{baseUrl}}{{operator.skins[chosenSkin].id}}.png"/>
     
-    <p *ngIf="loading">Loading...</p>
-    
     <lib-ngx-image-zoom
       #opImage
-      *ngIf="!loading"
+      *ngFor="let skins of operator.skins; let i = index"
       class="img"
       [style]="'background: rgb(' + backgroundBrightness + ', ' + backgroundBrightness +  ', ' + backgroundBrightness + ')'"
-      [ngClass]="{'is-tab' : isTab}"
-      thumbImage="{{baseUrl}}{{operator.skins[chosenSkin].id}}.png"
-      fullImage="{{baseUrl}}{{operator.skins[chosenSkin].id}}.png"
+      [ngClass]="{'selected' : chosenSkin == i}"
+      thumbImage="{{baseUrl}}{{operator.skins[i].id}}.png"
+      fullImage="{{baseUrl}}{{operator.skins[i].id}}.png"
       zoomMode="hover"
       [enableScrollZoom]="true"
       [magnification]="1.05 * magnificationMultiplier"

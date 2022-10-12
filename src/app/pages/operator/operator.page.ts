@@ -90,7 +90,9 @@ export class OperatorPage implements OnInit {
       const operatorIndex = this.database.operators.findIndex(operator => encodeURIComponent(operator.name.toLowerCase()) == newOpName.toLowerCase())
       this.operator = this.database.operators[operatorIndex];
       //console.log(this.operator)
-      this.changeTabDisplay();
+      setTimeout(() => {
+        this.changeTabDisplay();
+      })
     })
   }
 

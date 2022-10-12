@@ -52,9 +52,9 @@
 }
 
 .ngxImageZoomContainer {
-  // force sizes
-  width: auto !important;
-  height: 565px !important;
+  // force sizes, otherwise it will take the image's
+  width: 550px !important;
+  height: 550px !important;
 
   // remove thumbnail when hovering, as only zoomed image should appear
   .ngxImageZoomThumbnail:hover {

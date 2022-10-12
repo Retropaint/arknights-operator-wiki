@@ -684,6 +684,8 @@ export class DatabaseJsonParserService {
         return 'Liberator'
       case 'blastcaster':
         return 'Blast Caster'
+      case 'closerange':
+        return 'Heavyshooter'
       default:
         return operator.subProfessionId.charAt(0).toUpperCase() + operator.subProfessionId.slice(1);
     }
