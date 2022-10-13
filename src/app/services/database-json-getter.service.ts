@@ -5,6 +5,7 @@ import { Item } from '../interfaces/item';
 import { ProfileEntry, Operator, Skill, Dialogue } from '../interfaces/operator';
 import { Range } from '../interfaces/range';
 import { Skin } from '../interfaces/skin';
+import { Stage } from '../interfaces/stage';
 import { DatabaseJsonParserService } from './database-json-parser.service';
 import { DatabaseService } from './database.service';
 import { ManualJsonParserService } from './manual-json-parser.service';
@@ -15,8 +16,8 @@ import { SharedService } from './shared.service';
 })
 export class DatabaseJsonGetterService {
 
-  //baseUrl: string = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/"
-  baseUrl: string = "assets/json/"
+  baseUrl: string = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/"
+  //baseUrl: string = "assets/json/"
   jsonLoadingProgress: number;
   maxJsonFiles: number = 10;
 
@@ -42,7 +43,9 @@ export class DatabaseJsonGetterService {
               id: thisItem.itemId,
               imgId: thisItem.iconId,
               rarity: thisItem.rarity+1,
-              type: thisItem.classifyType
+              type: this.dbJsonParser.getMaterialType(thisItem.classifyType),
+              description: thisItem.description,
+              usage: thisItem.usage
             }
 
             this.database.items.push(newItem);
@@ -52,11 +55,27 @@ export class DatabaseJsonGetterService {
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'stage_table.json');
         }),
-        mergeMap(stageJson => {
-          console.log(stageJson)
-          Object.keys(stageJson['stages']).forEach(item => {
-            
+        concatMap(stageJson => {
+          Object.keys(stageJson['stages']).forEach(stage => {
+            const thisStage = stageJson['stages'][stage];
+
+            if(thisStage.stageDropInfo.displayRewards.length == 1) {
+              return
+            }
+
+            const newStage: Stage = {
+              name: thisStage.name,
+              code: thisStage.code,
+              itemDrops: {
+                main: this.dbJsonParser.parseStageDrops(thisStage.stageDropInfo.displayRewards),
+                side: this.dbJsonParser.parseStageDrops(thisStage.stageDropInfo.displayDetailRewards)
+              }
+            }
+
+            this.database.stages.push(newStage);
           })
+
+          console.log(this.database.stages)
 
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'character_table.json');
@@ -167,7 +186,6 @@ export class DatabaseJsonGetterService {
           return this.http.get(this.baseUrl + 'range_table.json');
         }),
         mergeMap(jsonRanges => {
-          console.log('loading range')
           Object.keys(jsonRanges).forEach(jsonRange => {
             const newRange: Range = {
               id: jsonRanges[jsonRange].id,
@@ -180,7 +198,6 @@ export class DatabaseJsonGetterService {
           return this.http.get(this.baseUrl + 'charword_table.json'); 
         }),
         mergeMap((jsonCharwords: any) => {
-          console.log('loading profile')
 
           Object.keys(jsonCharwords.charWords).forEach(char => {
             const voiceEntry = jsonCharwords.charWords[char]
@@ -211,7 +228,6 @@ export class DatabaseJsonGetterService {
           return this.http.get(this.baseUrl + 'skin_table.json'); 
         }),
         mergeMap((jsonSkins: any) => {
-          console.log('loading skins')
 
           Object.keys(jsonSkins.charSkins).forEach(jsonSkin => {
             const thisSkin = jsonSkins.charSkins[jsonSkin];
@@ -273,7 +289,6 @@ export class DatabaseJsonGetterService {
           })
 
           this.jsonLoadingProgress++;
-          console.log(this.jsonLoadingProgress)
           return this.http.get(this.baseUrl + 'battle_equip_table.json'); 
         }),
         mergeMap(results => {
@@ -359,7 +374,6 @@ export class DatabaseJsonGetterService {
         })
       )
       .subscribe(() => {
-        console.log(this.jsonLoadingProgress)
         this.sharedService.allJsonsLoaded();
         this.database.isLoaded = true;
         //this.transitioner.transitionSubscription.next()

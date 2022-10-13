@@ -3,9 +3,11 @@ export interface Item {
   id: string;
   imgId: string;
   rarity: number;
+  
   amount?: number;
   type?: string;
-  dropChance?: number;
+  description?: string;
+  usage?: string;
 }
 
 export interface ItemCategory {

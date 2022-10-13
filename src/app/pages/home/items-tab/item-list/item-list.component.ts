@@ -104,7 +104,7 @@ export class ItemListComponent implements OnInit {
     })
 
     this.miscellaneousItems = this.database.items.slice().filter(item => {
-      if(item.type != 'MATERIAL') {
+      if(item.type != 'Growth Material') {
         return false;
       }
       for(let category of this.groupedItems) {
@@ -122,7 +122,7 @@ export class ItemListComponent implements OnInit {
       return !item.name.includes('Token') && !item.name.includes('Letter');
     })
 
-    this.allItems = this.database.items.slice().filter(item => item.type == 'MATERIAL' && !item.name.includes('Token') && !item.name.includes('Letter'))
+    this.allItems = this.database.items.slice().filter(item => item.type == 'Growth Material' && !item.name.includes('Token') && !item.name.includes('Letter'))
   }
 
   includes(itemName: string, string: string) {

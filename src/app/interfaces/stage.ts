@@ -4,7 +4,11 @@ export interface Stage {
   name: string;
   code: string;
   itemDrops: {
-    main: Item[],
-    side: Item[]
+    main: StageItem[],
+    side: StageItem[]
   }
+}
+
+export interface StageItem extends Item {
+  dropChance?: number
 }

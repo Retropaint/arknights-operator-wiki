@@ -3,6 +3,7 @@ import { takeLast } from 'rxjs/operators';
 import { Item } from '../interfaces/item';
 import { BaseSkill, EliteUnlockReqs, Module, ModuleMission, Operator, OperatorBaseSkill, Skill, SkillLevel, SkillUnlockReqs, StatBreakpoint, Summon, Talent } from '../interfaces/operator';
 import { Grid } from '../interfaces/range';
+import { StageItem } from '../interfaces/stage';
 import { DatabaseService } from './database.service';
 import { ManualJsonParserService } from './manual-json-parser.service';
 
@@ -474,8 +475,12 @@ export class DatabaseJsonParserService {
     return object;
   }
 
-  getItem(id: string) {
-    return this.database.items.find(thisItem => id == thisItem.id)
+  getItem(id: string, isStage: boolean = false): Item | StageItem {
+    if(isStage) {
+      return this.database.items.find(thisItem => id == thisItem.id)
+    } else {
+      return this.database.items.find(thisItem => id == thisItem.id)
+    }
   }
 
   getBaseSkills(buffJson: any) {
@@ -522,6 +527,23 @@ export class DatabaseJsonParserService {
       })
     }
   }
+
+  parseStageDrops(dropsJson: any) {
+    let drops: StageItem[] = [];
+
+    dropsJson.forEach(drop => {
+      let stageItem: StageItem = this.getItem(drop.id);
+      if(!stageItem) {
+        return;
+      }
+      stageItem.dropChance = drop.occPercent;
+
+      drops.push(stageItem)
+    })
+
+    return drops;
+  }
+
 
   getTrustStats(operator: any) {
     return this.renameStats(operator.favorKeyFrames[1].data);
@@ -749,6 +771,13 @@ export class DatabaseJsonParserService {
         case 6: 
           return 180000;
       }
+    }
+  }
+
+  getMaterialType(type: string) {
+    switch(type) {
+      case 'MATERIAL': 
+        return 'Growth Material'
     }
   }
 
