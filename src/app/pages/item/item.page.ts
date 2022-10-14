@@ -37,10 +37,10 @@ export class ItemPage implements OnInit {
   constructor(
     private jsonParser: DatabaseJsonParserService,
     private router: Router,
-    private database: DatabaseService,
+    public database: DatabaseService,
     private sharedService: SharedService,
     private route: ActivatedRoute,
-    private dbGetter: DatabaseJsonGetterService
+    public dbGetter: DatabaseJsonGetterService
   ) { }
 
   ngOnInit() {

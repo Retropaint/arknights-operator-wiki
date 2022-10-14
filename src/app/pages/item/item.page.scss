@@ -9,6 +9,7 @@
 .dead-zone {
   padding-left: 10px;
   padding-right: 10px;
+  text-align: center;
 }
 
 .table {
@@ -36,6 +37,8 @@
   margin: 5px;
   overflow-y: auto;
   display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
 
   table {
     margin: 0px;
