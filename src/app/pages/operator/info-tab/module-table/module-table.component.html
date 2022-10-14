@@ -20,7 +20,7 @@
           <p [innerHTML]="trait" style="margin-bottom: 10px"></p>
           <app-range-grid id="3-1"></app-range-grid>
         </div>
-        <p *ngIf="operator.name != 'Dusk'" [innerHTML]="trait"></p>
+        <p *ngIf="operator.name != 'Dusk'" style="margin-left: 5px; margin-right: 5px" [innerHTML]="trait"></p>
       </td>
       <td>
         <div class="unlock-reqs-elite-and-level">
@@ -84,7 +84,7 @@
         </ng-container>
       </td>
       <th>
-        <app-item *ngFor="let itemCost of level.itemCosts" [item]="itemCost"></app-item>
+        <app-item-component *ngFor="let itemCost of level.itemCosts" [item]="itemCost"></app-item-component>
       </th>
     </tr>
   </tbody>

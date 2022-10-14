@@ -1,5 +1,66 @@
 <app-header></app-header>
 
 <ion-content>
+  <p *ngIf="!database.isLoaded" style="text-align: center; margin-top: 10px">Loading... {{dbGetter.jsonLoadingProgress / dbGetter.maxJsonFiles | numberFormatter: 'percent'}}</p>
+  
+  <div *ngIf="database.isLoaded" class="dead-zone">
+    <div style="background: red"></div>
+    <div *ngIf="item" class="container">
+      <table class="table item">
+        <tbody>
+          <tr>
+            <td style="border: none">
+              <div class="container">
+                <app-item-component *ngIf="item" [isGrouped]="true" [item]="item"></app-item-component>
+                <strong>{{item.name}}</strong>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>Item Description</th>
+          </tr>
+          <tr>
+            <td>{{item.description}}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>Item Usage</th>
+          </tr>
+          <tr>
+            <td>{{item.usage}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div class="stage-table-container" #stageTable [style]="'height:' + stageTableHeight + 'px'">
+      <table class="table" style="width: 500px">
+        <thead class="header">
+          <tr>
+            <th>Drops From</th>
+            <th>Stage Code</th>
+            <th>Drop Type</th>
+          </tr>
+        </thead>
 
+        <tbody>
+          <tr *ngFor="let stage of stageDrops">
+            <td>{{stage.type}}</td>
+            <td>{{stage.code}} {{stage.isGuaranteed ? '(guaranteed)' : ''}}</td>
+            <td>{{stage.dropType}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div (window:resize)="onResize($event)"></div>
 </ion-content>

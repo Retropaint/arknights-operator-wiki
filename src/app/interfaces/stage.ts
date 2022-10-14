@@ -3,6 +3,7 @@ import { Item } from "./item";
 export interface Stage {
   name: string;
   code: string;
+  type: string;
   itemDrops: {
     main: StageItem[],
     side: StageItem[]
@@ -10,5 +11,5 @@ export interface Stage {
 }
 
 export interface StageItem extends Item {
-  dropChance?: number
+  dropType?: number
 }

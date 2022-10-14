@@ -56,6 +56,7 @@ export class DatabaseJsonGetterService {
           return this.http.get(this.baseUrl + 'stage_table.json');
         }),
         concatMap(stageJson => {
+          console.log(stageJson['stages'])
           Object.keys(stageJson['stages']).forEach(stage => {
             const thisStage = stageJson['stages'][stage];
 
@@ -66,6 +67,7 @@ export class DatabaseJsonGetterService {
             const newStage: Stage = {
               name: thisStage.name,
               code: thisStage.code,
+              type: this.dbJsonParser.getSttageType(thisStage.stageType, thisStage.code),
               itemDrops: {
                 main: this.dbJsonParser.parseStageDrops(thisStage.stageDropInfo.displayRewards),
                 side: this.dbJsonParser.parseStageDrops(thisStage.stageDropInfo.displayDetailRewards)
@@ -74,7 +76,6 @@ export class DatabaseJsonGetterService {
 
             this.database.stages.push(newStage);
           })
-
           console.log(this.database.stages)
 
           this.jsonLoadingProgress++;

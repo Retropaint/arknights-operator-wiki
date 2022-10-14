@@ -19,14 +19,14 @@
         <div class="req-cell">
           <ion-img class="elite-img" src="assets/icons/elitePhases/0.webp"></ion-img>
           <p class="level">Lv {{operator.statBreakpoints[1].eliteUnlockReqs.level}}</p>
-          <app-item *ngFor="let item of operator.statBreakpoints[1].eliteUnlockReqs.items" [item]="item"></app-item>
+          <app-item-component *ngFor="let item of operator.statBreakpoints[1].eliteUnlockReqs.items" [item]="item" [isOperatorPage]="true"></app-item-component>
         </div>
       </td>
       <td *ngIf="operator.rarity > 3">
         <div class="req-cell">
           <ion-img class="elite-img" src="assets/icons/elitePhases/1.webp"></ion-img>
           <p class="level">Lv {{operator.statBreakpoints[2].eliteUnlockReqs.level}}</p>
-          <app-item *ngFor="let item of operator.statBreakpoints[2].eliteUnlockReqs.items" [item]="item"></app-item>
+          <app-item-component *ngFor="let item of operator.statBreakpoints[2].eliteUnlockReqs.items" [item]="item" [isOperatorPage]="true"></app-item-component>
         </div>
       </td>
     </tr>

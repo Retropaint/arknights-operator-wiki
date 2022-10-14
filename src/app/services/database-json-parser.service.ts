@@ -536,14 +536,13 @@ export class DatabaseJsonParserService {
       if(!stageItem) {
         return;
       }
-      stageItem.dropChance = drop.occPercent;
+      stageItem.dropType = drop.dropType;
 
       drops.push(stageItem)
     })
 
     return drops;
   }
-
 
   getTrustStats(operator: any) {
     return this.renameStats(operator.favorKeyFrames[1].data);
@@ -778,6 +777,42 @@ export class DatabaseJsonParserService {
     switch(type) {
       case 'MATERIAL': 
         return 'Growth Material'
+    }
+  }
+
+  getSttageType(type: string, code: string) {
+    switch(type) {
+      case 'MAIN': case 'SUB': 
+        let index = 0;
+        while(isNaN(parseInt(code[index]))) {
+          index++;
+        }
+        return `Campaign${type == 'SUB' ? ' Branch,' : ','} Chapter ` + (parseInt(code[index]));
+      case 'ACTIVITY':
+        return 'Event (will add name soon)'
+      case 'DAILY':
+        switch(code.slice(0, 2)) {
+          case 'CE':
+            return 'Daily - Cargo Escort'
+          case 'CA':
+            return 'Daily - Aerial Threat'
+          case 'AP':
+            return 'Daily - Tough Siege'
+          case 'LS':
+            return 'Daily - Tactical Drill'
+          case 'SK':
+            return 'Daily - Resource Search'
+          case 'PR':
+            switch(code.split('-')[1]) {
+              case 'A':
+                return 'Daily - Solid Defense'
+              case 'B':
+                return 'Daily - Fierce Attack'
+              case 'C':
+                return 'Daily - Unstoppable Charge'
+            }
+        }
+        return 'Daily';
     }
   }
 

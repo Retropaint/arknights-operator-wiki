@@ -26,15 +26,12 @@ export class OperatorPage implements OnInit {
   toggledDialogSubscription: Subscription;
   routerSubscription: Subscription;
 
-  favIcon!: HTMLLinkElement;
-  
   constructor(
     public database: DatabaseService,
     public dbGetter: DatabaseJsonGetterService,
     private sharedService: SharedService,
     private router: Router,
     private route: ActivatedRoute,
-    private title: Title,
     private opAvatarService: OperatorAvatarService
   ) { }
 
@@ -91,15 +88,9 @@ export class OperatorPage implements OnInit {
       this.operator = this.database.operators[operatorIndex];
       console.log(this.operator)
       setTimeout(() => {
-        this.changeTabDisplay();
+        this.sharedService.changeTabDisplay(this.operator.name, 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.opAvatarService.getAvatar(this.operator) + '.png');
       })
     })
-  }
-
-  changeTabDisplay() {
-    this.favIcon = <HTMLLinkElement>document.getElementById('appIcon');
-    this.favIcon.href = 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.opAvatarService.getAvatar(this.operator) + '.png';
-    this.title.setTitle(this.operator.name + ' | Retro\'s AK Wiki');
   }
 
   ngOnDestroy() {

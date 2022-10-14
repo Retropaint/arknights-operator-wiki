@@ -12,7 +12,7 @@
       <td>
         <div class="req-container">
           <ion-img *ngIf="level.elite > 0" class="elite-img" src="assets/icons/elitePhases/{{level.elite}}.webp"></ion-img>
-          <app-item *ngFor="let item of level.items" [item]="item"></app-item>
+          <app-item-component *ngFor="let item of level.items" [item]="item"></app-item-component>
         </div>
       </td>
     </tr>
@@ -25,7 +25,7 @@
             <div class="skill" *ngFor="let num of emptyArray(operator.skills.length); let i = index">
               <p class="name">{{operator.skills[i].name}}</p>
               <div>
-                <app-item *ngFor="let item of operator.skills[i].masteryUnlockReqs[m].items" [item]="item" [isMastery]="true"></app-item>
+                <app-item-component *ngFor="let item of operator.skills[i].masteryUnlockReqs[m].items" [item]="item" [isMastery]="true"></app-item-component>
               </div>
             </div>
           </div>

@@ -10,6 +10,7 @@ import { ItemPage } from './item.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
+import { ItemComponent } from 'src/app/shared/item/item.component';
 
 @NgModule({
   imports: [
@@ -17,9 +18,9 @@ import { DialogModule } from 'primeng/dialog';
     FormsModule,
     IonicModule,
     ItemPageRoutingModule,
-    SharedModule,
     DialogModule,
     DynamicDialogModule,
+    SharedModule
   ],
   declarations: [
     ItemPage,

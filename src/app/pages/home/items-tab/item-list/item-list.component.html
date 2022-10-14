@@ -10,10 +10,10 @@
         <tr>
           <ng-container *ngFor="let item of category.items; let i = index">
             <br *ngIf="i == category.items.length/2 && i != category.items.length - 1">
-            <app-item
+            <app-item-component
               [item]="item"
               [isGrouped]="true"
-            ></app-item>
+            ></app-item-component>
             <br *ngIf="item.name == 'Skill Summary - 2'">
           </ng-container>
         </tr>
@@ -28,10 +28,10 @@
         <tr>
           <ng-container *ngFor="let item of category.items; let i = index">
             <br *ngIf="i == category.items.length/2">
-            <app-item
+            <app-item-component
               [item]="item"
               [isGrouped]="true"
-            ></app-item>
+            ></app-item-component>
           </ng-container>
         </tr>
       </tbody>
@@ -43,10 +43,10 @@
       <tr> <th>Miscellaneous</th> </tr>
       <tr>
         <ng-container *ngFor="let item of miscellaneousItems; let i = index">
-          <app-item
+          <app-item-component
             [item]="item"
             [isGrouped]="true"
-          ></app-item>
+          ></app-item-component>
         </ng-container>
       </tr>
     </tbody>
@@ -59,10 +59,10 @@
       <tr> <th>Growth Materials</th> </tr>
       <tr>
         <ng-container *ngFor="let item of allItems; let i = index">
-          <app-item
+          <app-item-component
             [item]="item"
             [isGrouped]="true"
-          ></app-item>
+          ></app-item-component>
         </ng-container>
       </tr>
     </tbody>
