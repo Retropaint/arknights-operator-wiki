@@ -1,69 +1,30 @@
 
 .gallery {
-  border: 1px solid white;
-
-  &.is-tab {
-    border: none;
-  }
-
   padding: 20px;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 15px;
-}
-
-.left-container {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  &.is-tab {
-    position: absolute;
-    transform: scale(1.10);
-    transform-origin: top left;
-  }
-
-  .skin-list {
-    .icon {
-      width: 50px;
-      margin-right: 10px;
-    }
-  
-    .item-container {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      border: 1px solid white;
-      background: #2a2929;
-      height: 57.2px;
-      cursor: pointer;
-
-      &:hover {
-        background: var(--hovergrey)
-      }
-
-      &.selected {
-        background: var(--blue)
-      }
-    }
-  
-    .name {
-      white-space: nowrap;
-      padding-right: 10px;
-      text-decoration: underline;
-    }
-  }
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .skin-img-container {
   text-align: center;
-  width: 100%;
   margin: auto;
+  display: inline-block;
+  margin-bottom: 20px;
+
+  .info-container {
+    display: flex;
+    background: var(--hovergrey);
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px;
+  }
 
   .img {
-    width: 550px;
     display: none;
+    border: 1px solid #121212; // create 'invisible' border to prevent hover border from bumping
 
     &:hover {
       border: 1px solid white;
@@ -71,21 +32,6 @@
 
     &.selected {
       display: inline-block;
-    }
-  }
-}
-
-.right-container {
-  position: absolute;
-  right: 20px;
-
-  .background-brightness {
-    border: 1px solid white;
-    background: #2a2929;
-    padding: 10px;
-
-    p {
-      white-space: nowrap;
     }
   }
 }

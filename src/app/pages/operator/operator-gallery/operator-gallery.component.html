@@ -1,63 +1,31 @@
 <div class="gallery" [ngClass]="{'is-tab' : isTab}" *ngIf="operator">
 
-  <div class="left-container" [ngClass]="{'is-tab' : isTab}">
-
-    <div *ngIf="!operator.name.includes('Reserve Operator')" class="skin-list">
-      <div class="item-container" *ngFor="let skin of operator.skins; let i = index" [ngClass]="{'selected' : chosenSkin == i}" (click)="changedSkin(i)">
-        <ion-img *ngIf="i == 0" class="icon" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/{{defaultOpIconLink}}.png"></ion-img>
-        <ion-img *ngIf="i > 0" class="icon" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/{{operator.skins[i].id}}.png"></ion-img>
-        <p class="name">{{skin.name}}</p>
+  <ng-container *ngFor="let skin of operator.skins; let i = index">
+    <br *ngIf="i%2 == 0">
+    <div class="skin-img-container">
+    
+      <div class="info-container">
+        <p> {{skin.name}}</p>
+        <p>/</p>
+        <p style="color: darkgrey">Artist: <span style="color: white">{{skin.artist}}</span></p>
       </div>
+      
+      
+      <lib-ngx-image-zoom
+        #opImage
+        
+        class="img selected"
+        [style]="'background: rgb(' + backgroundBrightness + ', ' + backgroundBrightness +  ', ' + backgroundBrightness + ')'"
+        thumbImage="{{baseUrl}}{{skin.id}}.png"
+        fullImage="{{baseUrl}}{{skin.id}}.png"
+        zoomMode="hover"
+        [enableScrollZoom]="true"
+        [magnification]="1.05 * magnificationMultiplier"
+        [minZoomRatio]="1.05 * magnificationMultiplier"
+        [maxZoomRatio]="2"
+        (mouseenter)="onHover()"
+      ></lib-ngx-image-zoom>
+  
     </div>
-
-    <table class="quick-table">
-      <tbody>
-        <tr *ngIf="operator.skins[chosenSkin].artist != null">
-          <th>Illustrator</th><td>{{operator.skins[chosenSkin].artist}}</td>
-        </tr>
-        <tr *ngIf="operator.voiceActors.CN">
-          <th>VA (CN)</th><td>{{operator.voiceActors.CN}}</td>
-        </tr>
-        <tr *ngIf="operator.voiceActors.JP">
-          <th>VA (JP)</th><td>{{operator.voiceActors.JP}}</td>
-        </tr>
-        <tr *ngIf="operator.voiceActors.EN">
-          <th>VA (EN)</th><td>{{operator.voiceActors.EN}}</td>
-        </tr>
-        <tr *ngIf="operator.voiceActors.KR">
-          <th>VA (KR)</th><td>{{operator.voiceActors.KR}}</td>
-        </tr>
-      </tbody>
-    </table>
-    
-  </div>
-
-  <div class="skin-img-container">
-    
-    <!-- invisible image, whose only purpose is the (load) function -->
-    <img style="display: none" (load)="imageLoaded()" src="{{baseUrl}}{{operator.skins[chosenSkin].id}}.png"/>
-    
-    <lib-ngx-image-zoom
-      #opImage
-      *ngFor="let skins of operator.skins; let i = index"
-      class="img"
-      [style]="'background: rgb(' + backgroundBrightness + ', ' + backgroundBrightness +  ', ' + backgroundBrightness + ')'"
-      [ngClass]="{'selected' : chosenSkin == i}"
-      thumbImage="{{baseUrl}}{{operator.skins[i].id}}.png"
-      fullImage="{{baseUrl}}{{operator.skins[i].id}}.png"
-      zoomMode="hover"
-      [enableScrollZoom]="true"
-      [magnification]="1.05 * magnificationMultiplier"
-      [minZoomRatio]="1.05 * magnificationMultiplier"
-      [maxZoomRatio]="2"
-      (mouseenter)="onHover()"
-    ></lib-ngx-image-zoom>
-  </div>
-
-  <div class="right-container" *ngIf="isTab">
-    <div class="background-brightness">
-      <p>Background Brightness:</p>
-      <input [(ngModel)]="backgroundBrightness" type="range" class="slider" min="0" max="255"/>
-    </div>
-  </div>
+  </ng-container>
 </div>
