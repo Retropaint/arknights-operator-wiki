@@ -5,11 +5,6 @@
   <p *ngIf="!hasLoaded" style="text-align: center; margin-top: 10px">Loading... {{dbGetter.jsonLoadingProgress / dbGetter.maxJsonFiles | numberFormatter: 'percent'}}</p>
 
   <div *ngIf="hasLoaded">
-    <div class="tabs">
-      <p (click)="currentTab = 'operators'" [ngClass]="{'selected' : currentTab == 'operators'}">Operators</p>
-      <p (click)="currentTab = 'items'" [ngClass]="{'selected' : currentTab == 'items'}">Items</p>
-    </div>
-
     <div class="dead-zone container" *ngIf="currentTab == 'operators'">
       <div class="left-container filter-table">
         <app-filter-table></app-filter-table>
