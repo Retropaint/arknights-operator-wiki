@@ -579,6 +579,8 @@ export class DatabaseJsonParserService {
 
     text = text.replace('<Support Devices>', 'Support Devices')
 
+    text = this.cleanUpStylizedText(text);
+
     return text;
   }
 
@@ -622,6 +624,22 @@ export class DatabaseJsonParserService {
     text = text.replace(/<\$cc.g.psk>/g, openSpan + "Includes the following Operators:\nFlametail\nFartooth\nAshlock\nWild Mane\n\'Justice Knight\'" + closeSpan)
     
     return text;
+  }
+
+  cleanUpStylizedText(text: string) {
+    const split = text.split(/[\: ]/).filter(word => word != '');
+    let result = "";
+
+    for(let i = 0; i < split.length; i++) {
+      // don't add spacing between punctuation, and plus (it should be grouped with its stat value)
+      if(split[i+1] != '</span>.' && split[i+1] != '</span>;' && split[i+1] != '</span>,' && split[i] != '+') {
+        result += split[i] + ' '
+      } else {
+        result += split[i]
+      }
+    }
+
+    return result;
   }
 
   getSpType(skill): 'Auto Recovery' | 'Offensive Recovery' | 'Defensive Recovery' | 'Passive' {
