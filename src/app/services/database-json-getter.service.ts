@@ -354,7 +354,7 @@ export class DatabaseJsonGetterService {
 
               if(jsonSkill.levels) {
                 skill.name = jsonSkill.levels[0].name;
-                skill.description = this.dbJsonParser.stylizeText(jsonSkill.levels[6].description);
+                skill.description = this.dbJsonParser.stylizeText(jsonSkill.levels[6].description, false);
                 skill.spType = this.dbJsonParser.getSpType(jsonSkill);
                 skill.levels = [];
                 skill.activationType = jsonSkill.levels[0].skillType == 1 ? 'Manual' : 'Auto';

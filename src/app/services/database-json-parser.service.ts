@@ -558,7 +558,7 @@ export class DatabaseJsonParserService {
     return stats;
   }
 
-  stylizeText(text: string) {
+  stylizeText(text: string, cleanUp: boolean = true) {
 
     text = text.replace(/<@ba.vdown>/g, '<span class="negative-effect"> ')
     text = text.replace(/<@cc.vdown>/g, '<span class="negative-effect"> ')
@@ -579,7 +579,9 @@ export class DatabaseJsonParserService {
 
     text = text.replace('<Support Devices>', 'Support Devices')
 
-    text = this.cleanUpStylizedText(text);
+    if(cleanUp) {
+      text = this.cleanUpStylizedText(text);
+    }
 
     return text;
   }
