@@ -572,7 +572,7 @@ export class DatabaseJsonParserService {
     text = text.replace(/<@cc.kw>/g, ' <span class="positive-effect"> ')
     text = text.replace(/<@cc.rem>/g, ' <span class="positive-effect"> ')
     
-    const openSpan = '<span class="special" data-tip="';
+    const openSpan = "<span class=\"special\" data-tip=\"";
     const closeSpan = '">';
     text = text.replace(/<\$ba.shield>/g, openSpan + "Each stack of shield can block 1 instance of damage" + closeSpan )
     text = text.replace(/<\$ba.buffres>/g, openSpan + "Reduce duration of abnormal effects such as Stun, Cold, Freeze by 50% (Does not stack)" + closeSpan)
@@ -584,6 +584,8 @@ export class DatabaseJsonParserService {
     text = text.replace(/<\$ba.frozen>/g, openSpan + "Unable to move, attack or use skills (Activated through Cold effect); When enemies are Frozen, RES -15" + closeSpan)
     text = text.replace(/<\$ba.root>/g, openSpan + "Unable to move" + closeSpan)
     text = text.replace(/<\$ba.invisible>/g, openSpan + "When unblocked/not blocking, will not be attacked by enemies" + closeSpan)
+    text = text.replace(/<\$ba.overdrive>/g, openSpan + "The skill bar has 2 sections. Halfway through the skill, additional effects are activated" + closeSpan)
+    text = text.replace(/<\$ba.binding>/g, openSpan + "When the Tied target is not deployed, forcibly end activated skills, remove all SP and become unable to gain SP" + closeSpan)
     text = text.replace(/<\$cc.bd_b1>/g, openSpan + "Provided by the following Operator:\nDusk\nMr.Nothing" + closeSpan)
     text = text.replace(/<\$cc.bd_a1>/g, openSpan + "Affects Chain of Thought\nProvided by the following Operator(s):\nRosmontis\nDusk\nWhisperain\nIris"  + closeSpan)
     text = text.replace(/<\$cc.g.sui>/g, openSpan + "Includes the following Operators:\nNian\nDusk\nLing" + closeSpan)
@@ -605,7 +607,7 @@ export class DatabaseJsonParserService {
     text = text.replace(/<\$cc.c.abyssal2_1>/g, openSpan + "For every Abyssal Hunter operator stationed in a Factory, the Control Center provides 5% Productivity for every Factory with an Abyssal Hunter operator stationed within it, up to a maximum of 45% Productivity" + closeSpan)
     text = text.replace(/<\$cc.c.abyssal2_2>/g, openSpan + "For every Abyssal Hunter operator stationed in a Factory, the Control Center provides 10% Productivity for every Factory with an Abyssal Hunter operator stationed within it, up to a maximum of 90% Productivity" + closeSpan)
     text = text.replace(/<\$cc.c.abyssal2_3>/g, openSpan + "Takes priority over Cooperative Will, and does not stack.\nDoes not stack with Automation α, Automation β, or Bionic Seadragon, and the 'set to 0' effect will take priority" + closeSpan)
-    
+
     const closingSpan = new RegExp('</>', 'g');
     text = text.replace(closingSpan, " </span>")
 
