@@ -45,6 +45,11 @@ export class ManualJsonParserService {
       const br = new RegExp('<br>', 'g');
       op.skills[1].description = op.skills[1].description.replace(br, '');
     }
+
+    if(op.name == 'Ansel') {
+      op.skills[0].levels[0].range = '3-10';
+      op.skills[0].levels[3].range = '5-2';
+    }
   }
 
   talents(op: Operator) {
