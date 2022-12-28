@@ -364,12 +364,13 @@ export class DatabaseJsonParserService {
     })
 
     if(jsonModule.itemCost) {
-      module.levels.push({
-        itemCosts: [],
-        stats: []
-      })
+      for(let i = 1; i < 4; i++) {
+        module.levels.push({
+          itemCosts: [],
+          stats: []
+        }) 
 
-      jsonModule.itemCost.forEach(item => {
+        let item = jsonModule.itemCost[i];
 
         const newItem = this.getItem(item.id);
         
@@ -377,11 +378,11 @@ export class DatabaseJsonParserService {
           newItem.amount = item.count;
 
           // item.count changes and I have no idea where, so just separate the reference altogether
-          const clonedItem = JSON.parse(JSON.stringify(newItem))
+          const clonedItem = newItem
 
-          module.levels[0].itemCosts.push(clonedItem);
+          module.levels[i-1].itemCosts.push(clonedItem);
         }
-      })
+      }
       
     }
 
