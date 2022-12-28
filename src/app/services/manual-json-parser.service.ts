@@ -41,7 +41,10 @@ export class ManualJsonParserService {
       break; case 'Gladiia':
         op.skills.forEach(skill => {
           skill.levels.forEach(level => {
-            level.stats.find(stat => stat.name.includes('force')).name = 'attack@force';
+            const forceStat = level.stats.find(stat => stat.name == "force");
+            if(forceStat) {
+              forceStat.name = 'attack@force';
+            }
           })
         })
       break; case "Kal\'tsit":
