@@ -346,7 +346,12 @@ export class DatabaseJsonGetterService {
 
             operator.skills.forEach(skill => {
               const jsonSkill = skills[skill.id];
-  
+
+              // only make "Tied" have the tooltip rather than rest of text
+              if(operator.name == "Kal\'tsit") {
+                jsonSkill.levels[6].description = jsonSkill.levels[6].description.replace("Tied", "Tied</span>")
+              }
+
               if(jsonSkill.levels) {
                 skill.name = jsonSkill.levels[0].name;
                 skill.description = this.dbJsonParser.stylizeText(jsonSkill.levels[6].description);
