@@ -572,8 +572,20 @@ export class DatabaseJsonParserService {
     text = text.replace(/<@cc.kw>/g, ' <span class="positive-effect"> ')
     text = text.replace(/<@cc.rem>/g, ' <span class="positive-effect"> ')
     
+    text = this.addTooltipTexts(text);
+
+    const closingSpan = new RegExp('</>', 'g');
+    text = text.replace(closingSpan, " </span>")
+
+    text = text.replace('<Support Devices>', 'Support Devices')
+
+    return text;
+  }
+
+  addTooltipTexts(text: string) {
     const openSpan = "<span class=\"special\" data-tip=\"";
     const closeSpan = '">';
+    
     text = text.replace(/<\$ba.shield>/g, openSpan + "Each stack of shield can block 1 instance of damage" + closeSpan )
     text = text.replace(/<\$ba.buffres>/g, openSpan + "Reduce duration of abnormal effects such as Stun, Cold, Freeze by 50% (Does not stack)" + closeSpan)
     text = text.replace(/<\$ba.fragile>/g, openSpan + "Increase all damage taken by the stated percentage (Does not stack, strongest effect takes precedence)" + closeSpan)
@@ -607,12 +619,8 @@ export class DatabaseJsonParserService {
     text = text.replace(/<\$cc.c.abyssal2_1>/g, openSpan + "For every Abyssal Hunter operator stationed in a Factory, the Control Center provides 5% Productivity for every Factory with an Abyssal Hunter operator stationed within it, up to a maximum of 45% Productivity" + closeSpan)
     text = text.replace(/<\$cc.c.abyssal2_2>/g, openSpan + "For every Abyssal Hunter operator stationed in a Factory, the Control Center provides 10% Productivity for every Factory with an Abyssal Hunter operator stationed within it, up to a maximum of 90% Productivity" + closeSpan)
     text = text.replace(/<\$cc.c.abyssal2_3>/g, openSpan + "Takes priority over Cooperative Will, and does not stack.\nDoes not stack with Automation α, Automation β, or Bionic Seadragon, and the 'set to 0' effect will take priority" + closeSpan)
-
-    const closingSpan = new RegExp('</>', 'g');
-    text = text.replace(closingSpan, " </span>")
-
-    text = text.replace('<Support Devices>', 'Support Devices')
-
+    text = text.replace(/<\$cc.g.psk>/g, openSpan + "Includes the following Operators:\nFlametail\nFartooth\nAshlock\nWild Mane\n\'Justice Knight\'" + closeSpan)
+    
     return text;
   }
 
