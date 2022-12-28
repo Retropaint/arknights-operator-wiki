@@ -16,39 +16,37 @@ export class ManualJsonParserService {
   }
 
   skills(op: Operator) {
+    const br = new RegExp('<br>', 'g');
 
-    // Aqua Loop would be displayed as infinite due to a -1 duration
-    if(op.name == 'Tuye') {
-      op.skills.find(skill => skill.name == 'Aqua Loop')
-        .levels.forEach(level => {
-          level.duration = 0;
+    switch(op.name) {
+      case "Tuye":
+        op.skills.find(skill => skill.name == 'Aqua Loop')
+          .levels.forEach(level => {
+            level.duration = 0;
+          })
+      break; case 'Exusiai':
+        op.skills.find(skill => skill.name == 'Overloading Mode')
+          .levels.forEach(level => {
+            level.stats.find(stat => stat.name == 'base_attack_time').value *= 2;
+          })
+      break; case 'Vulcan':
+        op.skills[1].description = op.skills[1].description.replace('slightly', '');
+      break; case 'Ambriel':
+        op.skills[1].description = op.skills[1].description.replace('a bit', '');
+      break; case 'Silverash': case 'Mountain': case "Ch\'en": 
+        op.skills[1].description = op.skills[1].description.replace(br, '');
+      break; case 'Ansel':
+        op.skills[0].levels[0].range = '3-10';
+        op.skills[0].levels[3].range = '5-2';
+      break; case 'Gladiia':
+        op.skills.forEach(skill => {
+          skill.levels.forEach(level => {
+            level.stats.find(stat => stat.name.includes('force')).name = 'attack@force';
+          })
         })
-    }
-
-    // mulitply Exusiai's s3 attack interval reduction
-    if(op.name == 'Exusiai') {
-      op.skills.find(skill => skill.name == 'Overloading Mode')
-        .levels.forEach(level => {
-          level.stats.find(stat => stat.name == 'base_attack_time').value *= 2;
-        })
-    }
-
-    if(op.name == 'Vulcan') {
-      op.skills[1].description = op.skills[1].description.replace('slightly', '');
-    }
-
-    if(op.name == 'Ambriel') {
-      op.skills[1].description = op.skills[1].description.replace('a bit', '');
-    }
-
-    if(op.name == 'SilverAsh' || op.name == 'Mountain' || op.name == 'Ch\'en') {
-      const br = new RegExp('<br>', 'g');
-      op.skills[1].description = op.skills[1].description.replace(br, '');
-    }
-
-    if(op.name == 'Ansel') {
-      op.skills[0].levels[0].range = '3-10';
-      op.skills[0].levels[3].range = '5-2';
+      break; case "Kal\'tsit":
+        op.skills[1].description = op.skills[1].description.replace(br, '');
+        op.skills[2].description = op.skills[2].description.replace(br, '');
     }
   }
 
