@@ -1445,7 +1445,6 @@ sub {
   text-align: center;
   z-index: 99;
   box-shadow: 0px 0px 10px 5px rgb(0, 0, 0);
-  width: 400px;
 }
 .special:hover:after {
   opacity: 1;
