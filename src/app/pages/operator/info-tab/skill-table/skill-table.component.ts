@@ -316,8 +316,20 @@ export class SkillTableComponent implements OnInit {
         // a value less than 0 means it's negative, therefore it's reduced/raised *by* and not *to*
         if(skill.levels[0].stats[0].value < 0) {
           split[i] = 'by base_attack_time:' + suffix;
+        if(this.operator.name == 'Gladiia') {
+          split[i] = "with attack@force force";
         } else {
-          split[i] = 'to base_attack_time:' + suffix;
+          let suffix = '0%';
+          if(this.operator.name == 'Ptilopsis') {
+            suffix = 's';
+          }
+
+          // a value less than 0 means it's negative, therefore it's reduced/raised *by* and not *to*
+          if(skill.levels[0].stats[0].value < 0) {
+            split[i] = 'by base_attack_time:' + suffix;
+          } else {
+            split[i] = 'to base_attack_time:' + suffix;
+          }
         }
       }
 
