@@ -332,8 +332,10 @@ export class SkillTableComponent implements OnInit {
         }
       }
 
-      if(word == 'Minor' || word == 'Moderate' || word == 'Significant') {
-        split[i] = 'base_attack_time:s'
+      if(this.operator.name == 'Exusiai') {
+        if(word == 'Minor' || word == 'Moderate' || word == 'Significant') {
+          split[i] = 'base_attack_time:s';
+        }
       }
     }
 
