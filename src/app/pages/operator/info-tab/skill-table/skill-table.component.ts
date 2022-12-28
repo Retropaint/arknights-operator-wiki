@@ -307,15 +307,6 @@ export class SkillTableComponent implements OnInit {
       }
 
       if(word == 'moderately' || word == 'dramatically' || word == 'slightly' || word == 'significantly') {
-        let suffix = '0%';
-
-        if(this.operator.name == 'Ptilopsis') {
-          suffix = 's';
-        }
-
-        // a value less than 0 means it's negative, therefore it's reduced/raised *by* and not *to*
-        if(skill.levels[0].stats[0].value < 0) {
-          split[i] = 'by base_attack_time:' + suffix;
         if(this.operator.name == 'Gladiia') {
           split[i] = "with attack@force force";
         } else {
