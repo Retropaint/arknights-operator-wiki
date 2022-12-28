@@ -91,6 +91,7 @@ export class SkillTableComponent implements OnInit {
 
       newSkill.description = newSkill.description.replace('HP_RECOVERY_PER_SEC', 'hp_recovery_per_sec');
       newSkill.description = newSkill.description.replace('hp_recovery_per_sec_BY_MAX_HP_RATIO', "hp_recovery_per_sec_by_max_hp_ratio");
+      newSkill.description = newSkill.description.replace('ABILITY_RANGE_FORWARD_EXTEND', "ability_range_forward_extend");
 
       // here's where the skill parsing magic happens!
       newSkill.description = this.parseUnnumberedStats(newSkill.description, skill);
