@@ -468,16 +468,17 @@ export class SkillTableComponent implements OnInit {
   }
 
   manualEdits() {
-    
-    // add Mayer's s1 buff text if m0+ is active
-    if(this.operator.name == 'Mayer') {
-      for(let i = 6; i < 10; i++) {
-        if(this.selectedSkillLevels[i]) {
-          const m0img = '<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/7.png" /> </span>'
-          this.skills[0].description += "(Allies on Robotters' four adjacent tiles also gain the same buff " + m0img + ')';
-          break;
+    switch(this.operator.name) {
+      case 'Mayer':
+        for(let i = 6; i < 10; i++) {
+          if(this.selectedSkillLevels[i]) {
+            const m0img = '<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/7.png" /> </span>'
+            this.skills[0].description += "(Allies on Robotters' four adjacent tiles also gain the same buff " + m0img + ')';
+            break;
+          }
         }
-      }
+      break; case 'Exusiai':
+        this.skills[2].description += '<br>(this skill is bugged and triggers twice, giving twice the values than shown in-game)';
     }
   }
 
