@@ -370,20 +370,20 @@ export class DatabaseJsonParserService {
           stats: []
         }) 
 
-        let item = jsonModule.itemCost[i];
-
-        const newItem = this.getItem(item.id);
+        for(let j = 0; j < jsonModule.itemCost[i].length; j++) {
+          let item = jsonModule.itemCost[i][j];
+          const newItem = this.getItem(item.id);
         
-        if(newItem != null) {
-          newItem.amount = item.count;
-
-          // item.count changes and I have no idea where, so just separate the reference altogether
-          const clonedItem = newItem
-
-          module.levels[i-1].itemCosts.push(clonedItem);
+          if(newItem != null) {
+            newItem.amount = item.count;
+  
+            // item.count changes and I have no idea where, so just separate the reference altogether
+            const clonedItem = JSON.parse(JSON.stringify(newItem))
+            
+            module.levels[i-1].itemCosts.push(clonedItem);
+          }
         }
       }
-      
     }
 
     return module;
