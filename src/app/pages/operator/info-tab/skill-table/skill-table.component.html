@@ -51,7 +51,6 @@
       <td class="skill-description">
 
         <p class="special recovery {{s.recoveryType.name.split(' ')[0]}}" [attr.data-tip]="s.recoveryType.tip"> {{s.recoveryType.name}} </p>
-
         <p class="activation"> {{s.activationType}} </p>
         
         <!-- duration -->
@@ -95,15 +94,6 @@
           </p>
         </ng-container>
       </td>
-
     </tr>
   </tbody>
 </table>
-
-<p-overlayPanel #op>
-  <ng-template pTemplate>
-    <div style="background: black; padding: 10px">
-      <p>Slows enemies</p>
-    </div>
-  </ng-template>
-</p-overlayPanel>
