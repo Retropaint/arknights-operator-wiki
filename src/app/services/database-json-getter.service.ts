@@ -53,10 +53,10 @@ export class DatabaseJsonGetterService {
           })
 
           this.jsonLoadingProgress++;
-          return this.http.get(this.baseUrl + 'stage_table.json');
+          //return this.http.get(this.baseUrl + 'stage_table.json');
+          return this.http.get(this.baseUrl + 'character_table.json');
         }),
-        concatMap(stageJson => {
-          console.log(stageJson['stages'])
+        /*concatMap(stageJson => {
           Object.keys(stageJson['stages']).forEach(stage => {
             const thisStage = stageJson['stages'][stage];
 
@@ -76,11 +76,10 @@ export class DatabaseJsonGetterService {
 
             this.database.stages.push(newStage);
           })
-          console.log(this.database.stages)
 
           this.jsonLoadingProgress++;
           return this.http.get(this.baseUrl + 'character_table.json');
-        }),
+        }),*/
         concatMap(results => {
 
           Object.keys(results).forEach(entry => {
@@ -286,7 +285,6 @@ export class DatabaseJsonGetterService {
             }
 
             op.modules.push(this.dbJsonParser.getModule(jsonModule, results))
-            
           })
 
           this.jsonLoadingProgress++;
