@@ -1,0 +1,40 @@
+<div style="display: flex">
+  <table class="table">
+    <tbody>
+      <tr>
+        <ng-container *ngIf="operator.voiceActors['CN']">
+          <th>
+            CN VA:
+          </th>
+          <td>
+            {{operator.voiceActors['CN']}}
+          </td>
+        </ng-container>
+        <ng-container *ngIf="operator.voiceActors['JP']">
+          <th>
+            JP VA:
+          </th>
+          <td>
+            {{operator.voiceActors['JP']}}
+          </td>
+        </ng-container>
+        <ng-container *ngIf="operator.voiceActors['EN']">
+          <th>
+            EN VA:
+          </th>
+          <td>
+            {{operator.voiceActors['EN']}}
+          </td>
+        </ng-container>
+        <ng-container *ngIf="operator.voiceActors['KR']">
+          <th>
+            KR VA:
+          </th>
+          <td>
+            {{operator.voiceActors['KR']}}
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>

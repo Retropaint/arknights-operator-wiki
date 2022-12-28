@@ -27,6 +27,7 @@ import { EliteUnlockReqsTableComponent } from './info-tab/elite-unlock-reqs-tabl
 import { SkillLevelUnlockReqsTableComponent } from './info-tab/skill-level-unlock-reqs-table/skill-level-unlock-reqs-table.component';
 import { TalentTableComponent } from './info-tab/talent-table/talent-table.component';
 import { PotentialTableComponent } from './info-tab/potential-table/potential-table.component';
+import { VoiceActorTableComponent } from './dialogue-tab/voice-actor-table/voice-actor-table.component';
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { PotentialTableComponent } from './info-tab/potential-table/potential-ta
     EliteUnlockReqsTableComponent,
     SkillLevelUnlockReqsTableComponent,
     TalentTableComponent,
-    PotentialTableComponent
+    PotentialTableComponent,
+    VoiceActorTableComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

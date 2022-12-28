@@ -79,6 +79,9 @@
     </div>
 
     <div [ngClass]="{'not-selected-tab' : currentTab != 'dialogue'}">
+      <app-voice-actor-table
+        [operator]="operator"
+      ></app-voice-actor-table>
       <app-dialogue-table
         [operator]="operator"
       ></app-dialogue-table>
