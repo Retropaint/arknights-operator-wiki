@@ -53,8 +53,6 @@ export class SkillTableComponent implements OnInit {
   }
 
   getSkillDescriptions() {
-
-
     this.skills = [];
 
     // get first and last skill levels for parsing
@@ -110,6 +108,7 @@ export class SkillTableComponent implements OnInit {
 
     this.manualEdits();
 
+    // add tooltips
     setTimeout(() => {
       for(let i = 0; i < this.descs._results.length; i++) {
         const desc = this.descs._results[i];
