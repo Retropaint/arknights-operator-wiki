@@ -296,6 +296,7 @@ export class SkillTableComponent implements OnInit {
   
   // for skills with text like 'reduced slightly', descriptive words are removed and replaced with actual values
   parseUnnumberedStats(description: string, skill: Skill) {
+    const name = this.operator.name;
 
     const split = description.split(' ');
     for(let i = 0; i < split.length; i++) {
@@ -307,11 +308,9 @@ export class SkillTableComponent implements OnInit {
       }
 
       if(word == 'moderately' || word == 'dramatically' || word == 'slightly' || word == 'significantly') {
-        if(this.operator.name == 'Gladiia') {
-          split[i] = "with attack@force force";
         } else {
           let suffix = '0%';
-          if(this.operator.name == 'Ptilopsis') {
+          if(name == 'Ptilopsis') {
             suffix = 's';
           }
 
@@ -325,14 +324,14 @@ export class SkillTableComponent implements OnInit {
       }
 
       if(word == 'increases' && split[i-1].includes('negative-effect')) {
-        if(this.operator.name == 'Vulcan' || this.operator.name == 'Ambriel') {
+        if(name == 'Vulcan' || name == 'Ambriel') {
           split[i] += ' by base_attack_time:s';
         } else {
           split[i] += ' by base_attack_time:0%';
         }
       }
 
-      if(this.operator.name == 'Exusiai') {
+      if(name == 'Exusiai') {
         if(word == 'Minor' || word == 'Moderate' || word == 'Significant') {
           split[i] = 'base_attack_time:s';
         }
