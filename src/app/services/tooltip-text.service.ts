@@ -24,6 +24,7 @@ export class TooltipTextService {
     text = text.replace(/<\$ba.frozen>/g, openSpan + "Unable to move, attack or use skills (Activated through Cold effect); When enemies are Frozen, RES -15" + closeSpan)
     text = text.replace(/<\$ba.root>/g, openSpan + "Unable to move" + closeSpan)
     text = text.replace(/<\$ba.invisible>/g, openSpan + "When unblocked/not blocking, will not be attacked by enemies" + closeSpan)
+    text = text.replace(/<\$ba.levitate>/g, openSpan + "Changes into an aerial unit and becomes unable to move, attack and use skills; Duration halved against enemies with more than 3 weight" + closeSpan)
     text = text.replace(/<\$ba.overdrive>/g, openSpan + "The skill bar has 2 sections. Halfway through the skill, additional effects are activated" + closeSpan)
     text = text.replace(/<\$ba.binding>/g, openSpan + "When the Tied target is not deployed, forcibly end activated skills, remove all SP and become unable to gain SP" + closeSpan)
     text = text.replace(/<\$cc.bd_b1>/g, openSpan + "Provided by the following Operator:\nDusk\nMr.Nothing" + closeSpan)
