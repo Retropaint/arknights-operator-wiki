@@ -87,9 +87,11 @@ export class OperatorPage implements OnInit {
       const operatorIndex = this.database.operators.findIndex(operator => encodeURIComponent(operator.name.toLowerCase()) == newOpName.toLowerCase())
       this.operator = this.database.operators[operatorIndex];
       console.log(this.operator)
-      setTimeout(() => {
-        this.sharedService.changeTabDisplay(this.operator.name, 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.opAvatarService.getAvatar(this.operator) + '.png');
-      })
+      if(this.operator) {
+        setTimeout(() => {
+          this.sharedService.changeTabDisplay(this.operator.name, 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.opAvatarService.getAvatar(this.operator) + '.png');
+        })
+      }
     })
   }
 
