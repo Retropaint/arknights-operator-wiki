@@ -18,7 +18,20 @@ export class ManualJsonParserService {
     const br = new RegExp('<br>', 'g');
 
     switch(op.name) {
-      case "Tuye":
+      case 'Silverash': case 'Mountain': case "Ch\'en": 
+        this.replaceSkillDesc(op, 1, br, '');
+      break; case 'Vulcan':
+        this.replaceSkillDesc(op, 1, 'slightly', '');
+      break; case 'Schwarz':
+        this.replaceSkillDesc(op, 2, br, '');
+      break; case 'Ambriel': 
+        this.replaceSkillDesc(op, 1, 'slightly', '');
+      break; case "Kal\'tsit":
+        this.replaceSkillDesc(op, 1, br, '');
+        this.replaceSkillDesc(op, 2, br, '');
+      break; case 'Blemishine':
+        this.replaceSkillDesc(op, 2, br, '');
+      break; case "Tuye":
         op.skills.find(skill => skill.name == 'Aqua Loop')
           .levels.forEach(level => {
             level.duration = 0;
@@ -28,12 +41,6 @@ export class ManualJsonParserService {
           .levels.forEach(level => {
             level.stats.find(stat => stat.name == 'base_attack_time').value *= 2;
           })
-      break; case 'Vulcan':
-        op.skills[1].description = op.skills[1].description.replace('slightly', '');
-      break; case 'Ambriel':
-        op.skills[1].description = op.skills[1].description.replace('a bit', '');
-      break; case 'Silverash': case 'Mountain': case "Ch\'en": 
-        op.skills[1].description = op.skills[1].description.replace(br, '');
       break; case 'Ansel':
         op.skills[0].levels[0].range = '3-10';
         op.skills[0].levels[3].range = '5-2';
@@ -47,12 +54,12 @@ export class ManualJsonParserService {
             forceStat.name = 'attack@force';
           }
         })
-      break; case "Kal\'tsit":
-        op.skills[1].description = op.skills[1].description.replace(br, '');
-        op.skills[2].description = op.skills[2].description.replace(br, '');
-      break; case 'Schwarz':
-        op.skills[2].description = op.skills[2].description.replace(br, '');
+      })
     }
+  }
+
+  replaceSkillDesc(op: Operator, index: number, toReplace: string | RegExp, newString: string) {
+    op.skills[index].description = op.skills[index].description.replace(toReplace, newString);
   }
 
   private talents(op: Operator) {
