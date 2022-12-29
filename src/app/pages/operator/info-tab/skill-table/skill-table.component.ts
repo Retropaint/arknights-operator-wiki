@@ -224,6 +224,8 @@ export class SkillTableComponent implements OnInit {
       const fixedStatValue = (stat.value*multiplier).toFixed(2);
       if(fixedStatValue.includes('.00')) {
         statValue = fixedStatValue.slice(0, fixedStatValue.indexOf('.'));
+      if(statValue.includes('.00')) {
+        statValue = Math.floor((stat.value*multiplier)).toString();
       }
 
       // during parsing, the tilde (~) lets middle and last parsing know if to add more levels
