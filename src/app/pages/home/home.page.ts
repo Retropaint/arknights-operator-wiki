@@ -1,14 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, ChildActivationEnd, Router, RouterEvent, Scroll } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
-import { Operator } from 'src/app/interfaces/operator';
 import { DatabaseJsonGetterService } from 'src/app/services/database-json-getter.service';
 import { DatabaseService } from 'src/app/services/database.service';
-import { OperatorAvatarService } from 'src/app/services/operator-avatar.service';
-import { OperatorTransitionerService } from 'src/app/services/operator-transitioner.service'
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({

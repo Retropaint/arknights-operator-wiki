@@ -368,8 +368,6 @@ export class DatabaseJsonGetterService {
       groupId = op.teamId;
     }
 
-    
-
     const newOperator: Operator = {
       id: op.potentialItemId,
       name: op.name,
@@ -390,6 +388,7 @@ export class DatabaseJsonGetterService {
       trustStats: this.dbJsonParser.getTrustStats(op),
       recruitmentContract: op.itemDesc,
       potentialToken: op.itemUsage,
+      avatarLink: this.getAvatarLink(op),
       group: {
         name: this.dbJsonParser.getGroupName(groupId),
         id: groupId
@@ -413,5 +412,27 @@ export class DatabaseJsonGetterService {
     }
 
     this.database.operators.push(newOperator);
+  }
+
+  getAvatarLink(op: any) {
+    if(op.name == 'Amiya (Guard)') {
+      return 'char_1001_amiya2';
+    }
+
+    let operatorImageLink = op.potentialItemId;
+
+    const specialReserveOp = this.database.specialReserveOps.find(specOp => specOp == op.name) != null;
+
+    if(!specialReserveOp) {
+
+      if(op.name.includes('Reserve Operator')) {
+        operatorImageLink = op.potentialItemId.slice(0, op.potentialItemId.length - 2);
+      } else {
+        operatorImageLink = op.potentialItemId.slice(2, op.potentialItemId.length);
+      }
+
+    }
+
+    return operatorImageLink
   }
 }

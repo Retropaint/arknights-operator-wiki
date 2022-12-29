@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { Operator } from 'src/app/interfaces/operator';
 import { DatabaseJsonGetterService } from 'src/app/services/database-json-getter.service';
 import { DatabaseService } from 'src/app/services/database.service';
-import { OperatorAvatarService } from 'src/app/services/operator-avatar.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -35,7 +34,6 @@ export class OperatorPage implements OnInit {
     private sharedService: SharedService,
     private router: Router,
     private route: ActivatedRoute,
-    private opAvatarService: OperatorAvatarService
   ) { }
 
   ngOnInit() {
@@ -93,7 +91,7 @@ export class OperatorPage implements OnInit {
       if(this.operator) {
         this.isAmiyaGuard = this.operator.name == 'Amiya (Guard)';
         setTimeout(() => {
-          this.sharedService.changeTabDisplay(this.operator.name, 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.opAvatarService.getAvatar(this.operator) + '.png');
+          this.sharedService.changeTabDisplay(this.operator.name, 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.operator.avatarLink + '.png');
         })
       }
     })

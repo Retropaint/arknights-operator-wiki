@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Operator } from 'src/app/interfaces/operator';
 import { DatabaseService } from 'src/app/services/database.service';
-import { OperatorAvatarService } from 'src/app/services/operator-avatar.service';
 
 @Component({
   selector: 'app-search-box',
@@ -26,7 +25,6 @@ export class SearchBoxComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private database: DatabaseService,
-    public opAvatarService: OperatorAvatarService
   ) { }
 
   ngOnInit() {
@@ -117,7 +115,7 @@ export class SearchBoxComponent implements OnInit {
       operator = this.database.operators.find(op => op.name == name);
     }
     const newOp = {
-      img: 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.opAvatarService.getAvatar(operator) + '.png',
+      img: 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + operator.avatarLink + '.png',
       rarity: operator.rarity,
       name: operator.name
     }

@@ -24,6 +24,7 @@ export interface Operator {
   baseSkills?: OperatorBaseSkill[];
   recruitmentContract: string;
   potentialToken: string;
+  avatarLink: string;
   profileEntries: ProfileEntry[];
   dialogues: Dialogue[];
   group: {
