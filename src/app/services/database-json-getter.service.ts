@@ -85,17 +85,6 @@ export class DatabaseJsonGetterService {
             if(entry.includes('char')) {
               const op = results[entry];
 
-              // add just the skillId to each skill. Skill data retrieved in skill subscription
-              let skills: Skill[] = [];
-              op.skills.forEach(skill => {
-                const newSkill: Skill = {
-                  id: skill.skillId,
-                  masteryUnlockReqs: this.dbJsonParser.getSkillMasteryUnlockReqs(skill),
-                  eliteUnlockReq: skill.unlockCond.phase
-                }
-                skills.push(newSkill)
-              })
-
               if(op.potentialItemId == "p_char_512_aprot") {
                 return;
               }
@@ -126,53 +115,8 @@ export class DatabaseJsonGetterService {
                 break; case 'Nine-Colored Deer':
                   op.potentialItemId = 'p_char_4019_ncdeer'
               }
-
-              let groupId = '';
-              if(op.groupId != null) {
-                groupId = op.groupId;
-              } else if(op.nationId != null) {
-                groupId = op.nationId;
-              } else {
-                groupId = op.teamId;
-              }
-
-              const newOperator: Operator = {
-                id: op.potentialItemId,
-                name: op.name,
-                rarity: op.rarity + 1,
-                potentials: this.dbJsonParser.getPotentials(op),
-                trait: this.dbJsonParser.stylizeText(op.description).replace('{heal_scale:0%}', '80%'),
-                class: this.dbJsonParser.getClass(op),
-                branch: this.dbJsonParser.getBranch(op),
-                originalBranch: op.subProfessionId,
-                talents: this.dbJsonParser.getTalents(op),
-                tags: op.tagList,
-                obtainMethods: op.itemObtainApproach,
-                position: this.dbJsonParser.getPosition(op),
-                skills: skills,
-                statBreakpoints: this.dbJsonParser.getStats(op),
-                skillLevelUnlockReqs: this.dbJsonParser.getSkillLevelUnlockReqs(op),
-                summons: this.dbJsonParser.getSummons(results, op.tokenKey, op),
-                trustStats: this.dbJsonParser.getTrustStats(op),
-                recruitmentContract: op.itemDesc,
-                potentialToken: op.itemUsage,
-                group: {
-                  name: this.dbJsonParser.getGroupName(groupId),
-                  id: groupId
-                },
-                skins: [],
-                voiceActors: {},
-                modules: [],
-                baseSkills: [],
-                profileEntries: [],
-                dialogues: []
-              }
-
-              if(newOperator.branch == 'Pusher' || newOperator.branch == 'Hookmaster') {
-                newOperator.position = 'All'
-              }
-
-              this.database.operators.push(newOperator);
+              
+              this.addOperator(op, results);
             }
           })
 
@@ -182,6 +126,15 @@ export class DatabaseJsonGetterService {
           })
           
           this.jsonLoadingProgress++;
+          return this.http.get(this.baseUrl + 'char_patch_table.json');
+        }),
+        concatMap((result: any) => {
+          console.log(result)
+
+          this.addOperator(result.patchChars.char_1001_amiya2, null)
+
+          console.log(this.database.operators)
+
           return this.http.get(this.baseUrl + 'range_table.json');
         }),
         mergeMap(jsonRanges => {
@@ -198,10 +151,17 @@ export class DatabaseJsonGetterService {
         }),
         mergeMap((jsonCharwords: any) => {
 
+          console.log(jsonCharwords.voiceLangDict)
+
           Object.keys(jsonCharwords.charWords).forEach(char => {
             const voiceEntry = jsonCharwords.charWords[char]
+            let op;
 
-            const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == char.slice(0, char.length - 7))
+            if(char.includes('amiya2')) {
+              op = this.database.operators.find(operator => operator.name == 'Amiya (Guard)');
+            } else {
+              op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == char.slice(0, char.length - 7))
+            }
             if(op != null) {
               const newDialogue: Dialogue = {
                 name: voiceEntry.voiceTitle,
@@ -213,7 +173,12 @@ export class DatabaseJsonGetterService {
           })
 
           Object.keys(jsonCharwords.voiceLangDict).forEach(char => {
-            const op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == char)
+            let op;
+            if(char == 'char_1001_amiya2') {
+              op = this.database.operators.find(operator => operator.name == 'Amiya (Guard)');
+            } else {
+              op = this.database.operators.find(operator => operator.id.slice(2, operator.id.length) == char)
+            }
             if(op != null) {
               const charDict = jsonCharwords.voiceLangDict[char].dict;
               op.voiceActors.CN = charDict.CN_MANDARIN?.cvName
@@ -230,10 +195,6 @@ export class DatabaseJsonGetterService {
 
           Object.keys(jsonSkins.charSkins).forEach(jsonSkin => {
             const thisSkin = jsonSkins.charSkins[jsonSkin];
-
-            if(thisSkin.portraitId == "char_1001_amiya2_2") {
-              return;
-            }
 
             const newSkin: Skin = {
               name: thisSkin.displaySkin.skinName,
@@ -255,7 +216,9 @@ export class DatabaseJsonGetterService {
               }
             }
 
-            if(op != null) {
+            if(newSkin.id == "char_1001_amiya2_2") {
+              this.database.operators.find(operator => operator.name == 'Amiya (Guard)').skins.push(newSkin);
+            } else if(op != null) {
               op.skins.push(newSkin);
             }
 
@@ -382,5 +345,73 @@ export class DatabaseJsonGetterService {
         this.sharedService.allJsonsLoaded();
         this.database.isLoaded = true;
       })
+  }
+
+  addOperator(op: any, wholeJson: any) {
+    // add just the skillId to each skill. Skill data retrieved in skill subscription
+    let skills: Skill[] = [];
+    op.skills.forEach(skill => {
+      const newSkill: Skill = {
+        id: skill.skillId,
+        masteryUnlockReqs: this.dbJsonParser.getSkillMasteryUnlockReqs(skill),
+        eliteUnlockReq: skill.unlockCond.phase
+      }
+      skills.push(newSkill)
+    })
+
+    let groupId = '';
+    if(op.groupId != null) {
+      groupId = op.groupId;
+    } else if(op.nationId != null) {
+      groupId = op.nationId;
+    } else {
+      groupId = op.teamId;
+    }
+
+    
+
+    const newOperator: Operator = {
+      id: op.potentialItemId,
+      name: op.name,
+      rarity: op.rarity + 1,
+      potentials: this.dbJsonParser.getPotentials(op),
+      trait: this.dbJsonParser.stylizeText(op.description).replace('{heal_scale:0%}', '80%'),
+      class: this.dbJsonParser.getClass(op),
+      branch: this.dbJsonParser.getBranch(op),
+      originalBranch: op.subProfessionId,
+      talents: this.dbJsonParser.getTalents(op),
+      tags: op.tagList,
+      obtainMethods: op.itemObtainApproach,
+      position: this.dbJsonParser.getPosition(op),
+      skills: skills,
+      statBreakpoints: this.dbJsonParser.getStats(op),
+      skillLevelUnlockReqs: this.dbJsonParser.getSkillLevelUnlockReqs(op),
+      summons: this.dbJsonParser.getSummons(wholeJson, op.tokenKey, op),
+      trustStats: this.dbJsonParser.getTrustStats(op),
+      recruitmentContract: op.itemDesc,
+      potentialToken: op.itemUsage,
+      group: {
+        name: this.dbJsonParser.getGroupName(groupId),
+        id: groupId
+      },
+      skins: [],
+      voiceActors: {},
+      modules: [],
+      baseSkills: [],
+      profileEntries: [],
+      dialogues: []
+    }
+
+    if(op.name == 'Amiya' && op.profession == 'WARRIOR') {
+      newOperator.name = 'Amiya (Guard)';
+      newOperator.profileEntries = this.database.operators.find(op => op.name == 'Amiya').profileEntries;
+      newOperator.baseSkills = this.database.operators.find(op => op.name == 'Amiya').baseSkills;
+    }
+
+    if(newOperator.branch == 'Pusher' || newOperator.branch == 'Hookmaster') {
+      newOperator.position = 'All'
+    }
+
+    this.database.operators.push(newOperator);
   }
 }

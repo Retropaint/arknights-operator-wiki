@@ -22,7 +22,11 @@ export class DialogueTableComponent implements OnInit {
       this.loadedLanguages[index] = true;
       index++;
     }, 250)
-    this.charId = this.operator.id.slice(2, this.operator.id.length);
+    if(this.operator.name == 'Amiya (Guard)') {
+      this.charId = "char_1001_amiya2";
+    } else {
+      this.charId = this.operator.id.slice(2, this.operator.id.length);
+    }
   }
 
 }

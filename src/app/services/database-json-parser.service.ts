@@ -423,7 +423,7 @@ export class DatabaseJsonParserService {
   }
 
   getSummons(charJson: any, tokenKey, op) {
-    if(tokenKey == null) {
+    if(tokenKey == null || charJson == null) {
       return [];
     }
 

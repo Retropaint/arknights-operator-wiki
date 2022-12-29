@@ -12,6 +12,10 @@ export class OperatorAvatarService {
   ) { }
 
   getAvatar(operator: Operator) {
+    if(operator.name == 'Amiya (Guard)') {
+      return 'char_1001_amiya2';
+    }
+
     let operatorImageLink = operator.id;
 
     const specialReserveOp = this.database.specialReserveOps.find(op => op == operator.name) != null;

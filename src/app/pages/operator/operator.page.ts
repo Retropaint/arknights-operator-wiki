@@ -17,9 +17,12 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class OperatorPage implements OnInit {
 
+  encodeURI = encodeURI;
+
   operator: Operator;
   isFirstLoad: boolean = false;
   currentTab: 'info' | 'gallery' | 'profile' | 'dialogue' = 'info';
+  isAmiyaGuard: boolean;
   isBlurry: boolean = false;
 
   jsonsLoadedSubscription: Subscription;
@@ -88,6 +91,7 @@ export class OperatorPage implements OnInit {
       this.operator = this.database.operators[operatorIndex];
       console.log(this.operator)
       if(this.operator) {
+        this.isAmiyaGuard = this.operator.name == 'Amiya (Guard)';
         setTimeout(() => {
           this.sharedService.changeTabDisplay(this.operator.name, 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/' + this.opAvatarService.getAvatar(this.operator) + '.png');
         })

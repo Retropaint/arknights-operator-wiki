@@ -4,8 +4,15 @@
   <p *ngIf="!database.isLoaded" style="text-align: center; margin-top: 10px">Loading... {{dbGetter.jsonLoadingProgress / dbGetter.maxJsonFiles | numberFormatter: 'percent'}}</p>
   
   <ng-container *ngIf="database.isLoaded && operator">
-    <p class="op-name">{{operator.name}}</p>
-
+    <div class="op-name-container" [ngClass]="{'amiya' : operator.name.includes('Amiya')}">
+      <p class="op-name">{{operator.name}}</p>
+      <div class="tabs amiya" *ngIf="operator.name.includes('Amiya')">
+        <p routerLink="/operator" [queryParams]="{'name': encodeURI('Amiya')}" [ngClass]="{'selected' : !isAmiyaGuard}">Caster</p>
+        <p style="background: none; cursor: default">/</p>
+        <a routerLink="/operator" [queryParams]="{'name': encodeURI('Amiya (Guard)')}" [ngClass]="{'selected' : isAmiyaGuard}">Guard</a>
+      </div>
+    </div>
+    
     <div class="tabs">
       <p (click)="currentTab = 'info'" [ngClass]="{'selected' : currentTab == 'info'}">Gameplay Info</p>
       <p (click)="currentTab = 'gallery'" [ngClass]="{'selected' : currentTab == 'gallery'}">Gallery</p>
