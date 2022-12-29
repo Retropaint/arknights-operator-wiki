@@ -84,7 +84,6 @@ export class StatTableComponent implements OnInit {
 
       if(this.subject.statBreakpoints[breakpoint.elite] == null) {
 
-        // proceed if at least 1 breakpoint is valid
         if(this.visualBreakpoints.length > 0) {
           return;
         } else { // otherwise, pick the highest elite and level of this op as the breakpoint
@@ -117,7 +116,7 @@ export class StatTableComponent implements OnInit {
     const op = this.subject.statBreakpoints[elite]
     level = Math.min(level, this.subject.statBreakpoints[elite].maxLevel);
 
-    // immediately get min and max stats if that's the level
+    // skip calculation for min and max levels
     if(level == 0) {
       return this.addTrustAndPotential(op.minStats);
     } else if(level == op.maxLevel) {
@@ -155,8 +154,6 @@ export class StatTableComponent implements OnInit {
     }
 
     if(this.includePotentials) {
-
-      // directly parse potential text
       this.subject.potentials.forEach(rank => {
         const split = rank.split(' ').filter(word => word != '');
 
@@ -173,7 +170,12 @@ export class StatTableComponent implements OnInit {
     if(this.includeModule) {
       const module = this.subject.modules[1];
       module.levels[module.levels.length-1].stats.forEach(stat => {
-        stats[stat.key] += stat.value;
+        if(stat.key == 'attack_speed') {
+          stats['attackInterval'] *= 1 - (stat.value / 100);
+          stats['attackInterval'] = stats['attackInterval'].toFixed(2);
+        } else {
+          stats[stat.key] += stat.value;
+        }
       })
     }
 
