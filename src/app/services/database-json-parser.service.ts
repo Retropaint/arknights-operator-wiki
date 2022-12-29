@@ -762,8 +762,7 @@ export class DatabaseJsonParserService {
   }
 
   getPosition(operator: Operator) {
-    const pos = operator.position;
-    return pos.charAt(0).toUpperCase() + pos.slice(1).toLowerCase();
+    return operator.position.charAt(0).toUpperCase() + operator.position.slice(1).toLowerCase();
   }
 
   /*
