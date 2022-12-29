@@ -57,23 +57,12 @@ export class SearchBoxComponent implements OnInit {
       newResults.push(this.addOp('Ch\'en the Holungday'))
     }
 
-    // check if results are only an op and their alter
-    let isAlter: boolean = false;
-    if(newResults.length == 2) {
-      const firstResultWord = newResults[0].name.split(' ')[0];
-      const secondResultWord = newResults[1].name.split(' ')[0];
-      if(firstResultWord == secondResultWord) {
-          isAlter = true;
-      }
-    }
-
-    if(!isAlter) {
-      // sort by rarity, then alphabetically
+    // make the op with a similar, shorter name go above the longer one to allow navigating using Enter
+    if(newResults[0]?.name.includes(' the ') || newResults.length == 2 && newResults[0].rarity == newResults[1].rarity) {
+      newResults.sort((a, b) => a.name > b.name ? 1 : -1)
+    } else {
       newResults.sort((a, b) => a.name < b.name ? 1 : -1)
       newResults.sort((a, b) => a.rarity < b.rarity ? 1 : -1)
-    } else {
-      // put original op before alter
-      newResults.sort((a, b) => a.name.length < b.name.length ? 1 : -1)
     }
 
     this.results = newResults;
