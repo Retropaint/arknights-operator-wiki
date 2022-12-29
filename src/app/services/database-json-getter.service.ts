@@ -217,6 +217,7 @@ export class DatabaseJsonGetterService {
             }
 
             if(newSkin.id == "char_1001_amiya2_2") {
+              newSkin.name = 'Default';
               this.database.operators.find(operator => operator.name == 'Amiya (Guard)').skins.push(newSkin);
             } else if(op != null) {
               op.skins.push(newSkin);
@@ -415,7 +416,7 @@ export class DatabaseJsonGetterService {
   }
 
   getAvatarLink(op: any) {
-    if(op.name == 'Amiya (Guard)') {
+    if(op.name == 'Amiya' && op.profession == 'WARRIOR') {
       return 'char_1001_amiya2';
     }
 
