@@ -15,7 +15,7 @@ export class ManualJsonParserService {
     this.modules(op);
   }
 
-  skills(op: Operator) {
+  private skills(op: Operator) {
     const br = new RegExp('<br>', 'g');
 
     switch(op.name) {
@@ -50,10 +50,12 @@ export class ManualJsonParserService {
       break; case "Kal\'tsit":
         op.skills[1].description = op.skills[1].description.replace(br, '');
         op.skills[2].description = op.skills[2].description.replace(br, '');
+      break; case 'Schwarz':
+        op.skills[2].description = op.skills[2].description.replace(br, '');
     }
   }
 
-  talents(op: Operator) {
+  private talents(op: Operator) {
 
     // show eyja's 2nd talent random SP range
     if(op.name == 'Eyjafjalla') {
@@ -63,7 +65,7 @@ export class ManualJsonParserService {
 
   }
 
-  ranges(op: Operator) {
+  private ranges(op: Operator) {
     
     // Frostleaf's e2 talent gives her permanent extra range
     if(op.name == 'Frostleaf') {
@@ -72,7 +74,7 @@ export class ManualJsonParserService {
 
   }
 
-  modules(op: Operator) {
+  private modules(op: Operator) {
 
     if(op.modules[1]) {
       // fast-redploy modules
