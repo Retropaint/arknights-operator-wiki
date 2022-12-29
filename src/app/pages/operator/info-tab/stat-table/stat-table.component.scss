@@ -1,5 +1,6 @@
 .table {
   margin-bottom: 0px;
+  table-layout: fixed;
 
   &.bottom-margin {
     margin-bottom: 15px;
@@ -23,6 +24,10 @@
     &.button {
       background: #2a2929;
       cursor: pointer;
+
+      &:hover {
+        background: var(--hovergrey);
+      }
 
       &.selected {
         background: var(--blue);
