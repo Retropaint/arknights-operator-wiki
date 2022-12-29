@@ -14,6 +14,7 @@ export interface ItemCategory {
   name: string;
   items?: Item[];
 
+  // vars for automation
   find: string; // word(s) to find item of this category
   lowerCase?: boolean; // some items might only have the lowercase versions of whatever is assigned to 'find'
 }
