@@ -28,9 +28,11 @@ export class ModuleTableComponent implements OnInit {
       // parse stat values, just like skill table 
       module.traitStats.forEach(stat => {
         const statStrings = [
-          `+{${stat.key}} `,
-          `{${stat.key}:0%} `,
-          `{${stat.key}} `
+          `+{${stat.key}}`,
+          `{${stat.key}:0%}`,
+          `{${stat.key}}`,
+          `{${stat.key} 0%}`,
+          `{${stat.key} 0}`
         ];
         statStrings.forEach(string => {
           let multiplier = 1;
