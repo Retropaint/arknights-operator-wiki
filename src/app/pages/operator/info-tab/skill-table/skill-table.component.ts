@@ -308,6 +308,8 @@ export class SkillTableComponent implements OnInit {
       }
 
       if(word == 'moderately' || word == 'dramatically' || word == 'slightly' || word == 'significantly') {
+        if(this.operator.branch == 'Hookmaster' || this.operator.branch == 'Pusher') {
+          split[i] = "by attack@force tiles";
         } else {
           let suffix = '0%';
           if(name == 'Ptilopsis') {
