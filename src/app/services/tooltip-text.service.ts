@@ -49,6 +49,7 @@ export class TooltipTextService {
     text = text.replace(/<\$cc.c.abyssal2_3>/g, openSpan + "Takes priority over Cooperative Will, and does not stack.\nDoes not stack with Automation α, Automation β, or Bionic Seadragon, and the 'set to 0' effect will take priority" + closeSpan)
     text = text.replace(/<\$cc.g.psk>/g, openSpan + "Includes the following Operators:\nFlametail\nFartooth\nAshlock\nWild Mane\n\'Justice Knight\'" + closeSpan)
     text = text.replace(/<\$cc.g.sp>/g, openSpan + `Includes the following Operators:\n${this.alterOps()}` + closeSpan)
+    text = text.replace(/<\$ba.magicfragile>/g, openSpan + "Increase Arts damage taken by the stated percentage\n(Does not stack, strongest effect takes precedence)" + closeSpan)
 
     return text;
   }
