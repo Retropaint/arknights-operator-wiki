@@ -93,69 +93,15 @@ export class TalentTableComponent implements OnInit {
     
     let split = talent.descriptions[1].split(' ');
 
-    // store pot bonuses
-    let potBonuses: string[] = [];
     for(let i = 0; i < split.length; i++) {
       if(split[i].includes('positive-effect')) {
-
-        // do not get the closing bracket of pot bonus
-        let finalizedPotBonus = split[i+1].slice(0, split[i+1].length-1);
-
-        // if there is whitespace between stat and positive effect span, get the next word
-        if(split[i+1] == '') {
-          finalizedPotBonus = split[i+2].slice(0, split[i+2].length-1);
-        }
-
-        potBonuses.push(finalizedPotBonus);
+        split[i+1] = split[i+1].slice(0, split[i+1].length-1) + ` ${this.potImg(talent.unlockConditions[1].potential-1)})`;
       }
     }
 
-    // remove static pot bonus
-    for(let i = 0; i < split.length; i++) {
-      if(split[i].includes('positive-effect')) {
-        split[i-1] = ``;
-        split[i] = `~`;
-        split[i+1] = '';
-        split[i+2] = '';
-      }
-    }
-
-    // replace tilde (~) with pot bonus
-    let index = 0; // keeps track of pot bonus to add
-    for(let i = 0; i < split.length; i++) {
-      if(!potBonuses[index]) {
-        break;
-      }
-      if(split[i].includes('~')) {
-        // remove tilde
-        split[i] = split[i].slice(0, split[i].length - 1);
-        
-        let finalizedPotBonus = potBonuses[index];
-        // there is a HORRENDOUS bug where whitespace and opening bracket are somehow treated as a single character and I have no idea what's causing it
-        // god bless the code spaghetti monster I'll be counting my days
-        // the solution here is to just remove them and add a new opening bracket
-        finalizedPotBonus = finalizedPotBonus.slice(1, finalizedPotBonus.length);
-        finalizedPotBonus = '(' + finalizedPotBonus;
-        split[i] += "<span class='positive-effect'> " + finalizedPotBonus + this.potImg(talent.unlockConditions[1].potential-1) + ') </span>';
-        index++;
-      }
-    }
-
-    // remove stray tildes
-    for(let i = 0; i < split.length; i++) {
-      if(split[i].includes('~')) {
-        split[i] = split[i].slice(0, split[i].length - 1);
-      }
-    }
-
-    // turn split into an actual string
     let result = '';
     for(let i = 0; i < split.length; i++) {
-      if(split[i][split.length - 1] == ' ' || split[i+1] != null && split[i+1][0] == ' ') {
-        result += split[i];
-      } else {
-        result += split[i] + ' ';
-      }
+      result += split[i] + ' ';
     }
 
     const newTalent = {
@@ -166,7 +112,6 @@ export class TalentTableComponent implements OnInit {
     }
 
     return newTalent;
-
   }
 
   getRelevantUnlockConditions(unlockConditions: any) {
