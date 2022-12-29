@@ -574,7 +574,7 @@ export class DatabaseJsonParserService {
     text = this.tooltipTexts.addTooltipTexts(text);
 
     const closingSpan = new RegExp('</>', 'g');
-    text = text.replace(closingSpan, " </span>")
+    text = text.replace(closingSpan, ' </span> ')
 
     text = text.replace('<Support Devices>', 'Support Devices')
 
@@ -590,8 +590,10 @@ export class DatabaseJsonParserService {
     let result = "";
 
     for(let i = 0; i < split.length; i++) {
+      const s = split[i+1]
+
       // don't add spacing between punctuation, and plus (it should be grouped with its stat value)
-      if(split[i+1] != '</span>.' && split[i+1] != '</span>;' && split[i+1] != '</span>,' && split[i] != '+') {
+      if(s != '</span>.' && s != '</span>;' && s != '</span>,' && split[i] != '+') {
         result += split[i] + ' '
       } else {
         result += split[i]
