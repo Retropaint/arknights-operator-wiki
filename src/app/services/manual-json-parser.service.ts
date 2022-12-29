@@ -37,14 +37,15 @@ export class ManualJsonParserService {
       break; case 'Ansel':
         op.skills[0].levels[0].range = '3-10';
         op.skills[0].levels[3].range = '5-2';
-      break; case 'Gladiia':
-        op.skills.forEach(skill => {
-          skill.levels.forEach(level => {
-            const forceStat = level.stats.find(stat => stat.name == "force");
-            if(forceStat) {
-              forceStat.name = 'attack@force';
-            }
-          })
+    }
+
+    if(op.branch == 'Hookmaster' || op.branch == 'Pusher') {
+      op.skills.forEach(skill => {
+        skill.levels.forEach(level => {
+          const forceStat = level.stats.find(stat => stat.name == "force");
+          if(forceStat) {
+            forceStat.name = 'attack@force';
+          }
         })
       break; case "Kal\'tsit":
         op.skills[1].description = op.skills[1].description.replace(br, '');
