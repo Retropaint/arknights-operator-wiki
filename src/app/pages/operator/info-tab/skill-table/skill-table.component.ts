@@ -296,7 +296,6 @@ export class SkillTableComponent implements OnInit {
   
   // for skills with text like 'reduced slightly', descriptive words are removed and replaced with actual values
   parseUnnumberedStats(description: string, skill: Skill) {
-    description = description.replace('increases a bit', 'increases');
 
     const split = description.split(' ');
     for(let i = 0; i < split.length; i++) {
