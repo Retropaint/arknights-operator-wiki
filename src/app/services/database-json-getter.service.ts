@@ -31,7 +31,6 @@ export class DatabaseJsonGetterService {
 
   init() {
     this.jsonLoadingProgress = 0;
-    console.time("item");
     this.http.get(this.baseUrl + 'item_table.json')
       .pipe(
         mergeMap(itemJson => {
@@ -43,7 +42,7 @@ export class DatabaseJsonGetterService {
               id: thisItem.itemId,
               imgId: thisItem.iconId,
               rarity: thisItem.rarity+1,
-              type: this.dbJsonParser.getMaterialType(thisItem.classifyType),
+              //type: this.dbJsonParser.getMaterialType(thisItem.classifyType),
               description: thisItem.description,
               usage: thisItem.usage
             }
@@ -369,18 +368,19 @@ export class DatabaseJsonGetterService {
               }
             })
   
-            // rather just use this operator loop for manual edits than create an entirely new one
+            // use this last operator loop to go thru all manual edits
             this.manualParser.edit(operator);
           })
 
           this.jsonLoadingProgress++;
-          return new Array(1); 
+
+          // dummy data to let mergeMap pass thru
+          return new Array(1);
         })
       )
       .subscribe(() => {
         this.sharedService.allJsonsLoaded();
         this.database.isLoaded = true;
-        //this.transitioner.transitionSubscription.next()
       })
   }
 }
