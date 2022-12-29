@@ -8,6 +8,10 @@
   color: white;
   text-decoration: none;
 
+  &:hover {
+    background: var(--hovergrey);
+  }
+
   &.chosen {
     border: 1px solid white;
   }
