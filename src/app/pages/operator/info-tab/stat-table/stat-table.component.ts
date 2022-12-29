@@ -36,6 +36,8 @@ export class StatTableComponent implements OnInit {
 
   includePotentials: boolean = true;
 
+  includeModule: boolean = true;
+
   isSummon: boolean = false;
 
   constructor(
@@ -44,6 +46,8 @@ export class StatTableComponent implements OnInit {
 
   ngOnInit() {
     this.isSummon = this.subject.id.includes('token');
+
+    this.includeModule = this.subject.modules != null && this.subject.modules[1] != null;
 
     this.displayedBreakpoints = this.visualBreakpoints.slice();
     this.visualBreakpoints = [];
@@ -163,6 +167,13 @@ export class StatTableComponent implements OnInit {
             stats[word.toLowerCase()] += parseInt(nextWord)
           }
         }
+      })
+    }
+
+    if(this.includeModule) {
+      const module = this.subject.modules[1];
+      module.levels[module.levels.length-1].stats.forEach(stat => {
+        stats[stat.key] += stat.value;
       })
     }
 
