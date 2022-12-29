@@ -219,7 +219,7 @@ export class SkillTableComponent implements OnInit {
       }
 
       let statValue = (stat.value*multiplier).toString();
-      if(statValue.includes('.00')) {
+      if(statValue.includes('.00') || statValue.includes('.99')) {
         statValue = Math.floor(stat.value*multiplier).toString();
       }
 
