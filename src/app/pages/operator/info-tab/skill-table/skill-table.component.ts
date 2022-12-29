@@ -338,6 +338,14 @@ export class SkillTableComponent implements OnInit {
           split[i] = 'base_attack_time:s';
         }
       }
+
+      if(word == 'a' && split[i+1] == "bit") {
+        split[i] = '';
+        split[i+1] = '';
+      }
+      if(word == "slightly") {
+        split[i] = '';
+      }
     }
 
     // turn split into an actual string
