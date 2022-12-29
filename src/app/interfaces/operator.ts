@@ -132,6 +132,7 @@ export interface Summon {
 
   trustStats?: any;
   potentials?: string[];
+  modules?: Module[];
 }
 
 export interface BaseSkill {
