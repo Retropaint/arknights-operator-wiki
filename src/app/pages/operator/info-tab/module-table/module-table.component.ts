@@ -41,7 +41,7 @@ export class ModuleTableComponent implements OnInit {
             multiplier = 100;
             percent = '%'
           }
-          this.trait = this.trait.replace(string, `${Math.round(<number>stat.value*multiplier)}${percent}`);
+          this.trait = this.trait.replace(string, `${Math.round(stat.value*multiplier)}${percent}`);
         })
       })
     }
