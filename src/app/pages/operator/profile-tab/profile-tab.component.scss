@@ -15,6 +15,10 @@
 
   .table {
     height: 100%;
+
+    &.less-margin {
+      margin-bottom: 10px;
+    }
   
     th {
       height: 35px;
