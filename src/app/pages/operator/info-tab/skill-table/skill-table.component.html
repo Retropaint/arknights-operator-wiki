@@ -32,6 +32,9 @@
       <th>
         Skill Description
       </th>
+      <th class="tooltip" [attr.data-tip]="'Duration'">
+        Dur.
+      </th>
       <th>
         SP Cost
       </th>
@@ -50,20 +53,10 @@
       </td>
       <td class="skill-description">
 
-        <p class="special recovery {{s.recoveryType.name.split(' ')[0]}}" [attr.data-tip]="s.recoveryType.tip"> {{s.recoveryType.name}} </p>
-        <p class="activation"> {{s.activationType}} </p>
-        
-        <!-- duration -->
-        <p class="duration" *ngIf="s.durations[0].value != -1">
-          <span *ngFor="let d of s.durations; let i = index">
-            <ng-container *ngIf="d.value == 0">Instant</ng-container>
-            <ng-container *ngIf="d.value > 0">{{d.value}}s 
-              <img *ngIf="d.level <= 6" class="level" src="assets/icons/skillLevels/{{d.level}}.png"/>
-              <img *ngIf="d.level >= 7" class="mastery-img" src="assets/icons/skillLevels/{{d.level}}.png"/>
-            </ng-container>
-            <ng-container *ngIf="i < s.durations.length - 1">, </ng-container>
-          </span>
-        </p>
+        <div style="display: flex">
+          <p class="special tooltip recovery {{s.recoveryType.name.split(' ')[0]}}" [attr.data-tip]="s.recoveryType.tip"> {{s.recoveryType.name}} </p>
+          <p class="activation"> {{s.activationType}} </p>
+        </div>
 
         <p class="skill-description" #description [innerHtml]="s.description"></p>
 
@@ -75,6 +68,16 @@
               <img *ngIf="range.level >= 7" class="mastery-img" src="assets/icons/skillLevels/{{range.level}}.png"/>
           </div>
         </div>
+      </td>
+
+      <td>
+        <ng-container *ngFor="let duration of s.durations">
+          <p class="flex-container" *ngIf="duration.value == -1">Infinite</p>
+          <p class="flex-container" *ngIf="duration.value != -1">{{duration.value}}s 
+            <ion-img *ngIf="duration.level <= 6" class="level" src="assets/icons/skillLevels/{{duration.level}}.png"></ion-img>
+            <ion-img *ngIf="duration.level >= 7" class="mastery-img" src="assets/icons/skillLevels/{{duration.level}}.png"></ion-img>
+          </p>
+        </ng-container>
       </td>
 
       <td>

@@ -108,11 +108,13 @@ export class SkillTableComponent implements OnInit {
 
       const variants = [
         `+{${stat.name}:0%}`,
-        `-{-${stat.name}:0%}`,
         `{${stat.name}:0%}`,
+        `-{-${stat.name}:0%}`,
+        `-{-${stat.name}}`,
         `+{${stat.name}}`,
         `{${stat.name}}`,
         `${stat.name}:0%`,
+        `${stat.name}:s`,
         `${stat.name}`,
       ];
 
@@ -131,6 +133,8 @@ export class SkillTableComponent implements OnInit {
     let suffix = '';
     if(variant.includes('%')) {
       suffix = '%';
+    } else if(variant[variant.length - 1] == 's') {
+      suffix = 's';
     }
     let prefix = '';
     if(variant.includes('+')) {
@@ -149,7 +153,7 @@ export class SkillTableComponent implements OnInit {
 
         if(suffix == '%') {
           val *= 100;
-          if(val.toFixed(2).includes('.00' || val.toFixed(2).includes('.99'))) {
+          if(val.toFixed(2).includes('.00') || val.toFixed(2).includes('.99')) {
             val = Math.floor(val);
           }
         }
@@ -200,14 +204,12 @@ export class SkillTableComponent implements OnInit {
     }
 
     for(let i = 0; i < split.length; i++) {
-      // group punctuation with the word it's following
       if(split[i+1] != '</span>.' && split[i+1] != '</span>;' && split[i+1] != '</span>,' && split[i] != '+') {
         result += split[i] + ' '
       } else {
         result += split[i]
       }
     }
-
     return result;
   }
   
