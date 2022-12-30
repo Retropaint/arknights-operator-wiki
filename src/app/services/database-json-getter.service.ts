@@ -129,11 +129,8 @@ export class DatabaseJsonGetterService {
           return this.http.get(this.baseUrl + 'char_patch_table.json');
         }),
         concatMap((result: any) => {
-          console.log(result)
 
           this.addOperator(result.patchChars.char_1001_amiya2, null)
-
-          console.log(this.database.operators)
 
           return this.http.get(this.baseUrl + 'range_table.json');
         }),
@@ -150,8 +147,6 @@ export class DatabaseJsonGetterService {
           return this.http.get(this.baseUrl + 'charword_table.json'); 
         }),
         mergeMap((jsonCharwords: any) => {
-
-          console.log(jsonCharwords.voiceLangDict)
 
           Object.keys(jsonCharwords.charWords).forEach(char => {
             const voiceEntry = jsonCharwords.charWords[char]
