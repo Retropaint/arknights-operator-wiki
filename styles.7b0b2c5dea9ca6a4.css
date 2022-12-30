@@ -1411,7 +1411,6 @@ sub {
   color: rgb(246, 99, 57);
 }
 .special {
-  cursor: help;
   text-decoration: underline;
   display: inline-block;
 }
@@ -1432,7 +1431,10 @@ sub {
   color: #f6bf00;
   display: inline-block;
 }
-.special:after {
+.tooltip {
+  cursor: help;
+}
+.tooltip:after {
   content: attr(data-tip);
   position: absolute;
   margin-left: 15px;
@@ -1446,7 +1448,7 @@ sub {
   z-index: 99;
   box-shadow: 0px 0px 10px 5px rgb(0, 0, 0);
 }
-.special:hover:after {
+.tooltip:hover:after {
   opacity: 1;
 }
 .info {
