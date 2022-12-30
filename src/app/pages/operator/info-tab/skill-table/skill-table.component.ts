@@ -16,30 +16,24 @@ export class SkillTableComponent implements OnInit {
 
   @Input() operator: Operator;
 
-  selectedSkillLevels = {
-    0: true,
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-    6: true,
-    7: true,
-    8: true,
-    9: true
-  };
+  selectedSkillLevels = [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    true,
+    true
+  ];
 
   skills: FinalizedSkill[] = [];
 
   sliderLevel: number = 0;
 
   doctor: Doctor;
-  
-  // keeps track of previous stat values to prevent repetition
-  previousStatValues: {
-    name: string,
-    value: number
-  }[] = [];
 
   @ViewChildren('description') descs: any;
 
@@ -68,8 +62,6 @@ export class SkillTableComponent implements OnInit {
     }
 
     this.operator.skills.forEach(skill => {
-      this.previousStatValues = [];
-
       let newSkill: FinalizedSkill = {
         id: skill.id,
         iconId: skill.iconId,
@@ -91,16 +83,8 @@ export class SkillTableComponent implements OnInit {
       newSkill.description = newSkill.description.replace('hp_recovery_per_sec_BY_MAX_HP_RATIO', "hp_recovery_per_sec_by_max_hp_ratio");
       newSkill.description = newSkill.description.replace('ABILITY_RANGE_FORWARD_EXTEND', "ability_range_forward_extend");
 
-      // here's where the skill parsing magic happens!
-      newSkill.description = this.parseUnnumberedStats(newSkill.description, skill);
-      newSkill.description = this.initialParse(skill, newSkill.description, firstSelectedSkillLevel)
-      const maxLevel = this.operator.rarity > 3 ? 9: 6;
-      for(let i = firstSelectedSkillLevel+1; i <= Math.min(lastSelecedSkillLevel+1, maxLevel); i++) {
-        if(this.selectedSkillLevels[i]) {
-          newSkill.description = this.continuousParse(skill, newSkill.description, i);
-        }
-      }
-      newSkill.description = this.lastParse(skill, newSkill.description, Math.min(lastSelecedSkillLevel, maxLevel));
+      newSkill.description = this.parseDescriptiveWords(newSkill.description, skill);
+      newSkill.description = this.parseSkillDesc(skill, newSkill.description);
       newSkill.description = this.cleanUpSkillDescription(newSkill.description)
 
       this.skills.push(newSkill)
@@ -118,142 +102,79 @@ export class SkillTableComponent implements OnInit {
     
   }
 
-  initialParse(skill: Skill, description: string, level: number) {
+  parseSkillDesc(skill: Skill, description: string) {
+    // level doesn't matter, just need the stats
+    skill.levels[0].stats.forEach(stat => {
 
-    skill.levels[level].stats.forEach(stat => {
-
-      // behold, all stat value variations
-      const strings = [
+      const variants = [
+        `+{${stat.name}:0%}`,
+        `-{-${stat.name}:0%}`,
+        `{${stat.name}:0%}`,
+        `+{${stat.name}}`,
+        `{${stat.name}}`,
+        `${stat.name}:0%`,
         `${stat.name}`,
-        `-${stat.name}`, 
-        `${stat.name}:0%`, 
-        `${stat.name}:0.0`,
-        `${stat.name}:0`,
-        `-${stat.name}:0%`,
-        `${stat.name}:0.0%`,
-        `${stat.name}:s`,
       ];
 
-      // these values will be checked again to prevent repetition
-      this.previousStatValues.push({name: stat.name, value: stat.value})
-
-      description = this.parseDesc(description, stat, strings, level, 'first');
-
+      const variant = variants.find(variation => description.includes(variation))
+      if(variant) {
+        description = description.replace(variant, this.parseStat(skill, stat.name, variant));
+      }
     })
 
     return description;
   }
 
-  continuousParse(skill: Skill, description: string, level: number) {
-    
-    skill.levels[level].stats.forEach(stat => {
+  parseStat(skill: Skill, statName: string, variant: string) {
+    let result: string = "";
 
-      if(this.hasRepetition(stat)) {
-        return;
-      }
-
-      // parsed stats will always leave a tilde (~) to let it know this is where parsing continues, so check for it
-      const statParseVariations = [
-        `${stat.name}~`,
-        `${stat.name}%~`,
-        `${stat.name}:s~`,
-        `${stat.name}+~`
-      ];
-
-      description = this.parseDesc(description, stat, statParseVariations, level, 'middle');
-      
-    })
-
-    return description;
-  }
-
-  lastParse(skill: Skill, description: string, level: number) {
-    
-    skill.levels[level].stats.forEach(stat => {
-
-      if(this.hasRepetition(stat)) {
-        description = this.replaceWholeWord(description, stat.name + '~', '');
-        description = this.replaceWholeWord(description, stat.name + '%~', '');
-        description = this.replaceWholeWord(description, stat.name + ':s~', '');
-        return;
-      }
-
-      // parsed stats will always leave a tilde (~) to let it know this is where parsing continues, so check for it
-      const statParseVariations = [
-        `${stat.name}~`, 
-        `${stat.name}%~`, 
-        `${stat.name}:s~` 
-      ];
-
-      description = this.parseDesc(description, stat, statParseVariations, level, 'last');
-      
-    })
-
-    return description;
-  }
-
-  parseDesc(description: string, stat, statParseVariations: string[], levelNum: number, parseType: 'first' | 'middle' | 'last') {
-    statParseVariations.forEach(parseVariation => {
-
-      // add level image if level is not 1
-      let level = `<span class="skill-level"> <img class="level" src="assets/icons/skillLevels/${levelNum+1}.png" /> </span>`;
-      if(levelNum > 5) {
-        level = `<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/${levelNum+1}.png" /> </span>`;
-      } else if(levelNum == 0) {
-        level = '';
-      }
-
-      let multiplier = 1;
-      let suffix = '';
-      let prefix = '';
-
-      // add special symbols
-      if(parseVariation.includes('%')) {
-        multiplier = 100;
-        suffix = '%'
-      } else if(parseVariation.includes(':s')) {
-        suffix = ':s'
-      }
-      if(parseVariation.includes('+')) {
-        prefix = '+'
-      }
-
-      let statValue = (stat.value*multiplier).toString();
-      if(statValue.includes('.00') || statValue.includes('.99')) {
-        statValue = Math.floor(stat.value*multiplier).toString();
-      }
-
-      // during parsing, the tilde (~) lets middle and last parsing know if to add more levels
-      switch(parseType) {
-        case 'first':
-          description = this.replaceWholeWord(description, parseVariation, `${prefix}${statValue}${suffix} ${level} ${stat.name}${suffix}~`)
-        break; case 'middle':
-          description = this.replaceWholeWord(description, parseVariation, ` ${prefix}(${statValue}${suffix} ${level}) ${stat.name}${suffix}~`)
-        break; case 'last':
-          description = this.replaceWholeWord(description, parseVariation, ` ${prefix}(${statValue}${suffix} ${level})`, true)
-      }
-    })
-
-    return description;
-
-  }
-
-  // since some stat names can have overlapping words, use this function instead of string.replace()
-  replaceWholeWord(string: string, toCheck: string, replacement: string, isFinal: boolean = false) {
-    const split = string.split(/[\{\} ]/);
-
-    let index = split.findIndex(word => word == toCheck);
-    // use while-loop to replace all instances of checked word
-    while(index != -1) {
-      split[index] = replacement;
-      index = split.findIndex(word => word == toCheck);
+    let suffix = '';
+    if(variant.includes('%')) {
+      suffix = '%';
+    }
+    let prefix = '';
+    if(variant.includes('+')) {
+      prefix = '+';
     }
 
-    let result = '';
-    split.forEach(word => {
-      result += word + ' ';
-    })
+    let firstLevel = true;
+    let prevVal = 9999;
+    for(let i = 0; i < this.selectedSkillLevels.length; i++) {
+      if(this.selectedSkillLevels[i]) {
+        let val = skill.levels[i].stats.find(stat => stat.name == statName).value;
+        if(prevVal == val) {
+          continue;
+        }
+        prevVal = val;
+
+        if(suffix == '%') {
+          val *= 100;
+          if(val.toFixed(2).includes('.00' || val.toFixed(2).includes('.99'))) {
+            val = Math.floor(val);
+          }
+        }
+
+        if(firstLevel) {
+          result += `${prefix}${val}${suffix} `;
+        } else {
+          result += `(${prefix}${val}${suffix} ${this.getLevelImg(i)}) `;
+        }
+        
+        firstLevel = false;
+      }
+    }
+
     return result;
+  }
+
+  getLevelImg(level: number) {
+    let img = `<span class="skill-level"> <img class="level" src="assets/icons/skillLevels/${level+1}.png" /> </span>`;
+    if(level > 5) {
+      img = `<span class="skill-level"> <img class="mastery-img" src="assets/icons/skillLevels/${level+1}.png" /> </span>`;
+    } else if(level == 0) {
+      img = '';
+    }
+    return img;
   }
 
   cleanUpSkillDescription(string: string) {
@@ -266,7 +187,7 @@ export class SkillTableComponent implements OnInit {
     for(let i = 0; i < split.length; i++) {
       const word = split[i];
 
-      // when parsing negative stat values, the actual negative symbol is isolated, so put it out of its misery
+      // some negative symbols get isolated from parsing
       if(word == '-') {
         split[i] = ''
       }
@@ -278,9 +199,8 @@ export class SkillTableComponent implements OnInit {
       }
     }
 
-    // turn split into an actual string
     for(let i = 0; i < split.length; i++) {
-      // don't add spacing between punctuation, and plus (it should be grouped with its stat value)
+      // group punctuation with the word it's following
       if(split[i+1] != '</span>.' && split[i+1] != '</span>;' && split[i+1] != '</span>,' && split[i] != '+') {
         result += split[i] + ' '
       } else {
@@ -291,8 +211,7 @@ export class SkillTableComponent implements OnInit {
     return result;
   }
   
-  // for skills with text like 'reduced slightly', descriptive words are removed and replaced with actual values
-  parseUnnumberedStats(description: string, skill: Skill) {
+  parseDescriptiveWords(description: string, skill: Skill) {
     const name = this.operator.name;
 
     const split = description.split(' ');
@@ -345,24 +264,12 @@ export class SkillTableComponent implements OnInit {
       }
     }
 
-    // turn split into an actual string
     let result = '';
     split.forEach(word => {
       result += word + ' ';
     })
 
     return result;
-  }
-
-  hasRepetition(stat: {value: number, name: string}) {
-    const index = this.previousStatValues.findIndex(findingStat => findingStat.name == stat.name)
-
-    if(index != -1 && this.previousStatValues[index].value == stat.value) {
-      return true;
-    } else {
-      this.previousStatValues[index].value = stat.value;
-      return false;
-    }
   }
 
   getRanges(skill: Skill, firstSkillLevel, lastSkillLevel) {
