@@ -7,7 +7,6 @@
 }
 
 .special {
-  cursor: help;
   text-decoration: underline;
   display: inline-block; // prevents underline under whitespaces
 
@@ -30,7 +29,11 @@
   }
 }
 
-.special:after {
+.tooltip {
+  cursor: help;
+}
+
+.tooltip:after {
   content: attr(data-tip);
   position: absolute;
   margin-left: 15px;
@@ -45,7 +48,7 @@
   box-shadow: 0px 0px 10px 5px rgb(0 0 0);
 }
 
-.special:hover:after {
+.tooltip:hover:after {
   opacity: 1;
 }
 
