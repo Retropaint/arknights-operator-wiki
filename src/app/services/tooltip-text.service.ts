@@ -11,9 +11,11 @@ export class TooltipTextService {
   ) { }
 
   addTooltipTexts(text: string) {
-    const openSpan = "<span class=\"special\" data-tip=\"";
+    const openSpan = "<span class=\"special tooltip\" data-tip=\"";
     const closeSpan = '">';
     
+    text = text.replace(/<\@ba.dt.element>/g, openSpan + "Includes Neural Damage, Corrosion Damage, and Burn Damage" + closeSpan)
+    text = text.replace(/<\$ba.dt.element>/g, openSpan + "Includes Neural Damage, Corrosion Damage, and Burn Damage" + closeSpan)
     text = text.replace(/<\$ba.shield>/g, openSpan + "Each stack of shield can block 1 instance of damage" + closeSpan )
     text = text.replace(/<\$ba.buffres>/g, openSpan + "Reduce duration of abnormal effects such as Stun, Cold, Freeze by 50% (Does not stack)" + closeSpan)
     text = text.replace(/<\$ba.fragile>/g, openSpan + "Increase all damage taken by the stated percentage (Does not stack, strongest effect takes precedence)" + closeSpan)
