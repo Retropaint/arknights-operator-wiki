@@ -79,12 +79,8 @@ export class SkillTableComponent implements OnInit {
         ranges: this.getRanges(skill, firstSkilLevel, lastSkillLevel)
       }
 
-      newSkill.description = newSkill.description.replace('HP_RECOVERY_PER_SEC', 'hp_recovery_per_sec');
-      newSkill.description = newSkill.description.replace('hp_recovery_per_sec_BY_MAX_HP_RATIO', "hp_recovery_per_sec_by_max_hp_ratio");
-      newSkill.description = newSkill.description.replace('ABILITY_RANGE_FORWARD_EXTEND', "ability_range_forward_extend");
-
       newSkill.description = this.parseSkillDesc(skill, newSkill.description);
-      newSkill.description = this.cleanUpSkillDescription(newSkill.description)
+      newSkill.description = this.cleanUpSkillDescription(newSkill.description);
 
       this.skills.push(newSkill)
 
@@ -100,7 +96,6 @@ export class SkillTableComponent implements OnInit {
         desc.nativeElement.innerHTML = this.skills[i].description;
       }
     })
-    
   }
 
   parseSkillDesc(skill: Skill, description: string) {
@@ -111,6 +106,7 @@ export class SkillTableComponent implements OnInit {
         `+{${stat.name}:0%}`,
         `{${stat.name}:0%}`,
         `-{-${stat.name}:0%}`,
+        `{-${stat.name}:0%}`,
         `-{-${stat.name}}`,
         `+{${stat.name}}`,
         `{${stat.name}}`,

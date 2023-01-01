@@ -15,6 +15,7 @@ export class ManualJsonParserService {
   }
 
   private skills(op: Operator) {
+    
     const br = new RegExp('<br>', 'g');
 
     switch(op.name) {
@@ -48,6 +49,15 @@ export class ManualJsonParserService {
     }
 
     this.parseDescriptiveWords(op);
+    this.parseUpperCaseNames(op);
+  }
+
+  private parseUpperCaseNames(op: Operator) {
+    for(let i = 0; i < op.skills.length; i++) {
+      this.replaceSkillDesc(op, i, "ABILITY_RANGE_FORWARD_EXTEND", "ABILITY_RANGE_FORWARD_EXTEND".toLowerCase());
+      this.replaceSkillDesc(op, i, "hp_recovery_per_sec_BY_MAX_HP_RATIO", "hp_recovery_per_sec_BY_MAX_HP_RATIO".toLowerCase());
+      this.replaceSkillDesc(op, i, "HP_RECOVERY_PER_SEC", "HP_RECOVERY_PER_SEC".toLowerCase());
+    }
   }
 
   private parseDescriptiveWords(op: Operator) {
@@ -64,7 +74,7 @@ export class ManualJsonParserService {
         } else {
           let suffix = ':0%';
           if(op.name == 'Ptilopsis') {
-            suffix = 's';
+            suffix = ':s';
           }
 
           this.replaceSkillDesc(op, i, regex, this.baseAttackTime(op.skills[i], suffix));
@@ -98,13 +108,10 @@ export class ManualJsonParserService {
   }
 
   private talents(op: Operator) {
-
-    // show eyja's 2nd talent random SP range
     if(op.name == 'Eyjafjalla') {
       const pot = '<span class="positive-effect"> (+(3-4)) </span>'
       op.talents[2].descriptions[1] = op.talents[2].descriptions[1].replace('Points', 'Points (10-20) ' + pot);
     }
-
   }
 
   private ranges(op: Operator) {
