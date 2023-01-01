@@ -16,8 +16,8 @@
     <div class="tabs">
       <p (click)="currentTab = 'info'" [ngClass]="{'selected' : currentTab == 'info'}">Gameplay Info</p>
       <p (click)="currentTab = 'gallery'" [ngClass]="{'selected' : currentTab == 'gallery'}">Gallery</p>
-      <p (click)="currentTab = 'profile'" [ngClass]="{'selected' : currentTab == 'profile'}">Profile</p>
-      <p (click)="currentTab = 'dialogue'" [ngClass]="{'selected' : currentTab == 'dialogue'}">Dialogue</p>
+      <p (click)="currentTab = 'profile'" *ngIf="operator.profileEntries.length > 0" [ngClass]="{'selected' : currentTab == 'profile'}">Profile</p>
+      <p (click)="currentTab = 'dialogue'" *ngIf="operator.dialogues.length > 0" [ngClass]="{'selected' : currentTab == 'dialogue'}">Dialogue</p>
     </div>
 
     <div class="dead-zone container" [ngClass]="{'not-selected-tab' : currentTab != 'info'}">

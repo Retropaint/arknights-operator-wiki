@@ -1,4 +1,4 @@
-<table class="table" [ngClass]="{'top-margin': operator.statBreakpoints[0].eliteUnlockReqs == null}">
+<table class="table" *ngIf="!operator.name.includes('Reserve')" [ngClass]="{'top-margin': operator.statBreakpoints[0].eliteUnlockReqs == null}">
   <tbody>
     <tr>
       <th colspan="2">
