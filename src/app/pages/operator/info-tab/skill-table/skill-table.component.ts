@@ -60,6 +60,7 @@ export class SkillTableComponent implements OnInit {
       }
     }
 
+    let i = 0;
     this.operator.skills.forEach(skill => {
       let newSkill: FinalizedSkill = {
         id: skill.id,
@@ -82,11 +83,12 @@ export class SkillTableComponent implements OnInit {
       newSkill.description = newSkill.description.replace('hp_recovery_per_sec_BY_MAX_HP_RATIO', "hp_recovery_per_sec_by_max_hp_ratio");
       newSkill.description = newSkill.description.replace('ABILITY_RANGE_FORWARD_EXTEND', "ability_range_forward_extend");
 
-      newSkill.description = this.parseDescriptiveWords(newSkill.description, skill);
       newSkill.description = this.parseSkillDesc(skill, newSkill.description);
       newSkill.description = this.cleanUpSkillDescription(newSkill.description)
 
       this.skills.push(newSkill)
+
+      i++;
     })
 
     this.manualEdits();
@@ -120,6 +122,7 @@ export class SkillTableComponent implements OnInit {
       const variant = variants.find(variation => description.includes(variation))
       if(variant) {
         description = description.replace(variant, this.parseStat(skill, stat.name, variant));
+        return;
       }
     })
 
@@ -210,71 +213,6 @@ export class SkillTableComponent implements OnInit {
       }
     }
     return result;
-  }
-  
-  parseDescriptiveWords(description: string, skill: Skill) {
-    const name = this.operator.name;
-
-    const split = description.split(' ');
-    for(let i = 0; i < split.length; i++) {
-      let word = split[i];
-      
-      // wording lol
-      if(word == 'reduces') {
-        split[i] = 'reduced'
-      }
-
-      if(word == 'moderately' || word == 'dramatically' || word == 'slightly' || word == 'significantly') {
-        if(this.operator.branch == 'Hookmaster' || this.operator.branch == 'Pusher') {
-          split[i] = "by attack@force tiles";
-        } else {
-          let suffix = '0%';
-          if(name == 'Ptilopsis') {
-            suffix = 's';
-          }
-
-          // values less than 0 mean attack time is modified *by* and not *not*, since attack time cannot be negative
-          split[i] = this.baseAttackTime(skill, suffix);
-        }
-      }
-
-      if(word == 'increases' && split[i-1].includes('negative-effect')) {
-        if(name == 'Vulcan' || name == 'Ambriel') {
-          split[i] += ' by base_attack_time:s';
-        } else {
-          split[i] = "increases " + this.baseAttackTime(skill, ":0%");
-        }
-      }
-
-      if(name == 'Exusiai') {
-        if(word == 'Minor' || word == 'Moderate' || word == 'Significant') {
-          split[i] = 'base_attack_time:s';
-        }
-      }
-
-      if(word == 'a' && split[i+1] == "bit") {
-        split[i] = '';
-        split[i+1] = '';
-      }
-      if(word == "slightly") {
-        split[i] = '';
-      }
-    }
-
-    let result = '';
-    split.forEach(word => {
-      result += word + ' ';
-    })
-
-    return result;
-  }
-
-  baseAttackTime(skill: Skill, suffix: string) {
-    if(skill.levels[0].stats.find(stat => stat.name == 'base_attack_time').value < 0) {
-      return 'by base_attack_time' + suffix;
-    } else {
-      return 'to base_attack_time' + suffix;
-    }
   }
 
   getRanges(skill: Skill, firstSkillLevel, lastSkillLevel) {
@@ -394,7 +332,12 @@ export class SkillTableComponent implements OnInit {
           }
         }
       break; case 'Exusiai':
-        this.skills[2].description += '<br>(this skill is bugged and triggers twice, giving twice the values than shown in-game)';
+        for(let i = 3; i < 10; i++) {
+          if(this.selectedSkillLevels[i]) {
+            this.skills[2].description += "<br>(this skill is bugged and triggers twice, giving twice the values than shown in-game)";
+            break;
+          }
+        }
     }
   }
 

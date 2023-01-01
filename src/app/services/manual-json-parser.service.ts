@@ -24,37 +24,76 @@ export class ManualJsonParserService {
         this.replaceSkillDesc(op, 2, br, '');
       break; case 'Vulcan': case 'Ambriel':
         this.replaceSkillDesc(op, 1, 'slightly', '');
+        this.replaceSkillDesc(op, 1, 'increases', 'increases by base_attack_time:s');
       break; case "Kal\'tsit":
         this.replaceSkillDesc(op, 1, br, '');
         this.replaceSkillDesc(op, 2, br, '');
+      break; case 'Ebenholz':
+        this.replaceSkillDesc(op, 0, 'significantly reduced', 'reduced significantly');
+        this.replaceSkillStatName(op, 1, "force", "attack@force");
+        this.replaceSkillStatName(op, 2, "force", "attack@force");
       break; case "Tuye":
-        op.skills.find(skill => skill.name == 'Aqua Loop')
-          .levels.forEach(level => {
-            level.duration = 0;
-          })
+        op.skills[0].levels.forEach(level => {
+          level.duration = 0;
+        })
       break; case 'Exusiai':
-        op.skills.find(skill => skill.name == 'Overloading Mode')
-          .levels.forEach(level => {
-            level.stats.find(stat => stat.name == 'base_attack_time').value *= 2;
-          })
+        op.skills[2].levels.forEach(level => {
+          level.stats.find(stat => stat.name == 'base_attack_time').value *= 2;
+        })
+        this.replaceSkillDesc(op, 2, "Minor", "base_attack_time:s");
       break; case 'Ansel':
         op.skills[0].levels[0].range = '3-10';
         op.skills[0].levels[3].range = '5-2';
+      
     }
 
-    if(op.branch == 'Hookmaster' || op.branch == 'Pusher') {
-      op.skills.forEach(skill => {
-        skill.levels.forEach(level => {
-          const forceStat = level.stats.find(stat => stat.name == "force");
-          if(forceStat) {
-            forceStat.name = 'attack@force';
+    this.parseDescriptiveWords(op);
+  }
+
+  private parseDescriptiveWords(op: Operator) {
+    const descriptiveWords = ['slightly', 'moderately', 'dramatically', 'significantly'];
+
+    for(let i = 0; i < op.skills.length; i++) {
+      this.replaceSkillStatName(op, i, "force", "attack@force");
+
+      descriptiveWords.forEach(word => {
+        const regex = RegExp(word, 'g');
+
+        if(op.branch == 'Hookmaster' || op.branch == 'Pusher') {
+          this.replaceSkillDesc(op, i, regex, 'by attack@force tiles');
+        } else {
+          let suffix = ':0%';
+          if(op.name == 'Ptilopsis') {
+            suffix = 's';
           }
-        })
+
+          this.replaceSkillDesc(op, i, regex, this.baseAttackTime(op.skills[i], suffix));
+        }
       })
+
+      this.replaceSkillDesc(op, i, 'a bit', '');
+      this.replaceSkillDesc(op, i, 'reduces', 'reduced');
     }
   }
 
-  replaceSkillDesc(op: Operator, index: number, toReplace: string | RegExp, newString: string) {
+  private baseAttackTime(skill: Skill, suffix: string) {
+    if(skill.levels[0].stats.find(stat => stat.name == 'base_attack_time')?.value < 0) {
+      return 'by base_attack_time' + suffix;
+    } else {
+      return 'to base_attack_time' + suffix;
+    }
+  }
+
+  private replaceSkillStatName(op: Operator, index: number, name: string, toReplace: string) {
+    op.skills[index].levels.forEach(level => {
+      const stat = level.stats.find(stat => stat.name == name);
+      if(stat) {
+        stat.name = toReplace;
+      }
+    })
+  }
+
+  private replaceSkillDesc(op: Operator, index: number, toReplace: string | RegExp, newString: string) {
     op.skills[index].description = op.skills[index].description.replace(toReplace, newString);
   }
 
