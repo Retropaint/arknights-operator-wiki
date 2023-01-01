@@ -17,7 +17,7 @@ export class TooltipTextService {
     text = text.replace(/<\@ba.dt.element>/g, openSpan + "Includes Neural Damage, Corrosion Damage, and Burn Damage" + closeSpan)
     text = text.replace(/<\$ba.dt.element>/g, openSpan + "Includes Neural Damage, Corrosion Damage, and Burn Damage" + closeSpan)
     text = text.replace(/<\$ba.shield>/g, openSpan + "Each stack of shield can block 1 instance of damage" + closeSpan )
-    text = text.replace(/<\$ba.buffres>/g, openSpan + "Reduce duration of abnormal effects such as Stun, Cold, Freeze by 50% (Does not stack)" + closeSpan)
+    text = text.replace(/<\$ba.buffres>/g, openSpan + "The duration of stun, cold, and freeze effects are reduced by 50%" + closeSpan)
     text = text.replace(/<\$ba.fragile>/g, openSpan + "Increase all damage taken by the stated percentage (Does not stack, strongest effect takes precedence)" + closeSpan)
     text = text.replace(/<\$ba.sluggish>/g, openSpan + "Movement Speed reduced by 80%" + closeSpan)
     text = text.replace(/<\$ba.stun>/g, openSpan + "Unable to move, block, attack, or use skills" + closeSpan)
@@ -53,6 +53,7 @@ export class TooltipTextService {
     text = text.replace(/<\$cc.g.psk>/g, openSpan + "Includes the following Operators:\nFlametail\nFartooth\nAshlock\nWild Mane\n\'Justice Knight\'" + closeSpan)
     text = text.replace(/<\$cc.g.sp>/g, openSpan + `Includes the following Operators:\n${this.alterOps()}` + closeSpan)
     text = text.replace(/<\$ba.magicfragile>/g, openSpan + "Increase Arts damage taken by the stated percentage\n(Does not stack, strongest effect takes precedence)" + closeSpan)
+    text = text.replace(/<\$ba.debuff>/g, openSpan + "Includes Stun, Cold, Frozen, etc" + closeSpan)
 
     return text;
   }
