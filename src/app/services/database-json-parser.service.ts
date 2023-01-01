@@ -390,7 +390,7 @@ export class DatabaseJsonParserService {
 
   getModuleLevelStats(jsonModule: any, module: Module) {
     for(let i = 0; i < jsonModule.phases.length; i++) {
-      module.levels[i].stats = this.renameStats(jsonModule.phases[i].attributeBlackboard);
+      module.levels[i].stats = this.renameStatKeys(jsonModule.phases[i].attributeBlackboard);
 
       // summon stats
       if(jsonModule.phases[i].tokenAttributeBlackboard != null) {
@@ -475,12 +475,18 @@ export class DatabaseJsonParserService {
     return object;
   }
 
+  replaceKeyName(object: any, keyToRename: string, newName: string) {
+    object.forEach(stat => {
+      if(stat.key == keyToRename) {
+        stat.key = newName;
+      }
+    })
+    
+    return object;
+  }
+
   getItem(id: string, isStage: boolean = false): Item | StageItem {
-    if(isStage) {
-      return this.database.items.find(thisItem => id == thisItem.id)
-    } else {
-      return this.database.items.find(thisItem => id == thisItem.id)
-    }
+    return this.database.items.find(thisItem => id == thisItem.id)
   }
 
   getBaseSkills(buffJson: any) {
@@ -550,10 +556,22 @@ export class DatabaseJsonParserService {
 
   renameStats(stats) {
     stats = this.replaceKey(stats, 'magicResistance', 'res');
+    stats = this.replaceKey(stats, 'magic_resistance', 'res');
     stats = this.replaceKey(stats, 'blockCnt', 'blockCount');
     stats = this.replaceKey(stats, 'maxHp', 'hp');
     stats = this.replaceKey(stats, 'baseAttackTime', 'attackInterval');
     stats = this.replaceKey(stats, 'respawnTime', 'time');
+    return stats;
+  }
+
+  // this one replaces the name of 'key' members, than the key itself
+  renameStatKeys(stats) {
+    stats = this.replaceKeyName(stats, 'magicResistance', 'res');
+    stats = this.replaceKeyName(stats, 'magic_resistance', 'res');
+    stats = this.replaceKeyName(stats, 'blockCnt', 'blockCount');
+    stats = this.replaceKeyName(stats, 'maxHp', 'hp');
+    stats = this.replaceKeyName(stats, 'baseAttackTime', 'attackInterval');
+    stats = this.replaceKeyName(stats, 'respawnTime', 'time');
     return stats;
   }
 
