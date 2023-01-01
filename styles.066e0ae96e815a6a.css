@@ -1513,6 +1513,7 @@ sub {
   --hovergrey: #454545;
   --tableTextGrey: #a1a1a1;
   --tableFirstHeader: #575757;
+  --image-scale: 1;
 }
 .slider {
   width: 100%;
@@ -1566,7 +1567,7 @@ sub {
   opacity: 0;
 }
 .ngxImageZoomContainer .ngxImageZoomFull {
-  transform: scale(0.85);
+  transform: scale(var(--image-scale));
 }
 p {
   margin: 0;
