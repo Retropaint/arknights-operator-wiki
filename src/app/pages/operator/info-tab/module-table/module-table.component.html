@@ -11,7 +11,6 @@
         Unlock Requirements
       </th>
     </tr>
-    <tr>
     <tr style="height: 150px">
       <td>
         <div class="module-header">
@@ -58,7 +57,7 @@
         Unlock Reqs.
       </th>
     </tr>
-    <tr *ngFor="let level of operator.modules[moduleIndex].levels; let i=index">
+    <tr *ngFor="let level of operator.modules[moduleIndex].levels; let i=index" style="height: 75px">
       <th>
         {{i+1}}
       </th>

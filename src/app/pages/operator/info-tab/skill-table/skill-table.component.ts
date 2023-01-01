@@ -36,6 +36,9 @@ export class SkillTableComponent implements OnInit {
 
   doctor: Doctor;
 
+  imgSrcs: string[] = [];
+  imgLoaded: boolean[] = [];
+
   @ViewChildren('description') descs: any;
 
   constructor(
@@ -46,6 +49,11 @@ export class SkillTableComponent implements OnInit {
   ngOnInit() {
     this.doctor = this.doctorService.doctor;
     this.getSkillDescriptions();
+
+    for(let i = 0; i < this.operator.skills.length; i++) {
+      this.imgSrcs.push(`assets/skills/skill_icon_${this.operator.skills[i].iconId}.png`);
+      this.imgLoaded.push(false);
+    }
   }
 
   getSkillDescriptions() {
@@ -335,6 +343,10 @@ export class SkillTableComponent implements OnInit {
           }
         }
     }
+  }
+
+  noLocalImg(i: number) {
+    this.imgSrcs[i] = `https://raw.githubusercontent.com/Aceship/Arknight-Images/main/skills/skill_icon_${this.operator.skills[i].iconId}.png`;
   }
 
 }

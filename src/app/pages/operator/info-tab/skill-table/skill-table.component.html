@@ -42,9 +42,9 @@
         Initial SP
       </th>
     </tr>
-    <tr *ngFor="let s of skills">
+    <tr *ngFor="let s of skills; let i = index">
       <th>
-        <ion-img class="skill-img" src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/skills/skill_icon_{{s.iconId}}.png"></ion-img>
+        <img class="skill-img" [style.display]="{'none' : '!imgLoaded[i]'}" [src]="imgSrcs[i]" (error)="noLocalImg(i)" (load)="imgLoaded[i] = true"/>
         {{s.name}}
       </th>
       <td class="elite-unlock-req-cell">

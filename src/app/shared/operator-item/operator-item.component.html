@@ -1,4 +1,4 @@
 <a class="container" routerLink="/operator" [queryParams]="{'name': encodeURI(operator.name)}">
-  <ion-img src="https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/{{operator.avatarLink}}.png"></ion-img>
+  <img [style.display]="{'none' : '!imgLoaded'}" [src]="imgSrc" (error)="noLocalImg()" (load)="imgLoaded = true"/>
   <p class="op-name rarity-{{operator.rarity}}">{{operator.name}}</p>
 </a>

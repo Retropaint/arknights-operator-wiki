@@ -13,11 +13,15 @@ export class OperatorItemComponent implements OnInit {
 
   @Input() operator: Operator;
 
+  imgSrc: string;
+  imgLoaded: boolean = false;
+
   constructor(
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.imgSrc =  `assets/opAvatars/${this.operator.avatarLink}.png`;
   }
 
   async goToOperatorPage() {
@@ -32,6 +36,11 @@ export class OperatorItemComponent implements OnInit {
         queryParams: urlParams,
       }
     )
+  }
+
+  noLocalImg() {
+    this.imgSrc = `https://raw.githubusercontent.com/Aceship/Arknight-Images/main/avatars/${this.operator.avatarLink}.png`;
+    this.imgLoaded = true;
   }
 
 }

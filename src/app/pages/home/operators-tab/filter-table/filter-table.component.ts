@@ -69,7 +69,7 @@ export class FilterTableComponent implements OnInit {
   branches: FilterCategory = {
     name: 'Branches',
     filters: [],
-    imgUrl: 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/ui/subclass/sub_',
+    imgUrl: 'assets/subclass/sub_',
     imgUrlSuffix: '_icon',
     isFolded: false
   };
@@ -77,7 +77,7 @@ export class FilterTableComponent implements OnInit {
   groups: FilterCategory = {
     name: 'Groups',
     filters: [],
-    imgUrl: 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/factions/logo_',
+    imgUrl: 'assets/factions/logo_',
     isFolded: false,
   };
 
