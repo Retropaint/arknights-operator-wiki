@@ -98,88 +98,7 @@ export class FilterTableComponent implements OnInit {
     this.createCategoryFilters();
   }
 
-  sortCategory(filterName: string) {
-
-    this.refreshBranchHighlights();
-
-    this.filters.forEach(category => {
-      category.filters.forEach(filter => {
-        filter.toggle = false;
-      })
-    })
-
-    if(this.selectedAll == filterName) {
-      this.selectedAll = '';
-      this.generatedFilters = [];      
-    } else {
-      this.generatedFilters = [
-        {
-          categoryName: filterName,
-          toggles: []
-        }
-      ]
-  
-      this.selectedAll = filterName;
-    }
-
-    this.sharedService.operatorListRefreshSubscription.next(this.generatedFilters);
-  }
-
-  toggleFilter() {
-    this.selectedAll = null;
-    this.generatedFilters = [];
-
-    this.refreshBranchHighlights();
-    this.refreshGeneratedFilters();
-
-    this.sharedService.operatorListRefreshSubscription.next(this.generatedFilters);
-  }
-
-  refreshGeneratedFilters() {
-    let allClassesOff = true;
-
-    this.filters.forEach(category => {
-      category.filters.forEach(filter => {
-        if(!allClassesOff && category.name == 'Branches' && !this.branchHighlight(filter.name, filter.associatedClass)) {
-          return;
-        }
-
-        if(filter.toggle) {
-          if(category.name == 'Classes') {
-            allClassesOff = false;
-          }
-
-          const filterCategory = this.generatedFilters.find(generatedFilter => generatedFilter.categoryName == category.name)
-
-          if(filterCategory) {
-            filterCategory.toggles.push(filter.name)
-          } else {
-            this.generatedFilters.push(
-              {
-                categoryName: category.name,
-                toggles: [filter.name]
-              }
-            )
-          }
-        }
-      })
-    })
-  }
-
-  branchHighlight(branch: string, assClass: string) {
-    if(!this.classes.filters.find(filter => filter.name == assClass).toggle) {
-      const branchFilter = this.branches.filters.find(filter => filter.name == branch);
-      branchFilter.toggle = false;
-      branchFilter.isHighlighted = false;
-      
-      return false;
-    }
-
-    return true;
-  }
-
   createCategoryFilters() {
-
     // used to sort branches by class
     let associatedClasses: {
       branch: string;
@@ -237,6 +156,84 @@ export class FilterTableComponent implements OnInit {
         )
       }
     }
+  }
+
+  sortCategory(filterName: string) {
+    this.refreshBranchHighlights();
+
+    this.filters.forEach(category => {
+      category.filters.forEach(filter => {
+        filter.toggle = false;
+      })
+    })
+
+    if(this.selectedAll == filterName) {
+      this.selectedAll = '';
+      this.generatedFilters = [];      
+    } else {
+      this.generatedFilters = [
+        {
+          categoryName: filterName,
+          toggles: []
+        }
+      ]
+  
+      this.selectedAll = filterName;
+    }
+
+    this.sharedService.operatorListRefreshSubscription.next(this.generatedFilters);
+  }
+
+  toggleFilter() {
+    this.selectedAll = null;
+    this.generatedFilters = [];
+
+    this.refreshBranchHighlights();
+    this.refreshGeneratedFilters();
+
+    this.sharedService.operatorListRefreshSubscription.next(this.generatedFilters);
+  }
+
+  refreshGeneratedFilters() {
+    let allClassesOff = true;
+
+    this.filters.forEach(category => {
+      category.filters.forEach(filter => {
+        if(!allClassesOff && category.name == 'Branches' && !this.branchHighlight(filter.name, filter.associatedClass)) {
+          return;
+        }
+
+        if(filter.toggle) {
+          if(category.name == 'Classes') {
+            allClassesOff = false;
+          }
+
+          const filterCategory = this.generatedFilters.find(generatedFilter => generatedFilter.categoryName == category.name)
+          if(filterCategory) {
+            filterCategory.toggles.push(filter.name)
+          } else {
+            this.generatedFilters.push(
+              {
+                categoryName: category.name,
+                toggles: [filter.name]
+              }
+            )
+          }
+        }
+      })
+    })
+  }
+
+  branchHighlight(branch: string, assClass: string) {
+    if(!this.classes.filters.find(filter => filter.name == assClass).toggle) {
+      const branchFilter = this.branches.filters.find(filter => filter.name == branch);
+      branchFilter.toggle = false;
+      branchFilter.isHighlighted = false;
+      
+      return false;
+    }
+
+    return true;
   }
 
   refreshBranchHighlights() {
