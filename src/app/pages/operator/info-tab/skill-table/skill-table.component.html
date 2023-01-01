@@ -73,7 +73,8 @@
       <td>
         <ng-container *ngFor="let duration of s.durations">
           <p class="flex-container" *ngIf="duration.value == -1">Infinite</p>
-          <p class="flex-container" *ngIf="duration.value != -1">{{duration.value}}s 
+          <p class="flex-container" *ngIf="duration.value == 0">Instant</p>
+          <p class="flex-container" *ngIf="duration.value > 0">{{duration.value}}s 
             <ion-img *ngIf="duration.level <= 6" class="level" src="assets/icons/skillLevels/{{duration.level}}.png"></ion-img>
             <ion-img *ngIf="duration.level >= 7" class="mastery-img" src="assets/icons/skillLevels/{{duration.level}}.png"></ion-img>
           </p>
