@@ -28,6 +28,11 @@
 
     &:hover {
       border: 1px solid white;
+
+      // scale down bigger images so they're equal in zoom with others
+      &.big-image {
+        --image-scale: 0.55;
+      }
     }
 
     &.selected {

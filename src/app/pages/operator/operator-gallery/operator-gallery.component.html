@@ -9,20 +9,17 @@
         <p>/</p>
         <p style="color: darkgrey">Artist: <span style="color: white">{{skin.artist}}</span></p>
       </div>
+
+      <img style="display: none" #opImage src="{{baseUrl}}{{skin.id}}.png" (load)="getMagnificaction($event)" />
       
       <lib-ngx-image-zoom
-        #opImage
-        
         class="img selected"
         [style]="'background: rgb(' + backgroundBrightness + ', ' + backgroundBrightness +  ', ' + backgroundBrightness + ')'"
+        [ngClass]="{'big-image': magnifiers[i] == 0.5}"
         thumbImage="{{baseUrl}}{{skin.id}}.png"
         fullImage="{{baseUrl}}{{skin.id}}.png"
         zoomMode="hover"
         [enableScrollZoom]="true"
-        [magnification]="1.05 * magnificationMultiplier"
-        [minZoomRatio]="1.05 * magnificationMultiplier"
-        [maxZoomRatio]="2"
-        (mouseenter)="onHover()"
       ></lib-ngx-image-zoom>
   
     </div>

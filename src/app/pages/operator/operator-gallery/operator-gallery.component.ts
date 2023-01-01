@@ -15,14 +15,14 @@ export class OperatorGalleryComponent implements OnInit {
   @Input() isTab: boolean = false;
   @Input() operator: Operator;
 
-  chosenSkin: number = 0;
-  magnificationMultiplier: number = 1;
   backgroundBrightness: number = 18;
 
   reserveOpImageLink: string;
   defaultOpIconLink: string;
 
   loading: boolean = false;
+
+  magnifiers: number[] = [];
 
   baseUrl: string = 'https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/';
 
@@ -47,20 +47,8 @@ export class OperatorGalleryComponent implements OnInit {
     }
   }
 
-  changedSkin(newIndex: number) {
-    if(this.chosenSkin != newIndex) {
-      this.chosenSkin = newIndex;
-      this.loading = true;
-    }
-  }
-
-  onHover() {
-    // 2048 size images magnifier double as much as 1024, so compensate by halving magnification
-    if(this.opImage.fullWidth == 2048) {
-      this.magnificationMultiplier = 0.5;
-    } else {
-      this.magnificationMultiplier = 1;
-    }
+  getMagnificaction(event) {
+    this.magnifiers.push((event.path[0].width > 1024) ? 0.5 : 1);
   }
 
   imageLoaded() {
