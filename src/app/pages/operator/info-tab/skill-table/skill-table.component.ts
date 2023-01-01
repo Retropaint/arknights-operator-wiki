@@ -3,6 +3,7 @@ import { Doctor } from 'src/app/interfaces/doctor';
 import { FinalizedSkill } from 'src/app/interfaces/finalized-skill';
 import { Operator, Skill } from 'src/app/interfaces/operator';
 import { DoctorService } from 'src/app/services/doctor.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-skill-table',
@@ -38,7 +39,8 @@ export class SkillTableComponent implements OnInit {
   @ViewChildren('description') descs: any;
 
   constructor(
-    private doctorService: DoctorService
+    private doctorService: DoctorService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit() {
@@ -89,11 +91,9 @@ export class SkillTableComponent implements OnInit {
 
     this.manualEdits();
 
-    // add tooltips
     setTimeout(() => {
       for(let i = 0; i < this.descs._results.length; i++) {
-        const desc = this.descs._results[i];
-        desc.nativeElement.innerHTML = this.skills[i].description;
+        this.sharedService.addTooltips(this.descs.toArray()[i], this.skills[i].description);
       }
     })
   }

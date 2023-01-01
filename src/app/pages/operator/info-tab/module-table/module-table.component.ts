@@ -1,19 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Operator } from 'src/app/interfaces/operator';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-module-table',
   templateUrl: './module-table.component.html',
   styleUrls: ['./module-table.component.scss'],
 })
-export class ModuleTableComponent implements OnInit {
+export class ModuleTableComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('trait') traitHTML: ElementRef;
 
   @Input() operator: Operator;
   @Input() moduleIndex: number;
 
   trait: string;
 
-  constructor() { }
+  constructor(
+    private sharedService: SharedService
+  ) { }
 
   ngOnInit() {
     if(this.moduleIndex == 0) {
@@ -45,7 +50,10 @@ export class ModuleTableComponent implements OnInit {
         })
       })
     }
-    
+  }
+
+  ngAfterViewInit() {
+    this.sharedService.addTooltips(this.traitHTML, this.trait);
   }
 
 }

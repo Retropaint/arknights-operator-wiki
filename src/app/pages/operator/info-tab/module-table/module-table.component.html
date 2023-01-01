@@ -20,10 +20,10 @@
       </td>
       <td>
         <div *ngIf="operator.name == 'Dusk'" style="text-align: center">
-          <p [innerHTML]="trait" style="margin-bottom: 10px"></p>
+          <p #trait [innerHTML]="trait" style="margin-bottom: 10px"></p>
           <app-range-grid id="3-1"></app-range-grid>
         </div>
-        <p *ngIf="operator.name != 'Dusk'" style="margin-left: 5px; margin-right: 5px" [innerHTML]="trait"></p>
+        <p #trait *ngIf="operator.name != 'Dusk'" style="margin-left: 5px; margin-right: 5px" [innerHTML]="trait"></p>
       </td>
       <td>
         <div class="unlock-reqs-elite-and-level">

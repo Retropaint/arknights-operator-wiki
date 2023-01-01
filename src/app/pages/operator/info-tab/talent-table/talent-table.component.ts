@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, ViewChildren  } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChildren  } from '@angular/core';
 import { Operator, Talent } from 'src/app/interfaces/operator';
 import { DialogService } from 'primeng/dynamicdialog';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-talent-table',
@@ -9,7 +10,7 @@ import { DialogService } from 'primeng/dynamicdialog';
   providers: [DialogService],
 
 })
-export class TalentTableComponent implements OnInit {
+export class TalentTableComponent implements OnInit, AfterViewInit {
 
   @Input() operator: Operator;
 
@@ -17,10 +18,10 @@ export class TalentTableComponent implements OnInit {
 
   condenseElites: boolean = true;
 
-  @ViewChildren('description') descs: any;
+  @ViewChildren('description') descs: QueryList<ElementRef>;
   
   constructor(
-    private dialogService: DialogService
+    private sharedService: SharedService
   ) { }
 
   ngOnInit() {
@@ -34,13 +35,12 @@ export class TalentTableComponent implements OnInit {
       }
 
     })
+  }
 
-    setTimeout(() => {
-      for(let i = 0; i < this.operator.talents.length; i++) {
-        const desc = this.descs._results[i];
-        desc.nativeElement.innerHTML = this.talents[i].description;
-      }
-    })
+  ngAfterViewInit() {
+    for(let i = 0; i < this.talents.length; i++) {
+      this.sharedService.addTooltips(this.descs.toArray()[i], this.talents[i].description, false);
+    }
   }
 
   parseRobotTalent(talent: Talent) {
@@ -48,6 +48,7 @@ export class TalentTableComponent implements OnInit {
     let firstDescSplit: string[] = null;
     let finalSplit: string[] = null;
 
+    let index = 0;
     talent.descriptions.forEach(desc => {
       const split = desc.split(' ');
       if(!firstDescSplit) {
@@ -58,9 +59,10 @@ export class TalentTableComponent implements OnInit {
           if(firstDescSplit[i] != split[i]) {
             differences.push(split[i]);
 
-            finalSplit[i] += '<span class="positive-effect">  (' + split[i] + ') </span>';
+            finalSplit[i] += '<span class="positive-effect">  (' + split[i] + this.potImg(index) + ') </span>';
           }
         }
+        index++;
       }
     })
 
@@ -95,6 +97,7 @@ export class TalentTableComponent implements OnInit {
 
     for(let i = 0; i < split.length; i++) {
       if(split[i].includes('positive-effect')) {
+        // remove closing bracket, add pot img, and re-add bracket
         split[i+1] = split[i+1].slice(0, split[i+1].length-1) + ` ${this.potImg(talent.unlockConditions[1].potential-1)})`;
       }
     }
