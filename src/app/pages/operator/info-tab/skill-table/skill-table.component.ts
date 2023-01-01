@@ -49,15 +49,14 @@ export class SkillTableComponent implements OnInit {
   getSkillDescriptions() {
     this.skills = [];
 
-    // get first and last skill levels for parsing
-    let firstSelectedSkillLevel: number;
-    let lastSelecedSkillLevel: number;
+    let firstSkilLevel: number;
+    let lastSkillLevel: number;
     for(let i = 0; i < 10; i++) {
-      if(this.selectedSkillLevels[i] && firstSelectedSkillLevel == null) {
-        firstSelectedSkillLevel = i;   
+      if(this.selectedSkillLevels[i] && firstSkilLevel == null) {
+        firstSkilLevel = i;   
       }
       if(this.selectedSkillLevels[i]) {
-        lastSelecedSkillLevel = i;
+        lastSkillLevel = i;
       }
     }
 
@@ -73,10 +72,10 @@ export class SkillTableComponent implements OnInit {
         },
         eliteUnlockReq: skill.eliteUnlockReq,
         activationType: skill.activationType,
-        spCosts: this.getMiscSkillStats(skill, 'spCost', firstSelectedSkillLevel, lastSelecedSkillLevel),
-        initialSp: this.getMiscSkillStats(skill, 'initialSp', firstSelectedSkillLevel, lastSelecedSkillLevel),
-        durations: this.getMiscSkillStats(skill, 'duration', firstSelectedSkillLevel, lastSelecedSkillLevel),
-        ranges: this.getRanges(skill, firstSelectedSkillLevel, lastSelecedSkillLevel)
+        spCosts: this.getMiscSkillStats(skill, 'spCost', firstSkilLevel, lastSkillLevel),
+        initialSp: this.getMiscSkillStats(skill, 'initialSp', firstSkilLevel, lastSkillLevel),
+        durations: this.getMiscSkillStats(skill, 'duration', firstSkilLevel, lastSkillLevel),
+        ranges: this.getRanges(skill, firstSkilLevel, lastSkillLevel)
       }
 
       newSkill.description = newSkill.description.replace('HP_RECOVERY_PER_SEC', 'hp_recovery_per_sec');
@@ -143,7 +142,7 @@ export class SkillTableComponent implements OnInit {
 
     let firstLevel = true;
     let prevVal = 9999;
-    for(let i = 0; i < this.selectedSkillLevels.length; i++) {
+    for(let i = 0; i < ((this.operator.rarity > 3) ? 10 : 7); i++) {
       if(this.selectedSkillLevels[i]) {
         let val = skill.levels[i].stats.find(stat => stat.name == statName).value;
         if(prevVal == val) {
@@ -234,12 +233,8 @@ export class SkillTableComponent implements OnInit {
             suffix = 's';
           }
 
-          // a value less than 0 means it's negative, therefore it's reduced/raised *by* and not *to*
-          if(skill.levels[0].stats[0].value < 0) {
-            split[i] = 'by base_attack_time:' + suffix;
-          } else {
-            split[i] = 'to base_attack_time:' + suffix;
-          }
+          // values less than 0 mean attack time is modified *by* and not *not*, since attack time cannot be negative
+          split[i] = this.baseAttackTime(skill, suffix);
         }
       }
 
@@ -247,7 +242,7 @@ export class SkillTableComponent implements OnInit {
         if(name == 'Vulcan' || name == 'Ambriel') {
           split[i] += ' by base_attack_time:s';
         } else {
-          split[i] += ' by base_attack_time:0%';
+          split[i] = "increases " + this.baseAttackTime(skill, ":0%");
         }
       }
 
@@ -274,23 +269,30 @@ export class SkillTableComponent implements OnInit {
     return result;
   }
 
+  baseAttackTime(skill: Skill, suffix: string) {
+    if(skill.levels[0].stats.find(stat => stat.name == 'base_attack_time').value < 0) {
+      return 'by base_attack_time' + suffix;
+    } else {
+      return 'to base_attack_time' + suffix;
+    }
+  }
+
   getRanges(skill: Skill, firstSkillLevel, lastSkillLevel) {
     let ranges: {
       id: string;
       level: number;
     }[] = [];
 
-    // prevents repetition
-    let lastRange: string = '';
+    let prevRange: string = '';
     
     let maxLevel = (this.operator.rarity > 3) ? 10: 7;
     for(let i = firstSkillLevel; i < Math.min(lastSkillLevel+1, maxLevel); i++) {
-      if(skill.levels[i].range != null && skill.levels[i].range != lastRange) {
+      if(skill.levels[i].range != null && skill.levels[i].range != prevRange) {
         ranges.push({
           id: skill.levels[i].range,
           level: i+1
         });
-        lastRange = skill.levels[i].range;
+        prevRange = skill.levels[i].range;
       }
     }
 
@@ -298,7 +300,7 @@ export class SkillTableComponent implements OnInit {
   }
 
   getMiscSkillStats(skill: Skill, miscStat: 'duration' | 'spCost' | 'initialSp', firstSkillLevel, lastSkillLevel) {
-    let previousValue: number = -999;
+    let prevValue: number = -999;
     let stats: {
       value: number;
       level: number;
@@ -317,9 +319,9 @@ export class SkillTableComponent implements OnInit {
         if(this.selectedSkillLevels[i]) {
           const thisStat = skill.levels[i][miscStat];
 
-          if(thisStat != previousValue) {
+          if(thisStat != prevValue) {
             stats.push({value: thisStat, level: i+1});
-            previousValue = thisStat;
+            prevValue = thisStat;
           }
 
         }
@@ -336,7 +338,6 @@ export class SkillTableComponent implements OnInit {
 
     this.selectedSkillLevels[level] = !this.selectedSkillLevels[level];
 
-    // default to SL1 if none are active
     let shouldReset = true;
     for(let i = 0; i < 10; i++) {
       if(this.selectedSkillLevels[i]) {
