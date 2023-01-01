@@ -1,4 +1,4 @@
-  <ion-grid *ngFor="let category of filters" class="filter-container">
+  <ion-grid *ngFor="let category of filterService.filters" class="filter-container">
       
       <!-- sort button -->
       <ion-row style="text-align: center">
@@ -18,7 +18,7 @@
           *ngFor="let filter of category.filters" 
           style="padding: 0px;"
         >
-        <div (click)="filter.toggle = !filter.toggle; toggleFilter()" class="individual-box" [ngClass]="{'selected': filter.toggle, 'disabled': category.name == 'Branches' && !filter.isHighlighted}">
+        <div (click)="filter.toggle = !filter.toggle; filterService.toggleFilter()" class="individual-box" [ngClass]="{'selected': filter.toggle, 'disabled': category.name == 'Branches' && !filter.isHighlighted}">
           <ion-img *ngIf="category.imgUrl" src="{{category.imgUrl}}{{filter.iconId}}{{category.imgUrlSuffix}}.png"></ion-img>
           <p style="display: inline-block">{{filter.name}}</p>
         </div>
