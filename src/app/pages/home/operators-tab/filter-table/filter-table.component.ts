@@ -100,13 +100,13 @@ export class FilterTableComponent implements OnInit {
 
   sortCategory(filterName: string) {
 
+    this.refreshBranchHighlights();
+
     this.filters.forEach(category => {
       category.filters.forEach(filter => {
         filter.toggle = false;
       })
     })
-
-    this.refreshBranchHighlights();
 
     if(this.selectedAll == filterName) {
       this.selectedAll = '';
@@ -127,11 +127,9 @@ export class FilterTableComponent implements OnInit {
 
   toggleFilter() {
     this.selectedAll = null;
-
     this.generatedFilters = [];
 
     this.refreshBranchHighlights();
-
     this.refreshGeneratedFilters();
 
     this.sharedService.operatorListRefreshSubscription.next(this.generatedFilters);
