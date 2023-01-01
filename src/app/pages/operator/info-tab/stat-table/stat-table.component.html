@@ -1,6 +1,6 @@
 <table class="table no-bottom-border" *ngIf="subject && !isSummon">
   <tbody>
-    <tr>
+    <tr style="height: 31px;">
       <th class="button" [ngClass]="{'selected' : includeTrust}" (click)="includeTrust = !includeTrust; reset()">200 Trust</th>
       <th class="button" [ngClass]="{'selected' : includePotentials}" (click)="includePotentials = !includePotentials; reset()">All Potentials</th>
       <th *ngIf="subject.modules[1]" class="button" [ngClass]="{'selected' : includeModule}" (click)="includeModule = !includeModule; reset()">Module Lv 3</th>
@@ -39,7 +39,7 @@
       </th>
     </tr>
     
-    <tr *ngFor="let vb of displayedBreakpoints; let i = index">
+    <tr *ngFor="let vb of displayedBreakpoints; let i = index" style="height: 38px;">
       <td>
         <div class="level-cell">
           <ion-img class="elite-img" src="assets/icons/elitePhases/{{vb.elite}}.webp"></ion-img>
@@ -107,7 +107,7 @@
 </table>
 <table class="table" style="border: none" draggable="false" [ngClass]="{'bottom-margin' : isSummon}" *ngIf="subject && doctor.statSlider">
   <tbody>
-    <tr>
+    <tr style="height: 68px">
       <td style="border-top: none">
         <input draggable="false" [(ngModel)]="customLevel" type="range" class="slider" min="1" [max]="maxCustomLevel" (ngModelChange)="parseCustomLevel()"/>
       </td>
