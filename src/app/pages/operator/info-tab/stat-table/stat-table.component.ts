@@ -171,7 +171,7 @@ export class StatTableComponent implements OnInit {
       const module = this.subject.modules[1];
       module.levels[module.levels.length-1].stats.forEach(stat => {
         if(stat.key == 'attack_speed') {
-          stats['attackInterval'] *= 1 - (stat.value / 100);
+          stats['attackInterval'] = 100/((100+stat.value)/stats['attackInterval']);
           stats['attackInterval'] = stats['attackInterval'].toFixed(2);
         } else {
           stats[stat.key] += stat.value;
