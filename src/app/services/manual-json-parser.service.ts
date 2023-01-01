@@ -20,16 +20,12 @@ export class ManualJsonParserService {
     switch(op.name) {
       case 'Silverash': case 'Mountain': case "Ch\'en": 
         this.replaceSkillDesc(op, 1, br, '');
-      break; case 'Vulcan':
-        this.replaceSkillDesc(op, 1, 'slightly', '');
-      break; case 'Schwarz':
+      break; case 'Schwarz': case 'Blemishine': case 'Fartooth':
         this.replaceSkillDesc(op, 2, br, '');
-      break; case 'Ambriel': 
+      break; case 'Vulcan': case 'Ambriel':
         this.replaceSkillDesc(op, 1, 'slightly', '');
       break; case "Kal\'tsit":
         this.replaceSkillDesc(op, 1, br, '');
-        this.replaceSkillDesc(op, 2, br, '');
-      break; case 'Blemishine':
         this.replaceSkillDesc(op, 2, br, '');
       break; case "Tuye":
         op.skills.find(skill => skill.name == 'Aqua Loop')
