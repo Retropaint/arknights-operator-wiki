@@ -60,7 +60,6 @@
 
         <p class="skill-description" #description [innerHtml]="s.description"></p>
 
-        <!-- ranges -->
         <div class="range-container" *ngIf="s.ranges.length > 0">
           <div class="range" *ngFor="let range of s.ranges">
             <app-range-grid [id]="range.id"></app-range-grid>
